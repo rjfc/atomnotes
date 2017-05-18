@@ -6,6 +6,7 @@ var express          = require("express"),
 var port = 8080;
 
 app.set("view engine", "ejs");
+app.use(express.static(__dirname + "/public"));
 
 // GET ROUTE: landing page
 app.get("/", function(req, res) {

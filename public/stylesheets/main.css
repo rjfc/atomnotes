@@ -1,0 +1,74 @@
+/*
+Colours
+  _____ ____  _      ____  _    _ _____   _____
+ / ____/ __ \| |    / __ \| |  | |  __ \ / ____|
+| |   | |  | | |   | |  | | |  | | |__) | (___
+| |   | |  | | |   | |  | | |  | |  _  / \___ \
+| |___| |__| | |___| |__| | |__| | | \ \ ____) |
+ \_____\____/|______\____/ \____/|_|  \_\_____/
+  Colour           |   Type   |  Hex
+ ------------------|----------|-------
+  Silver Chalice   | Neutral  | #A7A7A7
+*/
+
+/*
+Fonts
+ ______ ____  _   _ _______ _____
+|  ____/ __ \| \ | |__   __/ ____|
+| |__ | |  | |  \| |  | | | (___
+|  __|| |  | | . ` |  | |  \___ \
+| |   | |__| | |\  |  | |  ____) |
+|_|    \____/|_| \_|  |_| |_____/
+*/
+/*
+Lato
+font-family: 'Lato', sans-serif;
+*/
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
+/*
+ General
+   _____ ______ _   _ ______ _____            _
+  / ____|  ____| \ | |  ____|  __ \     /\   | |
+ | |  __| |__  |  \| | |__  | |__) |   /  \  | |
+ | | |_ |  __| | . ` |  __| |  _  /   / /\ \ | |
+ | |__| | |____| |\  | |____| | \ \  / ____ \| |____
+  \_____|______|_| \_|______|_|  \_\/_/    \_\______|
+ */
+
+body {
+    background: url("/images/bluegradient.png") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.gn-logo-landing {
+    position: relative;
+    top: 20vh;
+    display: block;
+    margin: 0 auto;
+    width: 45%;
+    height: auto;
+}
+
+.tagline-h1 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 900;
+    color: #FCFCFC;
+    position: relative;
+    top: 20vh;
+    text-align: center;
+    font-size: 7vh;
+}
+
+.tagline-h2 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 900;
+    color: #FCFCFC;
+    position: relative;
+    top: 18vh;
+    text-align: center;
+    font-size: 4vh;
+}
