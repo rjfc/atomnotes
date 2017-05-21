@@ -13,6 +13,11 @@ app.get("/", function(req, res) {
     res.render("landing");
 });
 
+// GET ROUTE: main page
+app.get("/notes", function(req, res) {
+    res.render("interface");
+});
+
 // Listen on set port
 http.listen(port, function() {
     console.log("Server listening on port " + 8080);

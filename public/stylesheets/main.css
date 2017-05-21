@@ -36,13 +36,33 @@ font-family: 'Lato', sans-serif;
   \_____|______|_| \_|______|_|  \_\/_/    \_\______|
  */
 
-body {
+.container-landing {
+    width: 100vw;
+    height: 100vh;
     background: url("/images/bluegradient.png") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
 }
+
+.container-interface {
+    width: 100vw;
+    height: 100vh;
+    background-color: #fcfcfc;
+}
+
+.container-interface > .row > .col-md-3 {
+    padding-left: 0;
+    padding-right: 90px;
+}
+
+
+.side-panel {
+    height: 100vh;
+    background-color: #2b2e37;
+}
+
 
 .gn-logo-landing {
     position: relative;
