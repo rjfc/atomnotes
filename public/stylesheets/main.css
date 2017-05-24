@@ -44,6 +44,7 @@ font-family: 'Lato', sans-serif;
     -o-background-size: cover;
     background-size: cover;
     padding: 0;
+    overflow: hidden;
 }
 
 .container-interface {
@@ -163,6 +164,53 @@ font-family: 'Lato', sans-serif;
     position: absolute;
     background-color: Black;
     opacity: 0.7;
-    z-index: 100;
+    z-index: 1;
     display: none;
+}
+
+.popup-box {
+    font-family: 'Lato', sans-serif;
+    position: absolute;
+    z-index: 2;
+    background-color: #9bdcff;
+    height: 22vh;
+    border-radius: 7px;
+    padding: 0;
+    top: 20vh;
+    width: 17vw;
+    display: none;
+}
+
+.popup-header {
+    height: 4vh;
+    background-color: #32b3ff;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    margin: 0;
+    font-size: 1.6vh;
+    font-weight: 800;
+    line-height: 4vh;
+    padding-left: 14px;
+}
+
+.popup-close {
+    position: relative;
+    margin-top: 5px;
+    margin-right: 5px;
+    float: right;
+    padding: 0;
+    background-color: #f3f3f3;
+    border-radius: 100%;
+    width: 2.4vh;
+    height: 2.4vh;
+    border: 0.1vh solid #30475A;
+}
+
+.popup-close:hover {
+    cursor: pointer;
+}
+
+.popup-form > input[type="text"],
+.popup-form > input[type="password"] {
+    
 }
