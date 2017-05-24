@@ -210,7 +210,48 @@ font-family: 'Lato', sans-serif;
     cursor: pointer;
 }
 
+.popup-body {
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 7px;
+}
+
 .popup-form > input[type="text"],
 .popup-form > input[type="password"] {
-    
+    font-size: 1.5vh;
+    border-radius: 3px;
+    width: 100%;
+    border: 1px solid #f3f3f3;
+    height: 3.5vh;
+    margin-bottom: 2px;
+    padding-left: 4px;
+}
+
+.popup-form > input[type="text"]:focus,
+.popup-form > input[type="password"]:focus {
+    outline: none;
+    border: 1px solid #9fc7d3;
+}
+
+.popup-text-hint {
+    font-size: 1.4vh;
+}
+
+.popup-form-submit {
+    margin-top: 7px;
+    width: 100%;
+    font-size: 1.5vh;
+    height: 3vh;
+    background-color: #32b3ff;
+    border-radius: 2px;
+    border: none;
+    transition: 0.2s;
+}
+
+.popup-form-submit:focus {
+    outline: none;
+}
+
+.popup-form-submit:hover {
+    background-color: #0ebfff;
 }
