@@ -11,9 +11,9 @@
                 </div>
             </div>
             <div class="popup-body">
-                <form class="popup-form" id="popup-sign-up-form">
-                    <input type="text" placeholder="Email address" id="popup-sign-up-form-email"><br>
-                    <input type="password" placeholder="Password" autocomplete="off">
+                <form action="/register" method="POST" class="popup-form" id="popup-sign-up-form">
+                    <input type="text" name="email" placeholder="Email address" id="popup-sign-up-form-email"><br>
+                    <input type="password" name="password" placeholder="Password" autocomplete="off">
                     <span class="popup-text-hint">By signing up you agree to our <a>Terms</a> and <a>Privacy Policy</a></span>
                     <button class="popup-form-submit" onclick="document.getElementById('popup-sign-up-form').submit()">Sign Up</button>
                 </form>
@@ -27,9 +27,9 @@
                 </div>
             </div>
             <div class="popup-body">
-                <form class="popup-form" id="popup-log-in-form">
-                    <input type="text" placeholder="Email address" id="popup-log-in-form-email"><br>
-                    <input type="password" placeholder="Password" autocomplete="off">
+                <form action="/login" method="POST" class="popup-form" id="popup-log-in-form">
+                    <input type="text" name="email" placeholder="Email address" id="popup-log-in-form-email"><br>
+                    <input type="password" name="password" placeholder="Password" autocomplete="off">
                     <span class="popup-text-hint"><a>I forgot my password</a></span>
                     <button class="popup-form-submit" onclick="document.getElementById('popup-log-in-form').submit()">Log In</button>
                 </form>
