@@ -257,3 +257,7 @@ a:hover {
     cursor: pointer;
     text-decoration: none;
 }
+
+.popup-error {
+    color: #b15450;
+}

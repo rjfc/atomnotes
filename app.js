@@ -52,28 +52,29 @@ app.use(function(req, res, next) {
 
 // Passport login LocalStrategy
 passport.use("login", new LocalStrategy({
+    usernameField: "email",
     passReqToCallback : true
-}, function(req, email, password, done) {
-    // Check in mongo if a user with email exists or not
-    User.findOne({"email" : email },
+}, function(req, username, password, done) {
+  // Check in mongo if a user with email exists or not
+    User.findOne({"email" : username },
         function(error, user) {
             // In case of any error, return using the done method
             if (error)
                 return done(error);
             // User not found
-            if (!user){
-                console.log(currentTime + " - USER_LOG_IN_ERROR: USERNAME '" + email + "' DOES NOT EXIST");
+            if (!user) {
+                console.log(currentTime + " - USER '" + username + "' HAD A LOG IN ERROR: USER DOES NOT EXIST");
                 return done(null, false,
-                    req.flash("loginError", "A user could not be found with the username provided."));
+                    req.flash("loginError", "A user could not be found with the email provided."));
             }
             if (user && user.comparePassword(password)) {
                 // User and password both match, login success
-                console.log(currentTime + " - USER_LOG_IN_SUCCESS: '" + email + "' LOGGED IN");
+                console.log(currentTime + " - USER '" + username + "' SUCCESSFULLY LOGGED IN");
                 return done(null, user);
             } else {
                 // Wrong password
-                console.log(currentTime + " - USER_LOG_IN_ERROR: '" + email + "' ENTERED INVALID PASSWORD");
-                return done( null, false,
+                console.log(currentTime + " - USER '" + username + "' HAD A LOG IN ERROR: ENTERED INVALID PASSWORD");
+                return done(null, false,
                     req.flash("loginError", "The password is invalid."));
             }
             // User and password both match, login success
@@ -85,40 +86,40 @@ passport.use("login", new LocalStrategy({
 passport.use("register", new LocalStrategy({
     usernameField: "email",
     passReqToCallback : true
-    },
-    function(req, username, password, done) {
-        findOrCreateUser = function(){
-            // find a user in Mongo with provided username
-            User.findOne({"email" : username}, function(error, user) {
-                // In case of any error return
-                if (error){
-                    console.log(currentTime + " - USER '" + username + "' HAD A SIGN UP ERROR: " + error);
-                    return done(error);
-                }
-                // already exists
-                if (user) {
-                    console.log(currentTime + " - USER '" + username + "' HAD A SIGN UP ERROR: USER ALREADY EXISTS");
-                    return done(null, false,
-                        req.flash("registerError", "A user with the username provided already exists."));
-                } else {
-                    // if there is no user with that email
-                    // create the user
-                    var newUser = new User();
-                    // set the user's local credentials
-                    newUser.email = username;
-                    newUser.password = password;
-                    // save the user
-                    newUser.save(function(err) {
-                        if (err){
-                            console.log(currentTime + " - USER '" + username + "' HAD A SIGN UP ERROR: COULD NOT SAVE USER");
-                            throw err;
-                        }
-                        console.log(currentTime + " - USER '" + username + "' SUCCESSFULLY SIGNED UP");
-                        return done(null, newUser);
-                    });
-                }
-            });
-        };
+},
+function(req, username, password, done) {
+    findOrCreateUser = function(){
+        // find a user in Mongo with provided username
+        User.findOne({"email" : username}, function(error, user) {
+            // In case of any error return
+            if (error){
+                console.log(currentTime + " - USER '" + username + "' HAD A SIGN UP ERROR: " + error);
+                return done(error);
+            }
+            // already exists
+            if (user) {
+                console.log(currentTime + " - USER '" + username + "' HAD A SIGN UP ERROR: USER ALREADY EXISTS");
+                return done(null, false,
+                    req.flash("registerError", "A user with the email provided already exists."));
+            } else {
+                // if there is no user with that email
+                // create the user
+                var newUser = new User();
+                // set the user's local credentials
+                newUser.email = username;
+                newUser.password = password;
+                // save the user
+                newUser.save(function(err) {
+                    if (err){
+                        console.log(currentTime + " - USER '" + username + "' HAD A SIGN UP ERROR: COULD NOT SAVE USER");
+                        throw err;
+                    }
+                    console.log(currentTime + " - USER '" + username + "' SUCCESSFULLY SIGNED UP");
+                    return done(null, newUser);
+                });
+            }
+        });
+    };
     // Delay the execution of findOrCreateUser and execute
     // the method in the next tick of the event loop
     process.nextTick(findOrCreateUser);
