@@ -21,6 +21,9 @@ app.use(express.static(__dirname + "/public"));
 // Seed DB
 //seedDB();
 
+// Current time in UTC
+var currentTime = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+
 // PASSPORT CONFIGURATION
 app.use(expressSession({
     secret: "MMM I love me some good garlic bread",
@@ -80,20 +83,21 @@ passport.use("login", new LocalStrategy({
 }));
 
 passport.use("register", new LocalStrategy({
-        passReqToCallback : true
+    usernameField: "email",
+    passReqToCallback : true
     },
-    function(req, email, password, done) {
+    function(req, username, password, done) {
         findOrCreateUser = function(){
             // find a user in Mongo with provided username
-            User.findOne({"email" : email}, function(error, user) {
+            User.findOne({"email" : username}, function(error, user) {
                 // In case of any error return
                 if (error){
-                    console.log(currentTime + " - USER_SIGN_UP_ERROR: " + error);
+                    console.log(currentTime + " - USER '" + username + "' HAD A SIGN UP ERROR: " + error);
                     return done(error);
                 }
                 // already exists
                 if (user) {
-                    console.log(currentTime + " - USER_SIGN_UP_ERROR: USER '" + email + "' ALREADY EXISTS");
+                    console.log(currentTime + " - USER '" + username + "' HAD A SIGN UP ERROR: USER ALREADY EXISTS");
                     return done(null, false,
                         req.flash("registerError", "A user with the username provided already exists."));
                 } else {
@@ -101,15 +105,15 @@ passport.use("register", new LocalStrategy({
                     // create the user
                     var newUser = new User();
                     // set the user's local credentials
-                    newUser.email = email;
+                    newUser.email = username;
                     newUser.password = password;
                     // save the user
                     newUser.save(function(err) {
                         if (err){
-                            console.log(currentTime + " - USER_SIGN_UP_ERROR: COULD NOT SAVE USER - " + err);
+                            console.log(currentTime + " - USER '" + username + "' HAD A SIGN UP ERROR: COULD NOT SAVE USER");
                             throw err;
                         }
-                        console.log(currentTime + " - USER_SIGN_UP_SUCCESS: NEW USER '" + email + "'");
+                        console.log(currentTime + " - USER '" + username + "' SUCCESSFULLY SIGNED UP");
                         return done(null, newUser);
                     });
                 }
