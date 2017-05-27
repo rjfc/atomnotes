@@ -8,8 +8,14 @@ var hash_password = function(password) {
     },
     UserSchema = new mongoose.Schema({
         email:  String,
-        password: String
-    })
+        password: String,
+        notes: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Note"
+            }
+        ]
+    });
 
 UserSchema.methods.comparePassword = function(password) {
     if (!this.password) { return false; }
