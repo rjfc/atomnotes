@@ -16,14 +16,14 @@
                     <input type="password" name="password" placeholder="Password" id="popup-sign-up-form-password" autocomplete="off">
                     <span class="popup-text-hint">By signing up you agree to our <a>Terms</a> and <a>Privacy Policy</a></span>
                     <br>
-                    <span class="popup-text-hint popup-error" id="popup-sign-up-form-error">
-                        <strong>
+                    <strong>
+                        <span class="popup-text-hint popup-error" id="popup-sign-up-form-error">
                             <% if (registerError){ %>
                                 <%= registerError %>
                             <% } %>
-                        </strong>
-                    </span>
-                    <button class="popup-form-submit" onclick="document.getElementById('popup-sign-up-form').submit()">Sign Up</button>
+                        </span>
+                    </strong>
+                    <button class="popup-form-submit" id="popup-sign-up-form-submit" type="button">Sign Up</button>
                 </form>
             </div>
         </div>
@@ -40,14 +40,14 @@
                     <input type="password" name="password" placeholder="Password" id="popup-log-in-form-password" autocomplete="off">
                     <span class="popup-text-hint"><a>I forgot my password</a></span>
                     <br>
-                    <span class="popup-text-hint popup-error" id="popup-log-in-form-error">
-                        <strong>
+                    <strong>
+                        <span class="popup-text-hint popup-error" id="popup-log-in-form-error">
                             <% if (loginError){ %>
                                 <%= loginError %>
                             <% } %>
-                        </strong>
-                    </span>
-                    <button class="popup-form-submit" onclick="document.getElementById('popup-log-in-form').submit()">Log In</button>
+                        </span>
+                    </strong>
+                    <button class="popup-form-submit" id="popup-log-in-form-submit" type="button">Log In</button>
                 </form>
             </div>
         </div>
