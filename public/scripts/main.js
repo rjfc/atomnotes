@@ -103,3 +103,4 @@ $("#popup-sign-up-form-submit").click(function() {
         $("#popup-sign-up-form").submit();
     }
 });
+

@@ -8,6 +8,7 @@ var express          = require("express"),
     expressSession   = require("express-session"),
     LocalStrategy    = require("passport-local").Strategy,
     User             = require("./models/user")
+    Note             = require("./models/note")
 
 // Port for server to listen on
 var port = 8080;
@@ -131,18 +132,38 @@ app.get("/", function(req, res) {
 });
 
 // POST ROUTE: register user
-app.post('/register', passport.authenticate('register', {
-    successRedirect: '/interface',
-    failureRedirect: '/',
+app.post("/register", passport.authenticate("register", {
+    successRedirect: "/interface",
+    failureRedirect: "/",
     failureFlash : true
 }));
 
 // POST ROUTE: login user
-app.post('/login', passport.authenticate('login', {
-    successRedirect: '/interface',
-    failureRedirect: '/',
+app.post("/login", passport.authenticate("login", {
+    successRedirect: "/interface",
+    failureRedirect: "/",
     failureFlash : true
 }));
+
+app.post("/newNote", function(req, res) {
+    var newNote = {title : "Untitled note"}
+    Note.create(newNote, function(error, newNote) {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            User.findByIdAndUpdate(
+                req.user._id.toString(),
+                {$push: {"notes": newNote}},
+                {safe: true, upsert: true, new : true},
+                function(err, model) {
+                    console.log(err);
+                }
+            );
+            res.redirect("/campgrounds");
+        }
+    });
+});
 
 // GET ROUTE: main page
 app.get("/interface", function(req, res) {

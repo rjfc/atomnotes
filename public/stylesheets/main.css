@@ -146,6 +146,7 @@ font-family: 'Lato', sans-serif;
     width: 16vw;
     margin-top: 10px;
     transition: 0.2s;
+    margin-bottom: 20px;
 }
 
 .btn-new-binder:hover {
@@ -260,4 +261,20 @@ a:hover {
 
 .popup-error {
     color: #b15450;
+}
+
+.note-label {
+    font-family: 'Lato', sans-serif;
+    color: #f3f3f3;
+}
+
+.note-label-date {
+    color: #646b7c;
+    margin-left: 5px;
+}
+
+.note-label-icon {
+    height: 14px;
+    margin-bottom: 3px;
+    margin-right: 6px;
 }

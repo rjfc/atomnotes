@@ -4,8 +4,27 @@
         <div class="col-md-3">
             <div class="side-panel">
                 <img class="gn-logo-interface" src="/images/gn-logo.png">
-                <div class="btn-new-note">+ New Note</div>
+                <form action="/newNote" method="POST" id="new-note-form" target="new-note-iframe">
+                    <div class="btn-new-note" onclick="document.getElementById('new-note-form').submit();">+ New Note</div>
+                </form>
+                <iframe id="new-note-iframe" name="new-note-iframe" style="display: none;"></iframe>
                 <div class="btn-new-binder">New Binder</div>
+                <div class="notes">
+                    <%if (currentUser.notes.length > 0) {%>
+                        <% currentUser.notes.forEach(function(note){ %>
+                            <div class="note-label">
+                                <%console.log("type" + note);%>
+                                <% if (note.type == "Text") {%>
+                                    <img class="note-label-icon" src="/images/document-icon.png">
+                                <%} else {%>
+                                    <img class="note-label-icon" src="/images/microphone-icon.png">
+                                <%}%>
+                                <%=note.title%>
+                                <span class="note-label-date"><%=note.dateOfCreation%></span>
+                            </div>
+                        <% }); %>
+                    <%}%>
+                </div>
             </div>
         </div>
         <div class="col-md-9">

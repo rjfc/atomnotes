@@ -1,10 +1,17 @@
 var mongoose = require("mongoose");
 
 var NoteSchema = mongoose.Schema({
+    dateOfCreation: {
+        type: Date,
+        default: Date.now
+    },
     title: String,
     bodyText: String,
     binder: String,
-    type: String,
+    type: {
+        type: String,
+        default: "Text"
+    },
     audioPath: String,
     summarizedBodyText: String,
     summarizedAudioNote: String
