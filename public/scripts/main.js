@@ -30,6 +30,7 @@ $(".popup-close").click(function() {
 // Open sign up popup on button click
 $(".btn-sign-up").click(function() {
     localStorage.setItem("popupSignUp", "opened");
+    localStorage.setItem("popupLogin", "closed");
     $(".dark-overlay").fadeIn(20);
     $("#popup-sign-up").fadeIn(20);
     $("#popup-sign-up-form-email").focus();
@@ -39,6 +40,7 @@ $(".btn-sign-up").click(function() {
 // Open log in popup on button click
 $(".btn-log-in").click(function() {
     localStorage.setItem("popupLogin", "opened");
+    localStorage.setItem("popupSignUp", "closed");
     $(".dark-overlay").fadeIn(20);
     $("#popup-log-in").fadeIn(20);
     $("#popup-log-in-form-email").focus();

@@ -1,6 +1,10 @@
 var mongoose = require("mongoose");
 
 var NoteSchema = mongoose.Schema({
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+    },
     dateOfCreation: {
         type: Date,
         default: Date.now

@@ -154,8 +154,16 @@ app.post("/newNote", function(req, res) {
         else {
             User.findByIdAndUpdate(
                 req.user._id.toString(),
-                {$push: {"notes": newNote}},
-                {safe: true, upsert: true, new : true},
+                {
+                    $push: {
+                        "notes": newNote
+                    }
+                },
+                {
+                    safe: true,
+                    upsert: true,
+                    new : true
+                },
                 function(err, model) {
                     console.log(err);
                 }
