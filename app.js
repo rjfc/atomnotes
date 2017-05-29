@@ -146,31 +146,12 @@ app.post("/login", passport.authenticate("login", {
 }));
 
 app.post("/newNote", function(req, res) {
-    var newNote = {creator: req.user._id.toString(), title : "Untitled note"}
-    User.Note.create(newNote, function(error, newNote) {
+    req.user.notes.push({creator: req.user._id.toString(), title : "Untitled note"});
+    req.user.save(function(error) {
         if (error) {
             console.log(error);
         }
-        else {
-            User.findByIdAndUpdate(
-                req.user._id.toString(),
-                {
-                    $push: {
-                        "notes": newNote
-                    }
-                },
-                {
-                    safe: true,
-                    upsert: true,
-                    new : true
-                },
-                function(err, model) {
-                    console.log(err);
-                }
-            );
-            res.render("interface");
-        }
-    });
+    })
 });
 
 // GET ROUTE: main page
