@@ -1,6 +1,28 @@
 var bcrypt   = require("bcryptjs"),
     mongoose = require("mongoose");
 
+var NoteSchema = mongoose.Schema({
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+    },
+    dateOfCreation: {
+        type: Date,
+        default: Date.now
+    },
+    title: String,
+    bodyText: String,
+    binder: String,
+    type: {
+        type: String,
+        default: "Text"
+    },
+    audioPath: String,
+    summarizedBodyText: String,
+    summarizedAudioNote: String
+});
+
+
 var hash_password = function(password) {
         var salt = bcrypt.genSaltSync();
         var hash = bcrypt.hashSync( password, salt );
@@ -9,12 +31,7 @@ var hash_password = function(password) {
     UserSchema = new mongoose.Schema({
         email:  String,
         password: String,
-        notes: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Note"
-            }
-        ]
+        notes: [NoteSchema]
     });
 
 UserSchema.methods.comparePassword = function(password) {

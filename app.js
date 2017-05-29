@@ -7,8 +7,9 @@ var express          = require("express"),
     flash            = require("connect-flash"),
     expressSession   = require("express-session"),
     LocalStrategy    = require("passport-local").Strategy,
+/*  Note             = require("./models/note"),*/
     User             = require("./models/user")
-    Note             = require("./models/note")
+
 
 // Port for server to listen on
 var port = 8080;
@@ -47,7 +48,6 @@ app.use(function(req, res, next) {
     res.locals.currentUser = req.user;
     res.locals.loginError = req.flash("loginError");
     res.locals.registerError = req.flash("registerError");
-    res.locals.globalUserSearchQuery = req.globalUserSearchQuery;
     next();
 });
 
@@ -146,8 +146,8 @@ app.post("/login", passport.authenticate("login", {
 }));
 
 app.post("/newNote", function(req, res) {
-    var newNote = {title : "Untitled note"}
-    Note.create(newNote, function(error, newNote) {
+    var newNote = {creator: req.user._id.toString(), title : "Untitled note"}
+    User.Note.create(newNote, function(error, newNote) {
         if (error) {
             console.log(error);
         }
@@ -168,7 +168,7 @@ app.post("/newNote", function(req, res) {
                     console.log(err);
                 }
             );
-            res.redirect("/campgrounds");
+            res.render("interface");
         }
     });
 });

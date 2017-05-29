@@ -1,4 +1,5 @@
-var mongoose = require("mongoose");
+/*
+mongoose = require("mongoose");
 
 var NoteSchema = mongoose.Schema({
     creator: {
@@ -21,4 +22,4 @@ var NoteSchema = mongoose.Schema({
     summarizedAudioNote: String
 });
 
-module.exports = mongoose.model("Note", NoteSchema);
+module.exports = mongoose.model("Note", NoteSchema);*/

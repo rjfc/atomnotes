@@ -1,6 +1,6 @@
-// localStorage variables for sign up and log in popup boxes
-var popupLogin = localStorage.getItem("loginPopup");
-var popupSignUp = localStorage.getItem("signUpPopup");
+// sessionStorage variables for sign up and log in popup boxes
+var popupLogin = sessionStorage.getItem("loginPopup");
+var popupSignUp = sessionStorage.getItem("signUpPopup");
 
 // Close log in and sign up popup boxes on dark overlay click
 $(".dark-overlay").click(function() {
@@ -8,10 +8,10 @@ $(".dark-overlay").click(function() {
     $("#popup-sign-up").fadeOut(20);
     $("#popup-log-in").fadeOut(20);
     if (popupLogin == "opened") {
-        localStorage.setItem("popupLogin", "closed");
+        sessionStorage.setItem("popupLogin", "closed");
     }
     else if (popupSignUp == "opened") {
-        localStorage.setItem("popupSignUp", "closed");
+        sessionStorage.setItem("popupSignUp", "closed");
     }
 });
 
@@ -20,17 +20,17 @@ $(".popup-close").click(function() {
     $(this).parent().parent().fadeOut(20);
     $(".dark-overlay").fadeOut(20);
     if (popupLogin == "opened") {
-        localStorage.setItem("popupLogin", "closed");
+        sessionStorage.setItem("popupLogin", "closed");
     }
     else if (popupSignUp == "opened") {
-        localStorage.setItem("popupSignUp", "closed");
+        sessionStorage.setItem("popupSignUp", "closed");
     }
 });
 
 // Open sign up popup on button click
 $(".btn-sign-up").click(function() {
-    localStorage.setItem("popupSignUp", "opened");
-    localStorage.setItem("popupLogin", "closed");
+    sessionStorage.setItem("popupSignUp", "opened");
+    sessionStorage.setItem("popupLogin", "closed");
     $(".dark-overlay").fadeIn(20);
     $("#popup-sign-up").fadeIn(20);
     $("#popup-sign-up-form-email").focus();
@@ -39,23 +39,23 @@ $(".btn-sign-up").click(function() {
 
 // Open log in popup on button click
 $(".btn-log-in").click(function() {
-    localStorage.setItem("popupLogin", "opened");
-    localStorage.setItem("popupSignUp", "closed");
+    sessionStorage.setItem("popupLogin", "opened");
+    sessionStorage.setItem("popupSignUp", "closed");
     $(".dark-overlay").fadeIn(20);
     $("#popup-log-in").fadeIn(20);
     $("#popup-log-in-form-email").focus();
 });
 
 // Keep sign up and log in popups open on refresh (for sign up errors)
-if (localStorage.getItem("popupSignUp") == "opened") {
-    localStorage.setItem("popupLogin", "closed");
+if (sessionStorage.getItem("popupSignUp") == "opened") {
+    sessionStorage.setItem("popupLogin", "closed");
 }
 
-if (localStorage.getItem("popupLogin") == "opened") {
-    localStorage.setItem("popupSignUp", "closed");
+if (sessionStorage.getItem("popupLogin") == "opened") {
+    sessionStorage.setItem("popupSignUp", "closed");
 }
 
-if (localStorage.getItem("popupLogin") == "opened") {
+if (sessionStorage.getItem("popupLogin") == "opened") {
     $("#popup-log-in").show();
     $(".dark-overlay").show();
 }
@@ -63,7 +63,7 @@ else {
     $("#popup-log-in").hide();
 }
 
-if (localStorage.getItem("popupSignUp") == "opened") {
+if (sessionStorage.getItem("popupSignUp") == "opened") {
     $("#popup-sign-up").show();
     $(".dark-overlay").show();
 }
