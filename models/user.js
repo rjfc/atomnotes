@@ -1,14 +1,20 @@
 var bcrypt   = require("bcryptjs"),
     mongoose = require("mongoose");
 
+function getDate()
+{
+    var date = new Date();
+    return (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();
+}
+
 var NoteSchema = mongoose.Schema({
     creator: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
     },
     dateOfCreation: {
-        type: Date,
-        default: Date.now
+        type: String,
+        default: getDate()
     },
     title: String,
     bodyText: String,

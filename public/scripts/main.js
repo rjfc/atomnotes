@@ -106,3 +106,5 @@ $("#popup-sign-up-form-submit").click(function() {
     }
 });
 
+// Reload side-panel on new note click
+

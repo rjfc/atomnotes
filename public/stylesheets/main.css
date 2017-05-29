@@ -62,6 +62,7 @@ font-family: 'Lato', sans-serif;
     height: 100vh;
     background-color: #2b2e37;
     padding: 18px;
+    overflow-y: scroll;
 }
 
 .gn-logo-landing {

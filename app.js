@@ -151,6 +151,9 @@ app.post("/newNote", function(req, res) {
         if (error) {
             console.log(error);
         }
+        else {
+            res.render("interface");
+        }
     })
 });
 
