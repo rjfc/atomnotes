@@ -62,7 +62,7 @@ font-family: 'Lato', sans-serif;
     height: 100vh;
     background-color: #2b2e37;
     padding: 18px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .gn-logo-landing {
@@ -267,6 +267,12 @@ a:hover {
 .note-label {
     font-family: 'Lato', sans-serif;
     color: #f3f3f3;
+}
+
+.note-label:hover{
+    background-color: red;
+    cursor: pointer;
+    background-color: #16171b;
 }
 
 .note-label-date {

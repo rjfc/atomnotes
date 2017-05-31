@@ -25,6 +25,7 @@ app.use(express.static(__dirname + "/public"));
 
 // Current time in UTC
 var currentTime = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+var activeNote;
 
 // PASSPORT CONFIGURATION
 app.use(expressSession({
@@ -46,8 +47,9 @@ passport.deserializeUser(function(id, done) {
 
 app.use(function(req, res, next) {
     res.locals.currentUser = req.user;
-    res.locals.loginError = req.flash("loginError");
+    res.locals.loginError =  req.flash("loginError");
     res.locals.registerError = req.flash("registerError");
+    res.locals.activeNote = undefined;
     next();
 });
 
@@ -145,6 +147,7 @@ app.post("/login", passport.authenticate("login", {
     failureFlash : true
 }));
 
+// POST ROUTE: create a note
 app.post("/newNote", function(req, res) {
     req.user.notes.push({creator: req.user._id.toString(), title : "Untitled note"});
     req.user.save(function(error) {
@@ -157,9 +160,22 @@ app.post("/newNote", function(req, res) {
     })
 });
 
+// POST ROUTE: open a note
+app.post("/openNote", function(req, res) {
+    User.findOne({"notes._id": req.body.noteId}, {'notes.$': 1}, function(error, note) {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            activeNote = note.notes;
+            res.render("interface");
+        }
+    });
+});
+
 // GET ROUTE: main page
 app.get("/interface", function(req, res) {
-    res.render("interface");
+    res.render("interface", {activeNote: activeNote});
 });
 
 // Listen on set port

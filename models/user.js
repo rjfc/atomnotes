@@ -30,15 +30,15 @@ var NoteSchema = mongoose.Schema({
 
 
 var hash_password = function(password) {
-        var salt = bcrypt.genSaltSync();
-        var hash = bcrypt.hashSync( password, salt );
-        return hash;
-    },
-    UserSchema = new mongoose.Schema({
-        email:  String,
-        password: String,
-        notes: [NoteSchema]
-    });
+    var salt = bcrypt.genSaltSync();
+    var hash = bcrypt.hashSync( password, salt );
+    return hash;
+},
+UserSchema = new mongoose.Schema({
+    email:  String,
+    password: String,
+    notes: [NoteSchema]
+});
 
 UserSchema.methods.comparePassword = function(password) {
     if (!this.password) { return false; }
