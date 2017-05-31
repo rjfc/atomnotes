@@ -34,7 +34,12 @@
         <div class="col-md-9">
             <div class="note-interface">
                 <%if (activeNote) {%>
-                    <span>active note: <%=activeNote%></span>
+                    <% currentUser.notes.forEach(function(note){ %>
+                        <%if (note._id == activeNote) {%>
+                            <span><strong><%=note.title%></strong></span>
+                            <span><%=note.body%></span>
+                        <%}%>
+                    <%});%>
                 <%}%>
             </div>
         </div>
