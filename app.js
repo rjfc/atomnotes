@@ -162,7 +162,7 @@ app.post("/newNote", function(req, res) {
 
 // POST ROUTE: open a note
 app.post("/openNote", function(req, res) {
-    User.findOne({"notes._id": req.body.noteId}, {'notes.$': 1}, function(error, note) {
+    /*User.findOne({"notes._id": req.body.noteId}, {'notes.$': 1}, function(error, note) {
         if (error) {
             console.log(error);
         }
@@ -170,7 +170,9 @@ app.post("/openNote", function(req, res) {
             activeNote = note.notes;
             res.render("interface");
         }
-    });
+    });*/
+    activeNote = req.body.noteId;
+    res.render("interface");
 });
 
 // GET ROUTE: main page
