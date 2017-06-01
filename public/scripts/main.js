@@ -106,7 +106,7 @@ $("#popup-sign-up-form-submit").click(function() {
     }
 });
 
-$(".active-note-title").keyup(function(){
+$(".active-note-input").keyup(function(){
     $("#update-note-form").submit();
     setTimeout(function() {
         $('.side-panel').load('/interface .side-panel > *');

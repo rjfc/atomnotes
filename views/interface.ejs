@@ -36,8 +36,9 @@
                     <% currentUser.notes.forEach(function(note){ %>
                         <%if (note._id == activeNote) {%>
                             <form action="/updateNote" method="POST" id="update-note-form" target="update-note-iframe">
-                                <input class="active-note-title" name="noteTitle" rows="1" type="text" value="<%=note.title%>">
-                                <textarea name="noteId" type="text" style="display: none;"><%=note._id%></textarea>
+                                <input class="active-note-input active-note-title" name="noteTitle" type="text" value="<%=note.title%>">
+                                <textarea class="active-note-input active-note-body" name="noteBody" type="text"><%=note.bodyText%></textarea>
+                                <textarea id="active-note-id" name="noteId" type="text" style="display: none;"><%=note._id%></textarea>
                                 <span><%=note.body%></span>
                             </form>
                             <iframe id="update-note-iframe" name="update-note-iframe" style="display: none;"></iframe>

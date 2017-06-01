@@ -184,7 +184,8 @@ app.post("/updateNote", function(req, res) {
         },
         {
             "$set": {
-                "notes.$.title": req.body.noteTitle
+                "notes.$.title": req.body.noteTitle,
+                "notes.$.bodyText": req.body.noteBody
             }
         },
         function(error, user) {

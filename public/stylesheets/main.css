@@ -296,7 +296,6 @@ a:hover {
     resize: none;
     width: 100%;
     margin-top: 50px;
-    margin-left: -35px;
     font-size: 4vh;
     height: 6.5vh;
     padding-left: 10px;
@@ -305,6 +304,27 @@ a:hover {
 
 .active-note-title:hover,
 .active-note-title:focus {
+    outline: none;
+    border: 1px dashed black;
+    padding-left: 9px;
+}
+
+
+.active-note-body {
+    font-family: 'Lora', serif;
+    color: #333333;
+    resize: none;
+    width: 100%;
+    margin-top: 20px;
+    font-size: 2.8vh;
+    height: 80vh;
+    padding-left: 10px;
+    border: none;
+    overflow-y: auto;
+}
+
+.active-note-body:hover,
+.active-note-body:focus {
     outline: none;
     border: 1px dashed black;
     padding-left: 9px;
