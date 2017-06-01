@@ -14,7 +14,6 @@
                         <% currentUser.notes.forEach(function(note){ %>
                             <form action="/openNote" method="POST" id="open-note-<%=note._id%>-form" target="open-note-<%=note._id%>-iframe">
                                 <div class="note-label" onclick="document.getElementById('open-note-<%=note._id%>-form').submit();setTimeout(function(){$('.note-interface').load('/interface .note-interface > *');}, 15);">
-
                                     <% if (note.type == "Text") {%>
                                         <img class="note-label-icon" src="/images/document-icon.png">
                                     <%} else {%>
@@ -36,8 +35,12 @@
                 <%if (activeNote) {%>
                     <% currentUser.notes.forEach(function(note){ %>
                         <%if (note._id == activeNote) {%>
-                            <span><strong><%=note.title%></strong></span>
-                            <span><%=note.body%></span>
+                            <form action="/updateNote" method="POST" id="update-note-form" target="update-note-iframe">
+                                <input class="active-note-title" name="noteTitle" rows="1" type="text" value="<%=note.title%>">
+                                <textarea name="noteId" type="text" style="display: none;"><%=note._id%></textarea>
+                                <span><%=note.body%></span>
+                            </form>
+                            <iframe id="update-note-iframe" name="update-note-iframe" style="display: none;"></iframe>
                         <%}%>
                     <%});%>
                 <%}%>

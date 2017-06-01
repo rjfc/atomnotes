@@ -175,6 +175,29 @@ app.post("/openNote", function(req, res) {
     res.render("interface");
 });
 
+// POST ROUTE: update a note
+app.post("/updateNote", function(req, res) {
+    User.findOneAndUpdate(
+        {
+            "_id": req.user._id.toString(),
+            "notes._id": req.body.noteId
+        },
+        {
+            "$set": {
+                "notes.$.title": req.body.noteTitle
+            }
+        },
+        function(error, user) {
+            if (error) {
+                console.log(error);
+            }
+            else {
+                res.render("interface");
+            }
+        }
+    );
+});
+
 // GET ROUTE: main page
 app.get("/interface", function(req, res) {
     res.render("interface", {activeNote: activeNote});

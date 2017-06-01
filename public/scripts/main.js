@@ -106,5 +106,9 @@ $("#popup-sign-up-form-submit").click(function() {
     }
 });
 
-// Reload side-panel on new note click
-
+$(".active-note-title").keyup(function(){
+    $("#update-note-form").submit();
+    setTimeout(function() {
+        $('.side-panel').load('/interface .side-panel > *');
+    }, 15);
+});
