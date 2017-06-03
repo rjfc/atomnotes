@@ -1,6 +1,7 @@
 var express          = require("express"),
     app              = express(),
     http             = require("http").Server(app);
+    io               = require("socket.io")(http);
     mongoose         = require("mongoose")
     passport         = require("passport"),
     bodyParser       = require("body-parser"),
@@ -175,7 +176,7 @@ app.post("/openNote", function(req, res) {
     res.render("interface");
 });
 
-// POST ROUTE: update a note
+/*// POST ROUTE: update a note
 app.post("/updateNote", function(req, res) {
     User.findOneAndUpdate(
         {
@@ -197,12 +198,38 @@ app.post("/updateNote", function(req, res) {
             }
         }
     );
-});
+});*/
 
 // GET ROUTE: main page
 app.get("/interface", function(req, res) {
     res.render("interface", {activeNote: activeNote});
 });
+
+// Socket.IO connection
+io.on("connection", function(socket){
+    console.log("A USER CONNECTED");
+    socket.on('note update', function(updatedNote){
+        console.log(updatedNote);
+        User.findOneAndUpdate(
+            {
+                "_id": updatedNote.userId,
+                "notes._id": updatedNote.noteId
+            },
+            {
+                "$set": {
+                    "notes.$.title": updatedNote.title,
+                    "notes.$.bodyText": updatedNote.bodyText
+                }
+            },
+            function(error, user) {
+                if (error) {
+                    console.log(error);
+                }
+            }
+        );
+    });
+});
+
 
 // Listen on set port
 http.listen(port, function() {

@@ -106,9 +106,22 @@ $("#popup-sign-up-form-submit").click(function() {
     }
 });
 
-$(".active-note-input").keyup(function(){
-    $("#update-note-form").submit();
-    setTimeout(function() {
-        $('.side-panel').load('/interface .side-panel > *');
-    }, 15);
+$(document).ready(function() {
+    $(".active-note-input").keyup(function () {
+        /*$("#update-note-form").submit();
+        setTimeout(function () {
+            $('.side-panel').load('/interface .side-panel > *');
+        }, 15);*/
+        console.log("Active note input keyup detected");
+        var noteChange = {
+            userId: $(".active-user-id").val(),
+            noteId: $("#active-note-id").val(),
+            title: $(".active-note-title").val(),
+            bodyText: $(".active-note-body").val()
+        };
+        socket.emit("note update", noteChange);
+        setTimeout(function () {
+            $('.side-panel').load("/interface .side-panel > *");
+        }, 15);
+    });
 });
