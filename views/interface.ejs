@@ -1,13 +1,14 @@
 <% include partials/header %>
+<textarea class="active-user-id" name="userId" type="text" style="display: none;"><%=currentUser._id%></textarea>
 <div class="container-fluid container-interface">
     <div class="row">
         <div class="col-md-3">
             <div class="side-panel">
-                <img class="gn-logo-interface" src="/images/gn-logo.png">
-                <form action="/newNote" method="POST" id="new-note-form" target="new-note-iframe">
-                    <div class="btn-new-note" onclick="document.getElementById('new-note-form').submit();setTimeout(function(){$('.side-panel').load('/ .side-panel > *');}, 15);">+ New Note</div>
-                </form>
-                <iframe id="new-note-iframe" name="new-note-iframe" style="display: none;"></iframe>
+                <img class="gn-logo-interface" src="/images/gn-logo.png"><!--
+                <form action="/newNote" method="POST" id="new-note-form" target="new-note-iframe">-->
+                    <div class="btn-new-note" onclick="/*document.getElementById('new-note-form').submit();*/setTimeout(function(){$('.side-panel').load('/ .side-panel > *');}, 15);">+ New Note</div>
+            <!--    </form>
+                <iframe id="new-note-iframe" name="new-note-iframe" style="display: none;"></iframe>-->
                 <div class="btn-new-binder">New Binder</div>
                 <div class="notes">
                     <%if (currentUser.notes.length > 0) {%>
@@ -40,7 +41,6 @@
                                 <hr style="margin: 0; background-color: Black; height: 1px;">
                                 <textarea class="active-note-input active-note-body" name="noteBody" type="text" placeholder="Body here"><%=note.bodyText%></textarea>
                                 <textarea id="active-note-id" name="noteId" type="text" style="display: none;"><%=note._id%></textarea>
-                                <textarea class="active-user-id" name="userId" type="text" style="display: none;"><%=currentUser._id%></textarea>
                                 <span><%=note.body%></span>
                  <!--            </form>
                             <iframe id="update-note-iframe" name="update-note-iframe" style="display: none;"></iframe>-->

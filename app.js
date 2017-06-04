@@ -153,7 +153,42 @@ app.post("/login", passport.authenticate("login", {
     failureFlash : true
 }));
 
+// Socket.IO connection
+io.on("connection", function(socket){
+    console.log("A USER CONNECTED");
+    socket.on("note update", function(updatedNote){
+        User.findOneAndUpdate(
+            {
+                "_id": updatedNote.userId,
+                "notes._id": updatedNote.noteId
+            },
+            {
+                "$set": {
+                    "notes.$.title": updatedNote.title,
+                    "notes.$.bodyText": updatedNote.bodyText
+                }
+            },
+            function(error, user) {
+                if (error) {
+                    console.log(error);
+                }
+            }
+        );
+    });
+    socket.on("new note", function(userId){
+        User.findById(userId, function(error, user){
+            user.notes.push({creator: userId.toString(), title : "Untitled note"});
+            user.save(function(error) {
+                if (error) {
+                    console.log(error);
+                }
+            })
+        })
+    });
+});
+
 // POST ROUTE: create a note
+/*
 app.post("/newNote", function(req, res) {
     req.user.notes.push({creator: req.user._id.toString(), title : "Untitled note"});
     req.user.save(function(error) {
@@ -165,6 +200,7 @@ app.post("/newNote", function(req, res) {
         }
     })
 });
+*/
 
 // POST ROUTE: open a note
 app.post("/openNote", function(req, res) {
@@ -209,32 +245,6 @@ app.post("/updateNote", function(req, res) {
 /*app.get("/interface", function(req, res) {
     res.render("interface", {activeNote: activeNote});
 });*/
-
-// Socket.IO connection
-io.on("connection", function(socket){
-    console.log("A USER CONNECTED");
-    socket.on('note update', function(updatedNote){
-        console.log(updatedNote);
-        User.findOneAndUpdate(
-            {
-                "_id": updatedNote.userId,
-                "notes._id": updatedNote.noteId
-            },
-            {
-                "$set": {
-                    "notes.$.title": updatedNote.title,
-                    "notes.$.bodyText": updatedNote.bodyText
-                }
-            },
-            function(error, user) {
-                if (error) {
-                    console.log(error);
-                }
-            }
-        );
-    });
-});
-
 
 // Listen on set port
 http.listen(port, function() {

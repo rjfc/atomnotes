@@ -114,6 +114,10 @@ var delay = (function(){
     };
 })();
 
+$(".btn-new-note").click(function() {
+    socket.emit("new note", $(".active-user-id").val());
+});
+
 $(document).ready(function() {
     $(".active-note-input").keyup(function () {
             delay(function(){
