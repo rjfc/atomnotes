@@ -131,19 +131,24 @@ function(req, username, password, done) {
 
 // GET ROUTE: landing page
 app.get("/", function(req, res) {
-    res.render("landing");
+    if (!req.user) {
+        res.render("landing");
+    }
+    else {
+        res.render("interface", {activeNote: activeNote});
+    }
 });
 
 // POST ROUTE: register user
 app.post("/register", passport.authenticate("register", {
-    successRedirect: "/interface",
+    successRedirect: "/",
     failureRedirect: "/",
     failureFlash : true
 }));
 
 // POST ROUTE: login user
 app.post("/login", passport.authenticate("login", {
-    successRedirect: "/interface",
+    successRedirect: "/",
     failureRedirect: "/",
     failureFlash : true
 }));
@@ -201,9 +206,9 @@ app.post("/updateNote", function(req, res) {
 });*/
 
 // GET ROUTE: main page
-app.get("/interface", function(req, res) {
+/*app.get("/interface", function(req, res) {
     res.render("interface", {activeNote: activeNote});
-});
+});*/
 
 // Socket.IO connection
 io.on("connection", function(socket){

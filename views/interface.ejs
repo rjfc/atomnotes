@@ -5,7 +5,7 @@
             <div class="side-panel">
                 <img class="gn-logo-interface" src="/images/gn-logo.png">
                 <form action="/newNote" method="POST" id="new-note-form" target="new-note-iframe">
-                    <div class="btn-new-note" onclick="document.getElementById('new-note-form').submit();setTimeout(function(){$('.side-panel').load('/interface .side-panel > *');}, 15);">+ New Note</div>
+                    <div class="btn-new-note" onclick="document.getElementById('new-note-form').submit();setTimeout(function(){$('.side-panel').load('/ .side-panel > *');}, 15);">+ New Note</div>
                 </form>
                 <iframe id="new-note-iframe" name="new-note-iframe" style="display: none;"></iframe>
                 <div class="btn-new-binder">New Binder</div>
@@ -13,7 +13,7 @@
                     <%if (currentUser.notes.length > 0) {%>
                         <% currentUser.notes.forEach(function(note){ %>
                             <form action="/openNote" method="POST" id="open-note-<%=note._id%>-form" target="open-note-<%=note._id%>-iframe">
-                                <div class="note-label" onclick="document.getElementById('open-note-<%=note._id%>-form').submit();setTimeout(function(){$('.note-interface').load('/interface .note-interface > *');}, 15);">
+                                <div class="note-label" onclick="document.getElementById('open-note-<%=note._id%>-form').submit();setTimeout(function(){$('.note-interface').load('/ .note-interface > *');}, 15);">
                                     <% if (note.type == "Text") {%>
                                         <img class="note-label-icon" src="/images/document-icon.png">
                                     <%} else {%>

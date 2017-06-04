@@ -131,7 +131,7 @@ $(document).ready(function() {
             };
             socket.emit("note update", noteChange);
             setTimeout(function () {
-                $('.side-panel').load("/interface .side-panel > *");
+                $('.side-panel').load("/ .side-panel > *");
             }, 15);
             $(".text-save-status").html("changes saved");
             $(".text-save-status").css("color", "#0780ff");
