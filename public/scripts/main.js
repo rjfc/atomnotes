@@ -119,9 +119,8 @@ $(".btn-new-note").click(function() {
 });
 
 $(document).ready(function() {
-    $(".active-note-input").keyup(function () {
-            delay(function(){
-
+    $("body").on("keyup", ".active-note-input", function(event){
+        delay(function(){
             /*$("#update-note-form").submit();
             setTimeout(function () {
                 $('.side-panel').load('/interface .side-panel > *');
