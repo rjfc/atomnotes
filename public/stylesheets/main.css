@@ -329,3 +329,9 @@ a:hover {
     border: 1px dashed black;
     padding-left: 9px;
 }
+
+.text-save-status {
+    font-family: 'Lato', sans-serif;
+    font-weight: Bold;
+    font-size: 1.7vh;
+}

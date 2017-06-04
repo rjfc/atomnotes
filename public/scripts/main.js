@@ -106,22 +106,37 @@ $("#popup-sign-up-form-submit").click(function() {
     }
 });
 
+var delay = (function(){
+    var timer = 0;
+    return function(callback, ms){
+        clearTimeout (timer);
+        timer = setTimeout(callback, ms);
+    };
+})();
+
 $(document).ready(function() {
     $(".active-note-input").keyup(function () {
-        /*$("#update-note-form").submit();
-        setTimeout(function () {
-            $('.side-panel').load('/interface .side-panel > *');
-        }, 15);*/
-        console.log("Active note input keyup detected");
-        var noteChange = {
-            userId: $(".active-user-id").val(),
-            noteId: $("#active-note-id").val(),
-            title: $(".active-note-title").val(),
-            bodyText: $(".active-note-body").val()
-        };
-        socket.emit("note update", noteChange);
-        setTimeout(function () {
-            $('.side-panel').load("/interface .side-panel > *");
-        }, 15);
+            delay(function(){
+
+            /*$("#update-note-form").submit();
+            setTimeout(function () {
+                $('.side-panel').load('/interface .side-panel > *');
+            }, 15);*/
+            console.log("Active note input keyup detected");
+            var noteChange = {
+                userId: $(".active-user-id").val(),
+                noteId: $("#active-note-id").val(),
+                title: $(".active-note-title").val(),
+                bodyText: $(".active-note-body").val()
+            };
+            socket.emit("note update", noteChange);
+            setTimeout(function () {
+                $('.side-panel').load("/interface .side-panel > *");
+            }, 15);
+            $(".text-save-status").html("changes saved");
+            $(".text-save-status").css("color", "#0780ff");
+        }, 400);
+        $(".text-save-status").html("saving changes");
+        $(".text-save-status").css("color", "orange");
     });
 });
