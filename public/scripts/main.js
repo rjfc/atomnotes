@@ -136,8 +136,12 @@ $(document).ready(function() {
             setTimeout(function () {
                 $('.side-panel').load("/ .side-panel > *");
             }, 15);
-            $(".text-save-status").html("changes saved");
-            $(".text-save-status").css("color", "#0780ff");
+            socket.on("note update confirm", function(noteId) {
+                if (noteId == noteChange.noteId) {
+                    $(".text-save-status").html("changes saved");
+                    $(".text-save-status").css("color", "#0780ff");
+                }
+            });
         }, 400);
         $(".text-save-status").html("saving changes");
         $(".text-save-status").css("color", "orange");

@@ -172,6 +172,9 @@ io.on("connection", function(socket){
                 if (error) {
                     console.log(error);
                 }
+                else {
+                    socket.emit("note update confirm", updatedNote.noteId);
+                }
             }
         );
     });
