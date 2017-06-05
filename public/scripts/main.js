@@ -114,7 +114,7 @@ var delay = (function(){
     };
 })();
 
-$(".btn-new-note").click(function() {
+$("body").on("click", ".btn-new-note", function(event){
     socket.emit("new note", $(".active-user-id").val());
 });
 
