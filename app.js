@@ -188,6 +188,16 @@ io.on("connection", function(socket){
             })
         })
     });
+    socket.on("delete note", function(noteDelete){
+        User.findById(noteDelete.userId, function(error, user){
+            user.notes.pull(noteDelete.noteId);
+            user.save(function(error) {
+                if (error) {
+                    console.log(error);
+                }
+            })
+        })
+    });
 });
 
 // POST ROUTE: create a note

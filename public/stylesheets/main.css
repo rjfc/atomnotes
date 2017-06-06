@@ -335,3 +335,13 @@ a:hover {
     font-weight: Bold;
     font-size: 1.7vh;
 }
+
+.active-note-delete-icon {
+    height: 2.7vh;
+    transition: 0.2s;
+    opacity: 0.5;
+}
+
+.active-note-delete-icon:hover{
+    opacity: 1;
+}

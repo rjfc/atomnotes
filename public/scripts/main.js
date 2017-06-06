@@ -118,6 +118,17 @@ $("body").on("click", ".btn-new-note", function(event){
     socket.emit("new note", $(".active-user-id").val());
 });
 
+$("body").on("click", ".active-note-delete", function(event){
+    var noteDelete = {
+        userId: $(".active-user-id").val(),
+        noteId: $("#active-note-id").val()
+    }
+    socket.emit("delete note", noteDelete);
+    setTimeout(function () {
+        $('.side-panel').load("/ .side-panel > *");
+    }, 15);
+});
+
 $(document).ready(function() {
     $("body").on("keyup", ".active-note-input", function(event){
         delay(function(){
