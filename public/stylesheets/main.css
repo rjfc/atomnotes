@@ -273,8 +273,11 @@ a:hover {
 }
 
 .note-label:hover{
-    background-color: red;
     cursor: pointer;
+}
+
+.active-note-label {
+
     background-color: #16171b;
 }
 

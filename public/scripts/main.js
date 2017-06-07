@@ -114,9 +114,11 @@ var delay = (function(){
     };
 })();
 
-$("body").on("click", ".btn-new-note", function(event){
-    socket.emit("new note", $(".active-user-id").val());
-});
+/*
+ $("body").on("click", ".btn-new-note", function(event){
+ socket.emit("new note", $(".active-user-id").val());
+ });
+ */
 
 $("body").on("click", ".active-note-delete", function(event){
     var noteDelete = {
@@ -126,6 +128,7 @@ $("body").on("click", ".active-note-delete", function(event){
     socket.emit("delete note", noteDelete);
     setTimeout(function () {
         $('.side-panel').load("/ .side-panel > *");
+        $('.note-interface').load('/ .note-interface > *');
     }, 15);
 });
 

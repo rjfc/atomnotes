@@ -179,14 +179,18 @@ io.on("connection", function(socket){
         );
     });
     socket.on("new note", function(userId){
-        User.findById(userId, function(error, user){
-            user.notes.push({creator: userId.toString(), title : "Untitled note"});
-            user.save(function(error) {
+        /*User.findById(userId, function(error, user){
+            user.notes.push({creator: userId.toString(), title: "Untitled note"});
+            user.save(function(error, user) {
                 if (error) {
                     console.log(error);
                 }
+                else {
+                    activeNote = user.notes[user.notes.length - 1]._id;
+                    console.log(activeNote);
+                }
             })
-        })
+        })*/
     });
     socket.on("delete note", function(noteDelete){
         User.findById(noteDelete.userId, function(error, user){
@@ -229,6 +233,23 @@ app.post("/openNote", function(req, res) {
     activeNote = req.body.noteId;
     res.render("interface");
 });
+
+app.post("/newNote", function(req, res) {
+    User.findById(req.user._id, function(error, user){
+        user.notes.push({creator: req.user._id.toString(), title: "Untitled note"});
+        user.save(function(error, user) {
+            if (error) {
+                console.log(error);
+            }
+            else {
+                activeNote = user.notes[user.notes.length - 1]._id.toString();
+                consloe.log(activeNote);
+                res.render("interface");
+            }
+        })
+    })
+});
+
 
 /*// POST ROUTE: update a note
 app.post("/updateNote", function(req, res) {
