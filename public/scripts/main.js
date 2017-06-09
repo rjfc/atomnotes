@@ -161,3 +161,14 @@ $(document).ready(function() {
         $(".text-save-status").css("color", "orange");
     });
 });
+
+$(function() {
+    $(function() {
+        $( "#slider" ).slider({
+            min: 0,
+            max: 0,
+            value: 100,
+            animate:"fast"
+        });
+    });
+});

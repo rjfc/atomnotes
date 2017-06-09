@@ -7,7 +7,7 @@
                 <img class="gn-logo-interface" src="/images/gn-logo.png">
                 <form action="/newNote" method="POST" id="new-note-form" target="new-note-iframe">
                     <div class="btn-new-note" onclick="document.getElementById('new-note-form').submit();setTimeout(function(){$('.side-panel').load('/ .side-panel > *');$('.note-interface').load('/ .note-interface > *');}, 15);">+ New Note</div>
-              </form>
+                </form>
                 <iframe id="new-note-iframe" name="new-note-iframe" style="display: none;"></iframe>
                 <div class="btn-new-binder">New Binder</div>
                 <div class="notes">
@@ -30,7 +30,8 @@
                     <%}%>
                 </div>
                 <div class="control-panel">
-
+                    <span class="control-panel-reduction-percent">REDUCTION: </span>
+                    <div id="slider"></div>
                 </div>
             </div>
         </div>
