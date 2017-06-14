@@ -243,7 +243,7 @@ app.post("/newNote", function(req, res) {
             }
             else {
                 activeNote = user.notes[user.notes.length - 1]._id.toString();
-                consloe.log(activeNote);
+                console.log(activeNote);
                 res.render("interface");
             }
         })
