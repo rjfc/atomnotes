@@ -9,7 +9,8 @@ var express          = require("express"),
     expressSession   = require("express-session"),
     LocalStrategy    = require("passport-local").Strategy,
 /*  Note             = require("./models/note"),*/
-    User             = require("./models/user")
+    User             = require("./models/user"),
+    mongoose.Promise = require("bluebird");
 
 
 // Port for server to listen on
