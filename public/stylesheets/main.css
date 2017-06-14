@@ -372,6 +372,10 @@ a:hover {
     width: 80%;
 }
 
+.container-slider:hover {
+    cursor: pointer;
+}
+
 .ui-slider-handle{
     border-radius: 100% !important;
 }
