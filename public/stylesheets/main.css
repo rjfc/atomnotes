@@ -365,5 +365,28 @@ a:hover {
     font-family: "Lato", sans-serif;
     color: #f3f3f3;
     font-weight: Bold;
+}
 
+.container-slider {
+    margin-top: 5px;
+    width: 80%;
+}
+
+.ui-slider-handle{
+    border-radius: 100% !important;
+}
+
+.ui-slider-handle:focus {
+    outline: none;
+}
+
+.ui-slider-horizontal {
+    border: 6px solid #4d515c !important;
+    height: 20px !important;
+    border-radius: 24px !important;
+    background-color: #2b2e37 !important;
+}
+
+.ui-slider-range {
+    background-color: #5ab5fb !important;
 }

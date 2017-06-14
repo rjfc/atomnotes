@@ -162,13 +162,21 @@ $(document).ready(function() {
     });
 });
 
+
 $(function() {
-    $(function() {
-        $( "#slider" ).slider({
-            min: 0,
-            max: 0,
-            value: 100,
-            animate:"fast"
-        });
+    var initialValue = 0,
+        min = 0,
+        max = 100;
+    $("#slider").slider({
+        range: "min",
+        value: initialValue,
+        min: min,
+        max: max,
+        slide: function(event, ui) {
+            $("#reduction-percentage").text(ui.value);
+            $(".ui-slider-handle").css("background-color", "White");
+            $(".ui-slider-handle").css("border", "none");
+        }
     });
+    $("#reduction-percentage").text(initialValue);
 });
