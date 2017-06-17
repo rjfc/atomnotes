@@ -1,12 +1,13 @@
 <% include partials/header %>
 <textarea class="active-user-id" name="userId" type="text" style="display: none;"><%=currentUser._id%></textarea>
+
 <div class="container-fluid container-interface">
     <div class="row">
         <div class="col-md-3">
             <div class="side-panel">
                 <img class="gn-logo-interface" src="/images/gn-logo.png">
                 <form action="/newNote" method="POST" id="new-note-form" target="new-note-iframe">
-                    <div class="btn-new-note" onclick="document.getElementById('new-note-form').submit();setTimeout(function(){$('.side-panel').load('/ .side-panel > *');$('.note-interface').load('/ .note-interface > *');}, 15);">+ New Note</div>
+                    <div class="btn-new-note" onclick="document.getElementById('new-note-form').submit();setTimeout(function(){$('.side-panel').load('/ .side-panel > *');$('.note-interface').load('/ .note-interface > *'); loadReductionSlider();}, 15);">+ New Note</div>
                 </form>
                 <iframe id="new-note-iframe" name="new-note-iframe" style="display: none;"></iframe>
                 <div class="btn-new-binder">New Binder</div>
@@ -14,7 +15,7 @@
                     <%if (currentUser.notes.length > 0) {%>
                         <% currentUser.notes.forEach(function(note){ %>
                             <form action="/openNote" method="POST" id="open-note-<%=note._id%>-form" target="open-note-<%=note._id%>-iframe">
-                                <div class="note-label<%if (note._id == activeNote) { %> active-note-label <%}%>" onclick="document.getElementById('open-note-<%=note._id%>-form').submit();setTimeout(function(){$('.side-panel').load('/ .side-panel > *');$('.note-interface').load('/ .note-interface > *');}, 15);">
+                                <div class="note-label<%if (note._id == activeNote) { %> active-note-label <%}%>" onclick="document.getElementById('open-note-<%=note._id%>-form').submit();setTimeout(function(){$('.side-panel').load('/ .side-panel > *'); $('.note-interface').load('/ .note-interface > *'); loadReductionSlider();}, 15);">
                                     <% if (note.type == "Text") {%>
                                         <img class="note-label-icon" src="/images/document-icon.png">
                                     <%} else {%>
@@ -29,7 +30,11 @@
                         <% }); %>
                     <%}%>
                 </div>
+                <%if (activeNote) {%>
+                <% currentUser.notes.forEach(function(note){ %>
+                <%if (note._id == activeNote) {%>
                 <div class="control-panel">
+                    <span class="control-panel-reduction-percent"  style="display: none;"><%=note.reduction%></span>
                     <span class="control-panel-subtitle">REDUCTION: <span id="reduction-percentage"></span>%</span>
                     <div class="container-slider">
                         <div id="slider"></div>
@@ -40,18 +45,15 @@
         </div>
         <div class="col-md-9">
             <div class="note-interface">
-                <%if (activeNote) {%>
-                    <% currentUser.notes.forEach(function(note){ %>
-                        <%if (note._id == activeNote) {%>
-                           <!-- <form action="/updateNote" method="POST" id="update-note-form" target="update-note-iframe">-->
-                                <input class="active-note-input active-note-title" name="noteTitle" type="text" placeholder="Title here" value="<%=note.title%>">
-                                <hr style="margin: 0; background-color: Black; height: 1px;">
-                                <textarea class="active-note-input active-note-body" name="noteBody" type="text" placeholder="Body here"><%=note.bodyText%></textarea>
-                                <textarea id="active-note-id" name="noteId" type="text" style="display: none;"><%=note._id%></textarea>
-                                <span><%=note.body%></span>
-                                <a class="active-note-delete"><img class="active-note-delete-icon" src="/images/trash-icon.png"></a>
-                 <!--           </form>
-                            <iframe id="update-note-iframe" name="update-note-iframe" style="display: none;"></iframe>-->
+               <!-- <form action="/updateNote" method="POST" id="update-note-form" target="update-note-iframe">-->
+                    <input class="active-note-input active-note-title" name="noteTitle" type="text" placeholder="Title here" value="<%=note.title%>">
+                    <hr style="margin: 0; background-color: Black; height: 1px;">
+                    <textarea class="active-note-input active-note-body" name="noteBody" type="text" placeholder="Body here"><%=note.bodyText%></textarea>
+                    <textarea id="active-note-id" name="noteId" type="text" style="display: none;"><%=note._id%></textarea>
+                    <span><%=note.body%></span>
+                    <a class="active-note-delete"><img class="active-note-delete-icon" src="/images/trash-icon.png"></a>
+     <!--           </form>
+                <iframe id="update-note-iframe" name="update-note-iframe" style="display: none;"></iframe>-->
                         <%}%>
                     <%});%>
                 <%}%>

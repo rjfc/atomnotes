@@ -380,6 +380,10 @@ a:hover {
     border-radius: 100% !important;
 }
 
+.ui-slider-handle:hover {
+    cursor: pointer !important;
+}
+
 .ui-slider-handle:focus {
     outline: none;
 }

@@ -23,6 +23,10 @@ var NoteSchema = mongoose.Schema({
         type: String,
         default: "Text"
     },
+    reduction:   {
+        type: Number,
+        default: 0
+    },
     audioPath: String,
     summarizedBodyText: String,
     summarizedAudioNote: String

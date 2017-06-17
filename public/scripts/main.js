@@ -129,7 +129,23 @@ $("body").on("click", ".active-note-delete", function(event){
     setTimeout(function () {
         $('.side-panel').load("/ .side-panel > *");
         $('.note-interface').load('/ .note-interface > *');
+        loadReductionSlider();
     }, 15);
+});
+
+$("body").keydown(function(e){
+    if(e.keyCode == 46) {
+        var noteDelete = {
+            userId: $(".active-user-id").val(),
+            noteId: $("#active-note-id").val()
+        }
+        socket.emit("delete note", noteDelete);
+        setTimeout(function () {
+            $('.side-panel').load("/ .side-panel > *");
+            $('.note-interface').load('/ .note-interface > *');
+            loadReductionSlider();
+        }, 15);
+    }
 });
 
 $(document).ready(function() {
@@ -149,6 +165,7 @@ $(document).ready(function() {
             socket.emit("note update", noteChange);
             setTimeout(function () {
                 $('.side-panel').load("/ .side-panel > *");
+                loadReductionSlider();
             }, 15);
             socket.on("note update confirm", function(noteId) {
                 if (noteId == noteChange.noteId) {
@@ -162,9 +179,11 @@ $(document).ready(function() {
     });
 });
 
+loadReductionSlider();
 
-$(function() {
-    var initialValue = 0,
+function loadReductionSlider() {
+    console.log('reload');
+    var initialValue = $(".control-panel-reduction-percent").value,
         min = 0,
         max = 100;
     $("#slider").slider({
@@ -179,4 +198,4 @@ $(function() {
         }
     });
     $("#reduction-percentage").text(initialValue);
-});
+}

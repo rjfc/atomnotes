@@ -14,7 +14,7 @@ var express          = require("express"),
 
 
 // Port for server to listen on
-var port = 8080;
+var port = 80;
 
 mongoose.connect("mongodb://localhost/gistnotes");
 app.use(bodyParser.urlencoded({extended: true}));
@@ -244,7 +244,6 @@ app.post("/newNote", function(req, res) {
             }
             else {
                 activeNote = user.notes[user.notes.length - 1]._id.toString();
-                console.log(activeNote);
                 res.render("interface");
             }
         })
@@ -283,5 +282,5 @@ app.post("/updateNote", function(req, res) {
 
 // Listen on set port
 http.listen(port, function() {
-    console.log("Server listening on port " + 8080);
+    console.log("Server listening on port " + port);
 });
