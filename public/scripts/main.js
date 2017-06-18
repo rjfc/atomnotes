@@ -182,20 +182,34 @@ $(document).ready(function() {
 loadReductionSlider();
 
 function loadReductionSlider() {
-    console.log('reload');
-    var initialValue = $(".control-panel-reduction-percent").value,
-        min = 0,
-        max = 100;
-    $("#slider").slider({
-        range: "min",
-        value: initialValue,
-        min: min,
-        max: max,
-        slide: function(event, ui) {
-            $("#reduction-percentage").text(ui.value);
-            $(".ui-slider-handle").css("background-color", "White");
-            $(".ui-slider-handle").css("border", "none");
-        }
-    });
-    $("#reduction-percentage").text(initialValue);
+    setTimeout(function(){
+        var noteInfo = {
+            userId: $(".active-user-id").val(),
+            noteId: $("#active-note-id").val()
+        };
+        socket.emit("get note reduction", noteInfo);
+        socket.on("note reduction percent", function(initialValue) {
+            var min = 0,
+                max = 100;
+            console.log(initialValue);
+            $("#slider").slider({
+                range: "min",
+                value: initialValue,
+                min: min,
+                max: max,
+                slide: function(event, ui) {
+                    $("#reduction-percentage").text(ui.value);
+                    $(".ui-slider-handle").css("background-color", "White");
+                    $(".ui-slider-handle").css("border", "none");
+                    var noteReductionChange = {
+                        userId: $(".active-user-id").val(),
+                        noteId: $("#active-note-id").val(),
+                        reduction: ui.value
+                    };
+                    socket.emit("note reduction", noteReductionChange);
+                }
+            });
+            $("#reduction-percentage").text(initialValue);
+        });
+    }, 10);
 }

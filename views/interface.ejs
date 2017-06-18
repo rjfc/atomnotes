@@ -13,7 +13,8 @@
                             setTimeout(function(){
                                 $('.notes-panel').load('/ .notes-panel > *');
                                 $('.note-interface').load('/ .note-interface > *');
-                        }, 15);">+ New Note</div>
+                                loadReductionSlider();
+                        }, 10);">+ New Note</div>
                     </form>
                     <iframe id="new-note-iframe" name="new-note-iframe" style="display: none;"></iframe>
                     <div class="btn-new-binder">New Binder</div>
@@ -26,7 +27,8 @@
                                             setTimeout(function(){
                                             $('.notes-panel').load('/ .notes-panel > *');
                                             $('.note-interface').load('/ .note-interface > *');
-                                    }, 15);">
+                                            loadReductionSlider();
+                                    }, 10);">
                                         <% if (note.type == "Text") {%>
                                             <img class="note-label-icon" src="/images/document-icon.png">
                                         <%} else {%>
@@ -46,7 +48,7 @@
                 <% currentUser.notes.forEach(function(note){ %>
                 <%if (note._id == activeNote) {%>
                 <div class="control-panel">
-                    <span class="control-panel-reduction-percent"  style="display: none;"><%=note.reduction%></span>
+                    <textarea class="control-panel-reduction-percent" style="display: none;"><%=note.reduction%></textarea>
                     <span class="control-panel-subtitle">REDUCTION: <span id="reduction-percentage"></span>%</span>
                     <div class="container-slider">
                         <div id="slider"></div>

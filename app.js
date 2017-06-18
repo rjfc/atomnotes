@@ -203,6 +203,45 @@ io.on("connection", function(socket){
             })
         })
     });
+    socket.on("note reduction", function(noteReductionInfo){
+        User.findOneAndUpdate(
+            {
+                "_id": noteReductionInfo.userId,
+                "notes._id": noteReductionInfo.noteId
+            },
+            {
+                "$set": {
+                    "notes.$.reduction": noteReductionInfo.reduction
+                }
+            },
+            function(error, user) {
+                if (error) {
+                    console.log(error);
+                }
+            }
+        );
+    });
+    socket.on("get note reduction", function(noteInfo){
+        console.log("hi");
+        User.findOne(
+            {
+                "_id": noteInfo.userId,
+                "notes._id": noteInfo.noteId
+            },
+            {
+              "notes.$": 1
+            },
+            function(error, user) {
+                if (error) {
+                    console.log(error);
+                }
+                else if (user) {
+                    console.log(user.notes[0].reduction);
+                    socket.emit("note reduction percent", user.notes[0].reduction);
+                }
+            }
+        );
+    });
 });
 
 // POST ROUTE: create a note
