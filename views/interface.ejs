@@ -5,30 +5,42 @@
     <div class="row">
         <div class="col-md-3">
             <div class="side-panel">
-                <img class="gn-logo-interface" src="/images/gn-logo.png">
-                <form action="/newNote" method="POST" id="new-note-form" target="new-note-iframe">
-                    <div class="btn-new-note" onclick="document.getElementById('new-note-form').submit();setTimeout(function(){$('.side-panel').load('/ .side-panel > *');$('.note-interface').load('/ .note-interface > *'); loadReductionSlider();}, 15);">+ New Note</div>
-                </form>
-                <iframe id="new-note-iframe" name="new-note-iframe" style="display: none;"></iframe>
-                <div class="btn-new-binder">New Binder</div>
-                <div class="notes">
-                    <%if (currentUser.notes.length > 0) {%>
-                        <% currentUser.notes.forEach(function(note){ %>
-                            <form action="/openNote" method="POST" id="open-note-<%=note._id%>-form" target="open-note-<%=note._id%>-iframe">
-                                <div class="note-label<%if (note._id == activeNote) { %> active-note-label <%}%>" onclick="document.getElementById('open-note-<%=note._id%>-form').submit();setTimeout(function(){$('.side-panel').load('/ .side-panel > *'); $('.note-interface').load('/ .note-interface > *'); loadReductionSlider();}, 15);">
-                                    <% if (note.type == "Text") {%>
-                                        <img class="note-label-icon" src="/images/document-icon.png">
-                                    <%} else {%>
-                                        <img class="note-label-icon" src="/images/microphone-icon.png">
-                                    <%}%>
-                                    <%=note.title%>
-                                    <span class="note-label-date"><%=note.dateOfCreation%></span>
-                                </div>
-                                <textarea name="noteId" type="text" style="display: none;"><%=note._id%></textarea>
-                            </form>
-                            <iframe id="open-note-<%=note._id%>-iframe" name="open-note-<%=note._id%>-iframe" style="display: none;"></iframe>
-                        <% }); %>
-                    <%}%>
+                <div class="notes-panel">
+                    <img class="gn-logo-interface" src="/images/gn-logo.png">
+                    <form action="/newNote" method="POST" id="new-note-form" target="new-note-iframe">
+                        <div class="btn-new-note" onclick="
+                            document.getElementById('new-note-form').submit();
+                            setTimeout(function(){
+                                $('.notes-panel').load('/ .notes-panel > *');
+                                $('.note-interface').load('/ .note-interface > *');
+                        }, 15);">+ New Note</div>
+                    </form>
+                    <iframe id="new-note-iframe" name="new-note-iframe" style="display: none;"></iframe>
+                    <div class="btn-new-binder">New Binder</div>
+                    <div class="notes">
+                        <%if (currentUser.notes.length > 0) {%>
+                            <% currentUser.notes.forEach(function(note){ %>
+                                <form action="/openNote" method="POST" id="open-note-<%=note._id%>-form" target="open-note-<%=note._id%>-iframe">
+                                    <div class="note-label<%if (note._id == activeNote) { %> active-note-label <%}%>" onclick="
+                                            document.getElementById('open-note-<%=note._id%>-form').submit();
+                                            setTimeout(function(){
+                                            $('.notes-panel').load('/ .notes-panel > *');
+                                            $('.note-interface').load('/ .note-interface > *');
+                                    }, 15);">
+                                        <% if (note.type == "Text") {%>
+                                            <img class="note-label-icon" src="/images/document-icon.png">
+                                        <%} else {%>
+                                            <img class="note-label-icon" src="/images/microphone-icon.png">
+                                        <%}%>
+                                        <%=note.title%>
+                                        <span class="note-label-date"><%=note.dateOfCreation%></span>
+                                    </div>
+                                    <textarea name="noteId" type="text" style="display: none;"><%=note._id%></textarea>
+                                </form>
+                                <iframe id="open-note-<%=note._id%>-iframe" name="open-note-<%=note._id%>-iframe" style="display: none;"></iframe>
+                            <% }); %>
+                        <%}%>
+                    </div>
                 </div>
                 <%if (activeNote) {%>
                 <% currentUser.notes.forEach(function(note){ %>

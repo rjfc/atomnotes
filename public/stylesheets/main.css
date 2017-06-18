@@ -61,14 +61,6 @@ font-family: 'Lora', serif;
     padding-right: 90px;
 }
 
-.side-panel {
-    height: 100vh;
-    background-color: #2b2e37;
-    padding: 18px;
-    overflow-y: auto;
-    position: relative;
-}
-
 .gn-logo-landing {
     position: relative;
     top: 20vh;
@@ -350,14 +342,27 @@ a:hover {
     opacity: 1;
 }
 
+.side-panel {
+    height: 100vh;
+}
+
+.notes-panel {
+    height: 90%;
+    background-color: #2b2e37;
+    padding: 18px;
+    overflow-y: auto;
+    position: relative;
+}
+
 .control-panel {
     position: absolute;
     bottom: 0;
     background-color: #1e2127;
     width: 100%;
-    margin-left: -18px;
-    margin-right: -18px;
+    position: relative;
     padding: 15px;
+    height: 10%;
+
 }
 
 .control-panel-subtitle {

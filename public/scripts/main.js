@@ -127,7 +127,7 @@ $("body").on("click", ".active-note-delete", function(event){
     }
     socket.emit("delete note", noteDelete);
     setTimeout(function () {
-        $('.side-panel').load("/ .side-panel > *");
+        $('.notes-panel').load("/ .notes-panel > *");
         $('.note-interface').load('/ .note-interface > *');
         loadReductionSlider();
     }, 15);
@@ -141,7 +141,7 @@ $("body").keydown(function(e){
         }
         socket.emit("delete note", noteDelete);
         setTimeout(function () {
-            $('.side-panel').load("/ .side-panel > *");
+            $('.notes-panel').load("/ .notes-panel > *");
             $('.note-interface').load('/ .note-interface > *');
             loadReductionSlider();
         }, 15);
@@ -153,7 +153,7 @@ $(document).ready(function() {
         delay(function(){
             /*$("#update-note-form").submit();
             setTimeout(function () {
-                $('.side-panel').load('/interface .side-panel > *');
+                $('.notes-panel').load('/interface .notes-panel > *');
             }, 15);*/
             console.log("Active note input keyup detected");
             var noteChange = {
@@ -164,7 +164,7 @@ $(document).ready(function() {
             };
             socket.emit("note update", noteChange);
             setTimeout(function () {
-                $('.side-panel').load("/ .side-panel > *");
+                $('.notes-panel').load("/ .notes-panel > *");
                 loadReductionSlider();
             }, 15);
             socket.on("note update confirm", function(noteId) {
