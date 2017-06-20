@@ -2,7 +2,6 @@
 var popupLogin = sessionStorage.getItem("loginPopup");
 var popupSignUp = sessionStorage.getItem("signUpPopup");
 var firstNoteOpened = sessionStorage.getItem("firstNoteOpened");
-console.log(firstNoteOpened)
 
 // Close log in and sign up popup boxes on dark overlay click
 $(".dark-overlay").click(function() {
@@ -218,12 +217,10 @@ function loadReductionSlider() {
 
 $("body").on("click", ".note-label", function(event){
     if (firstNoteOpened == "false") {
-        console.log(firstNoteOpened);
         location.reload();
         sessionStorage.setItem("firstNoteOpened", "no");
     }
     else {
-        console.log(firstNoteOpened);
         setTimeout(function(){
             $('.side-panel').load('/ .side-panel > *');
             $('.notes-panel').load('/ .notes-panel > *');

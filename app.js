@@ -4,6 +4,7 @@ var express          = require("express"),
     io               = require("socket.io")(http);
     mongoose         = require("mongoose")
     passport         = require("passport"),
+    summarize        = require("text-summary"),
     bodyParser       = require("body-parser"),
     flash            = require("connect-flash"),
     expressSession   = require("express-session"),
