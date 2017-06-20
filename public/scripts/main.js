@@ -216,17 +216,17 @@ function loadReductionSlider() {
 }
 
 $("body").on("click", ".note-label", function(event){
-    if (firstNoteOpened == "false") {
-        location.reload();
-        sessionStorage.setItem("firstNoteOpened", "no");
-    }
-    else {
+    if (firstNoteOpened !== null && firstNoteOpened !== undefined) {
         setTimeout(function(){
             $('.side-panel').load('/ .side-panel > *');
             $('.notes-panel').load('/ .notes-panel > *');
             $('.note-interface').load('/ .note-interface > *');
             loadReductionSlider();
         }, 10);
+    }
+    else {
+        location.reload();
+        sessionStorage.setItem("firstNoteOpened", "no");
     }
 });
 
