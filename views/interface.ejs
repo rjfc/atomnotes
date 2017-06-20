@@ -8,13 +8,7 @@
                 <div class="notes-panel">
                     <img class="gn-logo-interface" src="/images/gn-logo.png">
                     <form action="/newNote" method="POST" id="new-note-form" target="new-note-iframe">
-                        <div class="btn-new-note" onclick="
-                            document.getElementById('new-note-form').submit();
-                            setTimeout(function(){
-                                $('.notes-panel').load('/ .notes-panel > *');
-                                $('.note-interface').load('/ .note-interface > *');
-                                loadReductionSlider();
-                        }, 10);">+ New Note</div>
+                        <div class="btn-new-note">+ New Note</div>
                     </form>
                     <iframe id="new-note-iframe" name="new-note-iframe" style="display: none;"></iframe>
                     <div class="btn-new-binder">New Binder</div>
@@ -22,13 +16,7 @@
                         <%if (currentUser.notes.length > 0) {%>
                             <% currentUser.notes.forEach(function(note){ %>
                                 <form action="/openNote" method="POST" id="open-note-<%=note._id%>-form" target="open-note-<%=note._id%>-iframe">
-                                    <div class="note-label<%if (note._id == activeNote) { %> active-note-label <%}%>" onclick="
-                                            document.getElementById('open-note-<%=note._id%>-form').submit();
-                                            setTimeout(function(){
-                                            $('.notes-panel').load('/ .notes-panel > *');
-                                            $('.note-interface').load('/ .note-interface > *');
-                                            loadReductionSlider();
-                                    }, 10);">
+                                    <div class="note-label note-label<%if (note._id == activeNote) { %> active-note-label <%}%>" onclick="document.getElementById('open-note-<%=note._id%>-form').submit();">
                                         <% if (note.type == "Text") {%>
                                             <img class="note-label-icon" src="/images/document-icon.png">
                                         <%} else {%>
@@ -44,10 +32,10 @@
                         <%}%>
                     </div>
                 </div>
-                <%if (activeNote) {%>
-                <% currentUser.notes.forEach(function(note){ %>
-                <%if (note._id == activeNote) {%>
                 <div class="control-panel">
+                    <%if (activeNote) {%>
+                    <% currentUser.notes.forEach(function(note){ %>
+                    <%if (note._id == activeNote) {%>
                     <textarea class="control-panel-reduction-percent" style="display: none;"><%=note.reduction%></textarea>
                     <span class="control-panel-subtitle">REDUCTION: <span id="reduction-percentage"></span>%</span>
                     <div class="container-slider">

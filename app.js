@@ -222,7 +222,6 @@ io.on("connection", function(socket){
         );
     });
     socket.on("get note reduction", function(noteInfo){
-        console.log("hi");
         User.findOne(
             {
                 "_id": noteInfo.userId,
@@ -236,7 +235,6 @@ io.on("connection", function(socket){
                     console.log(error);
                 }
                 else if (user) {
-                    console.log(user.notes[0].reduction);
                     socket.emit("note reduction percent", user.notes[0].reduction);
                 }
             }

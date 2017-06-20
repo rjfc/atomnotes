@@ -1,6 +1,8 @@
 // sessionStorage variables for sign up and log in popup boxes
 var popupLogin = sessionStorage.getItem("loginPopup");
 var popupSignUp = sessionStorage.getItem("signUpPopup");
+var firstNoteOpened = sessionStorage.getItem("firstNoteOpened");
+console.log(firstNoteOpened)
 
 // Close log in and sign up popup boxes on dark overlay click
 $(".dark-overlay").click(function() {
@@ -8,7 +10,7 @@ $(".dark-overlay").click(function() {
     $("#popup-sign-up").fadeOut(20);
     $("#popup-log-in").fadeOut(20);
     if (popupLogin == "opened") {
-        sessionStorage.setItem("popupLogin", "closed");
+        sessionStorage.getItem("popupLogin");
     }
     else if (popupSignUp == "opened") {
         sessionStorage.setItem("popupSignUp", "closed");
@@ -47,15 +49,15 @@ $(".btn-log-in").click(function() {
 });
 
 // Keep sign up and log in popups open on refresh (for sign up errors)
-if (sessionStorage.getItem("popupSignUp") == "opened") {
+if (popupSignUp == "opened") {
     sessionStorage.setItem("popupLogin", "closed");
 }
 
-if (sessionStorage.getItem("popupLogin") == "opened") {
+if (popupLogin == "opened") {
     sessionStorage.setItem("popupSignUp", "closed");
 }
 
-if (sessionStorage.getItem("popupLogin") == "opened") {
+if (popupLogin == "opened") {
     $("#popup-log-in").show();
     $(".dark-overlay").show();
 }
@@ -63,7 +65,7 @@ else {
     $("#popup-log-in").hide();
 }
 
-if (sessionStorage.getItem("popupSignUp") == "opened") {
+if (popupSignUp == "opened") {
     $("#popup-sign-up").show();
     $(".dark-overlay").show();
 }
@@ -213,3 +215,29 @@ function loadReductionSlider() {
         });
     }, 10);
 }
+
+$("body").on("click", ".note-label", function(event){
+    if (firstNoteOpened == "false") {
+        console.log(firstNoteOpened);
+        location.reload();
+        sessionStorage.setItem("firstNoteOpened", "no");
+    }
+    else {
+        console.log(firstNoteOpened);
+        setTimeout(function(){
+            $('.side-panel').load('/ .side-panel > *');
+            $('.notes-panel').load('/ .notes-panel > *');
+            $('.note-interface').load('/ .note-interface > *');
+            loadReductionSlider();
+        }, 10);
+    }
+});
+
+$("body").on("click", ".btn-new-note", function(event){
+    document.getElementById('new-note-form').submit();
+    setTimeout(function(){
+        $('.side-panel').load('/ .side-panel > *');
+        $('.note-interface').load('/ .note-interface > *');
+        loadReductionSlider();
+    }, 10);
+});
