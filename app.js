@@ -215,9 +215,45 @@ io.on("connection", function(socket){
                     "notes.$.reduction": noteReductionInfo.reduction
                 }
             },
-            function(error, user) {
+            function(error, doc) {
                 if (error) {
                     console.log(error);
+                }
+                else {
+                    User.findOne(
+                        {
+                            "_id": noteReductionInfo.userId,
+                            "notes._id": noteReductionInfo.noteId
+                        },
+                        {
+                            "notes.$": 1
+                        },
+                        function(error, user) {
+                            var text = user.notes[0].bodyText,
+                                numberSentences = (user.notes[0].bodyText.trim().split(/[\.\?\!]\s/).length) * (1 - (user.notes[0].reduction / 100)),
+                                summary = summarize.summary(text, numberSentences);
+                            User.findOneAndUpdate(
+                                {
+                                    "_id": noteReductionInfo.userId,
+                                    "notes._id": noteReductionInfo.noteId
+                                },
+                                {
+                                    "$set": {
+                                        "notes.$.summarizedBodyText": summary
+                                    }
+                                },
+                                function(error, userNote) {
+                                    if (error) {
+                                        console.log(error);
+                                    }
+                                    else {
+                                        socket.emit("note reduction text", summary);
+                                    }
+                                }
+                            );
+                        }
+                    );
+
                 }
             }
         );
