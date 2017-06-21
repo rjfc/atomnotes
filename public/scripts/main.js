@@ -48,15 +48,15 @@ $(".btn-log-in").click(function() {
 });
 
 // Keep sign up and log in popups open on refresh (for sign up errors)
-if (popupSignUp == "opened") {
+if (sessionStorage.getItem("popupSignUp") == "opened") {
     sessionStorage.setItem("popupLogin", "closed");
 }
 
-if (popupLogin == "opened") {
+if (sessionStorage.getItem("popupLogin") == "opened") {
     sessionStorage.setItem("popupSignUp", "closed");
 }
 
-if (popupLogin == "opened") {
+if (sessionStorage.getItem("popupLogin") == "opened") {
     $("#popup-log-in").show();
     $(".dark-overlay").show();
 }
@@ -64,7 +64,7 @@ else {
     $("#popup-log-in").hide();
 }
 
-if (popupSignUp == "opened") {
+if (sessionStorage.getItem("popupSignUp") == "opened") {
     $("#popup-sign-up").show();
     $(".dark-overlay").show();
 }
