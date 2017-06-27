@@ -19,7 +19,7 @@ $(".dark-overlay").click(function() {
 // Close log in and sign up popup boxes on popup close button click
 $(".popup-close").click(function() {
     $(this).parent().parent().fadeOut(20);
-    $(".dark-overlay").fadeOut(20);
+    $("#dark-overlay-landing").fadeOut(20);
     if (popupLogin == "opened") {
         sessionStorage.setItem("popupLogin", "closed");
     }
@@ -32,7 +32,7 @@ $(".popup-close").click(function() {
 $(".btn-sign-up").click(function() {
     sessionStorage.setItem("popupSignUp", "opened");
     sessionStorage.setItem("popupLogin", "closed");
-    $(".dark-overlay").fadeIn(20);
+    $("#dark-overlay-landing").fadeIn(20);
     $("#popup-sign-up").fadeIn(20);
     $("#popup-sign-up-form-email").focus();
 });
@@ -42,7 +42,7 @@ $(".btn-sign-up").click(function() {
 $(".btn-log-in").click(function() {
     sessionStorage.setItem("popupLogin", "opened");
     sessionStorage.setItem("popupSignUp", "closed");
-    $(".dark-overlay").fadeIn(20);
+    $("#dark-overlay-landing").fadeIn(20);
     $("#popup-log-in").fadeIn(20);
     $("#popup-log-in-form-email").focus();
 });
@@ -58,7 +58,7 @@ if (sessionStorage.getItem("popupLogin") == "opened") {
 
 if (sessionStorage.getItem("popupLogin") == "opened") {
     $("#popup-log-in").show();
-    $(".dark-overlay").show();
+    $("#dark-overlay-landing").show();
 }
 else {
     $("#popup-log-in").hide();
@@ -66,7 +66,7 @@ else {
 
 if (sessionStorage.getItem("popupSignUp") == "opened") {
     $("#popup-sign-up").show();
-    $(".dark-overlay").show();
+    $("#dark-overlay-landing").show();
 }
 else {
     $("#popup-sign-up").hide();
@@ -151,32 +151,38 @@ $("body").keydown(function(e){
 
 $(document).ready(function() {
     $("body").on("keyup", ".active-note-input", function(event){
-        delay(function(){
-            /*$("#update-note-form").submit();
-            setTimeout(function () {
-                $('.notes-panel').load('/interface .notes-panel > *');
-            }, 15);*/
-            console.log("Active note input keyup detected");
-            var noteChange = {
-                userId: $(".active-user-id").val(),
-                noteId: $("#active-note-id").val(),
-                title: $(".active-note-title").val(),
-                bodyText: $(".active-note-body").val()
-            };
-            socket.emit("note update", noteChange);
-            setTimeout(function () {
-                $('.notes-panel').load("/ .notes-panel > *");
-                loadReductionSlider();
-            }, 15);
-            socket.on("note update confirm", function(noteId) {
-                if (noteId == noteChange.noteId) {
-                    $(".text-save-status").html("changes saved");
-                    $(".text-save-status").css("color", "#0780ff");
-                }
-            });
-        }, 400);
-        $(".text-save-status").html("saving changes");
-        $(".text-save-status").css("color", "orange");
+        if ($("#reduction-percentage").text() == 0) {
+            $(".active-note-input").attr("onkeydown", "");
+            delay(function(){
+                /*$("#update-note-form").submit();
+                 setTimeout(function () {
+                 $('.notes-panel').load('/interface .notes-panel > *');
+                 }, 15);*/
+                var noteChange = {
+                    userId: $(".active-user-id").val(),
+                    noteId: $("#active-note-id").val(),
+                    title: $(".active-note-title").val(),
+                    bodyText: $(".active-note-body").val()
+                };
+                socket.emit("note update", noteChange);
+                setTimeout(function () {
+                    $('.notes-panel').load("/ .notes-panel > *");
+                    loadReductionSlider();
+                }, 15);
+                socket.on("note update confirm", function(noteId) {
+                    if (noteId == noteChange.noteId) {
+                        $(".text-save-status").html("changes saved");
+                        $(".text-save-status").css("color", "#0780ff");
+                    }
+                });
+            }, 400);
+            $(".text-save-status").html("saving changes");
+            $(".text-save-status").css("color", "orange");
+        }
+        else {
+
+            $("#dark-overlay-interface").show();
+        }
     });
 });
 
@@ -201,6 +207,10 @@ function loadReductionSlider() {
                     $("#reduction-percentage").text(ui.value);
                     $(".ui-slider-handle").css("background-color", "White");
                     $(".ui-slider-handle").css("border", "none");
+                    if (ui.value != 0) {
+                        $(".active-note-input").attr("onkeydown", "return false;");
+                    }
+                    else {}
                     var noteReductionChange = {
                         userId: $(".active-user-id").val(),
                         noteId: $("#active-note-id").val(),
