@@ -181,18 +181,23 @@ io.on("connection", function(socket){
         );
     });
     socket.on("new note", function(userId){
-        /*User.findById(userId, function(error, user){
-            user.notes.push({creator: userId.toString(), title: "Untitled note"});
+        User.findById(userId, function(error, user){
+            user.notes.push({creator: userId, title: "Untitled note"});
             user.save(function(error, user) {
                 if (error) {
                     console.log(error);
                 }
                 else {
-                    activeNote = user.notes[user.notes.length - 1]._id;
-                    console.log(activeNote);
+                    activeNote = user.notes[user.notes.length - 1]._id.toString();
+                    var noteInfo = {
+                        noteId: user.notes[user.notes.length - 1]._id.toString(),
+                        noteTitle: user.notes[user.notes.length - 1].title,
+                        noteDate: user.notes[user.notes.length - 1].dateOfCreation
+                    };
+                    socket.emit("new note confirm", noteInfo);
                 }
             })
-        })*/
+        })
     });
     socket.on("delete note", function(noteDelete){
         User.findById(noteDelete.userId, function(error, user){
@@ -309,7 +314,7 @@ app.post("/openNote", function(req, res) {
     res.render("interface");
 });
 
-app.post("/newNote", function(req, res) {
+/*app.post("/newNote", function(req, res) {
     User.findById(req.user._id, function(error, user){
         user.notes.push({creator: req.user._id.toString(), title: "Untitled note"});
         user.save(function(error, user) {
@@ -322,7 +327,7 @@ app.post("/newNote", function(req, res) {
             }
         })
     })
-});
+});*/
 
 
 /*// POST ROUTE: update a note

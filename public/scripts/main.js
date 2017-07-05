@@ -129,7 +129,7 @@ $("body").on("click", ".active-note-delete", function(event){
     socket.emit("delete note", noteDelete);
     setTimeout(function () {
         $('.notes-panel').load("/ .notes-panel > *");
-        $('.note-interface').load('/ .note-interface > *');
+         $('.note-interface').load('/ .note-interface > *');
         loadReductionSlider();
     }, 15);
 });
@@ -248,7 +248,13 @@ socket.on("note reduction percent", function(initialValue) {
 });
 
 socket.on("note reduction text", function(summarizedText) {
-$(".active-note-body").text(summarizedText);
+    $(".active-note-body").text(summarizedText);
+});
+
+
+socket.on("new note confirm", function(newNote) {
+    $(".notes .note-label").last().removeClass("active-note-label");
+    $(".notes").append("<div class='note-label active-note-label'onclick='document.getElementById(&quot;open-note-" + newNote.noteId + "-form&quot;).submit();'><img class='note-label-icon' src='/images/document-icon.png'>Untitled note<span class='note-label-date'>" + newNote.noteDate + "</span></div>");
 });
 
 
@@ -268,10 +274,11 @@ $("body").on("click", ".note-label", function(event){
 });
 
 $("body").on("click", ".btn-new-note", function(event){
-    document.getElementById('new-note-form').submit();
+/*    document.getElementById('new-note-form').submit();
     setTimeout(function(){
         $('.side-panel').load('/ .side-panel > *');
         $('.note-interface').load('/ .note-interface > *');
         loadReductionSlider();
-    }, 10);
+    }, 10);*/
+    socket.emit("new note", $(".active-user-id").val());
 });
