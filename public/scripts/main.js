@@ -253,7 +253,7 @@ socket.on("note reduction text", function(summarizedText) {
 
 
 socket.on("new note confirm", function(newNote) {
-    $(".notes .note-label").last().removeClass("active-note-label");
+    $(".notes .note-label").removeClass("active-note-label");
     $(".notes").append("<div class='note-label active-note-label'onclick='document.getElementById(&quot;open-note-" + newNote.noteId + "-form&quot;).submit();'><img class='note-label-icon' src='/images/document-icon.png'>Untitled note<span class='note-label-date'>" + newNote.noteDate + "</span></div>");
 });
 
