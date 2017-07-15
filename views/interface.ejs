@@ -7,9 +7,7 @@
             <div class="side-panel">
                 <div class="notes-panel">
                     <img class="gn-logo-interface" src="/images/gn-logo.png">
-                    <form action="/newNote" method="POST" id="new-note-form" target="new-note-iframe">
-                        <div class="btn-new-note">+ New Note</div>
-                    </form>
+                    <div class="btn-new-note">+ New Note</div>
                     <iframe id="new-note-iframe" name="new-note-iframe" style="display: none;"></iframe>
                     <div class="btn-new-binder">New Binder</div>
                     <div class="notes">
@@ -17,6 +15,7 @@
                             <% currentUser.notes.forEach(function(note){ %>
                                 <form action="/openNote" method="POST" id="open-note-<%=note._id%>-form" target="open-note-<%=note._id%>-iframe">
                                     <div class="note-label note-label<%if (note._id == activeNote) { %> active-note-label <%}%>" onclick="document.getElementById('open-note-<%=note._id%>-form').submit();">
+                                        <textarea class="note-label-id" name="noteId" type="text" style="display: none;"><%=note._id%></textarea>
                                         <% if (note.type == "Text") {%>
                                             <img class="note-label-icon" src="/images/document-icon.png">
                                         <%} else {%>
@@ -33,10 +32,7 @@
                     </div>
                 </div>
                 <div class="control-panel">
-                    <%if (activeNote) {%>
-                    <% currentUser.notes.forEach(function(note){ %>
-                    <%if (note._id == activeNote) {%>
-                    <textarea class="control-panel-reduction-percent" style="display: none;"><%=note.reduction%></textarea>
+                    <textarea class="control-panel-reduction-percent" style="display: none;"></textarea>
                     <span class="control-panel-subtitle">REDUCTION: <span id="reduction-percentage"></span>%</span>
                     <div class="container-slider">
                         <div id="slider"></div>
@@ -48,17 +44,14 @@
         <div class="col-md-9">
             <div class="note-interface">
                <!-- <form action="/updateNote" method="POST" id="update-note-form" target="update-note-iframe">-->
-                    <input class="active-note-input active-note-title" name="noteTitle" type="text" placeholder="Title here" value="<%=note.title%>">
+                    <input class="active-note-input active-note-title" name="noteTitle" type="text" placeholder="Title here">
                     <hr style="margin: 0; background-color: Black; height: 1px;">
-                    <textarea class="active-note-input active-note-body" name="noteBody" type="text" placeholder="Body here"><%=note.bodyText%></textarea>
-                    <textarea id="active-note-id" name="noteId" type="text" style="display: none;"><%=note._id%></textarea>
-                    <span><%=note.body%></span>
+                    <textarea class="active-note-input active-note-body" name="noteBody" type="text" placeholder="Body here"></textarea>
+                    <textarea id="active-note-id" name="noteId" type="text" style="display: none;"></textarea>
+                    <span></span>
                     <a class="active-note-delete"><img class="active-note-delete-icon" src="/images/trash-icon.png"></a>
      <!--           </form>
                 <iframe id="update-note-iframe" name="update-note-iframe" style="display: none;"></iframe>-->
-                        <%}%>
-                    <%});%>
-                <%}%>
                 <span class="text-save-status"></span>
             </div>
         </div>

@@ -1,7 +1,7 @@
 // sessionStorage variables for sign up and log in popup boxes
 var popupLogin = sessionStorage.getItem("loginPopup");
 var popupSignUp = sessionStorage.getItem("signUpPopup");
-var firstNoteOpened = sessionStorage.getItem("firstNoteOpened");
+/*var firstNoteOpened = sessionStorage.getItem("firstNoteOpened");*/
 
 // Close log in and sign up popup boxes on dark overlay click
 $(".dark-overlay").click(function() {
@@ -251,15 +251,14 @@ socket.on("note reduction text", function(summarizedText) {
     $(".active-note-body").text(summarizedText);
 });
 
-
 socket.on("new note confirm", function(newNote) {
     $(".notes .note-label").removeClass("active-note-label");
     $(".notes").append("<div class='note-label active-note-label'onclick='document.getElementById(&quot;open-note-" + newNote.noteId + "-form&quot;).submit();'><img class='note-label-icon' src='/images/document-icon.png'>Untitled note<span class='note-label-date'>" + newNote.noteDate + "</span></div>");
 });
 
-
+/*
 $("body").on("click", ".note-label", function(event){
-    if (firstNoteOpened !== null && firstNoteOpened !== undefined) {
+   if (firstNoteOpened !== null && firstNoteOpened !== undefined) {
         setTimeout(function(){
             $('.side-panel').load('/ .side-panel > *');
             $('.notes-panel').load('/ .notes-panel > *');
@@ -271,6 +270,22 @@ $("body").on("click", ".note-label", function(event){
         location.reload();
         sessionStorage.setItem("firstNoteOpened", "no");
     }
+});*/
+
+$(".note-label").click(function(){
+        var openNoteInfo = {
+            userId: $(".active-user-id").val(),
+            noteId: $(this).find(".note-label-id").val()
+        };
+        console.log($(this).find(".note-label-id").val());
+        socket.emit("open note", openNoteInfo);
+});
+
+
+socket.on("open note confirm", function(openedNote) {
+    console.log(openedNote.title);
+    $(".active-note-title").val(openedNote.noteTitle);
+    $(".active-note-body").val(openedNote.noteBody);
 });
 
 $("body").on("click", ".btn-new-note", function(event){

@@ -263,6 +263,29 @@ io.on("connection", function(socket){
             }
         );
     });
+    socket.on("open note", function(openNoteInfo){
+        User.findOne(
+            {
+                "_id": openNoteInfo.userId,
+                "notes._id": openNoteInfo.noteId
+            },
+            {
+                "notes.$": 1
+            },
+            function(error, user) {
+                if (error) {
+                    console.log(error);
+                }
+                else if (user) {
+                    var noteInfo = {
+                        noteTitle: user.notes[0].title,
+                        noteBody: user.notes[0].bodyText
+                    };
+                    socket.emit("open note confirm", noteInfo);
+                }
+            }
+        );
+    });
     socket.on("get note reduction", function(noteInfo){
         User.findOne(
             {
