@@ -286,7 +286,7 @@ io.on("connection", function(socket){
             }
         );
     });
-    socket.on("get note reduction", function(noteInfo){
+    /*socket.on("get note reduction", function(noteInfo){
         User.findOne(
             {
                 "_id": noteInfo.userId,
@@ -304,7 +304,7 @@ io.on("connection", function(socket){
                 }
             }
         );
-    });
+    });*/
 });
 
 // POST ROUTE: create a note

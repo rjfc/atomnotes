@@ -1,6 +1,8 @@
 // sessionStorage variables for sign up and log in popup boxes
 var popupLogin = sessionStorage.getItem("loginPopup");
 var popupSignUp = sessionStorage.getItem("signUpPopup");
+var lastNote;
+
 /*var firstNoteOpened = sessionStorage.getItem("firstNoteOpened");*/
 
 // Close log in and sign up popup boxes on dark overlay click
@@ -193,7 +195,7 @@ function loadReductionSlider() {
         var noteInfo = {
             userId: $(".active-user-id").val(),
             noteId: $("#active-note-id").val()
-        };
+        };/*
         socket.emit("get note reduction", noteInfo);
         socket.on("note reduction percent", function(initialValue) {
             var min = 0,
@@ -220,7 +222,7 @@ function loadReductionSlider() {
                 }
             });
             $("#reduction-percentage").text(initialValue);
-        });
+        });*/
     }, 10);
 }
 
@@ -273,20 +275,29 @@ $("body").on("click", ".note-label", function(event){
 });*/
 
 $(".note-label").click(function(){
-        var openNoteInfo = {
-            userId: $(".active-user-id").val(),
-            noteId: $(this).find(".note-label-id").val()
-        };
-        console.log($(this).find(".note-label-id").val());
-        socket.emit("open note", openNoteInfo);
+   /* var openNoteInfo = {
+        userId: $(".active-user-id").val(),
+        noteId: $(this).find(".note-label-id").val()
+    };
+    console.log($(this).find(".note-label-id").val());
+    socket.emit("open note", openNoteInfo);*/
+    var activeNoteId = $(this).find(".note-label-id").val();
+/*   $(".active-note-interface").addClass("note-interface");
+    $(".active-note-interface").removeClass("active-note-interface");
+    $(".note-interface").addClass("note-interface");
+    $("#note-interface-" + activeNoteId).addClass("active-note-interface");
+    $("#note-interface-" + activeNoteId).removeClass("note-interface");*/
+    $("#note-interface-" + lastNote).hide();
+    $("#note-interface-" + activeNoteId).show();
+    lastNote = activeNoteId;
+
 });
 
-
-socket.on("open note confirm", function(openedNote) {
+/*socket.on("open note confirm", function(openedNote) {
     console.log(openedNote.title);
     $(".active-note-title").val(openedNote.noteTitle);
     $(".active-note-body").val(openedNote.noteBody);
-});
+});*/
 
 $("body").on("click", ".btn-new-note", function(event){
 /*    document.getElementById('new-note-form').submit();
