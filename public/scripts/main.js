@@ -2,6 +2,7 @@
 var popupLogin = sessionStorage.getItem("loginPopup");
 var popupSignUp = sessionStorage.getItem("signUpPopup");
 var lastNote;
+var deletedNote;
 
 /*var firstNoteOpened = sessionStorage.getItem("firstNoteOpened");*/
 
@@ -117,38 +118,39 @@ var delay = (function(){
     };
 })();
 
-/*
- $("body").on("click", ".btn-new-note", function(event){
- socket.emit("new note", $(".active-user-id").val());
- });
- */
-
-$("body").on("click", ".active-note-delete", function(event){
+$(".active-note-delete").click(function() {
     var noteDelete = {
         userId: $(".active-user-id").val(),
-        noteId: $("#active-note-id").val()
-    }
+        noteId: $(".note-interface:visible > .active-note-id").val()
+    };
+    deletedNote = noteDelete.noteId;
     socket.emit("delete note", noteDelete);
-    setTimeout(function () {
-        $('.notes-panel').load("/ .notes-panel > *");
-         $('.note-interface').load('/ .note-interface > *');
-        loadReductionSlider();
-    }, 15);
 });
 
 $("body").keydown(function(e){
     if(e.keyCode == 46) {
         var noteDelete = {
             userId: $(".active-user-id").val(),
-            noteId: $("#active-note-id").val()
-        }
+            noteId: $(".note-interface:visible > .active-note-id").val()
+        };
+
+        deletedNote = noteDelete.noteId;
         socket.emit("delete note", noteDelete);
-        setTimeout(function () {
-            $('.notes-panel').load("/ .notes-panel > *");
-            $('.note-interface').load('/ .note-interface > *');
-            loadReductionSlider();
-        }, 15);
     }
+});
+
+socket.on("delete note confirm", function(noteId) {
+    var activeNoteId;
+    if (deletedNote == noteId) {
+        $("#note-label-" + noteId).next().addClass("active-note-label");
+        activeNoteId = $("#note-label-" + noteId).next().find(".note-label-id").val();
+        console.log(noteId);
+        console.log(activeNoteId);
+        $("#note-label-" + noteId).remove();
+        $("#note-interface-" + noteId).remove();
+    }
+    $("#note-interface-" + activeNoteId).show();
+    lastNote = activeNoteId;
 });
 
 $(document).ready(function() {
@@ -156,10 +158,6 @@ $(document).ready(function() {
         if ($("#reduction-percentage").text() == 0) {
             $(".active-note-input").attr("onkeydown", "");
             delay(function(){
-                /*$("#update-note-form").submit();
-                 setTimeout(function () {
-                 $('.notes-panel').load('/interface .notes-panel > *');
-                 }, 15);*/
                 var noteChange = {
                     userId: $(".active-user-id").val(),
                     noteId: $("#active-note-id").val(),
@@ -189,40 +187,12 @@ $(document).ready(function() {
 });
 
 loadReductionSlider();
-
 function loadReductionSlider() {
     setTimeout(function(){
         var noteInfo = {
             userId: $(".active-user-id").val(),
             noteId: $("#active-note-id").val()
-        };/*
-        socket.emit("get note reduction", noteInfo);
-        socket.on("note reduction percent", function(initialValue) {
-            var min = 0,
-                max = 100;
-            $("#slider").slider({
-                range: "min",
-                value: initialValue,
-                min: min,
-                max: max,
-                slide: function(event, ui) {
-                    $("#reduction-percentage").text(ui.value);
-                    $(".ui-slider-handle").css("background-color", "White");
-                    $(".ui-slider-handle").css("border", "none");
-                    if (ui.value != 0) {
-                        $(".active-note-input").attr("onkeydown", "return false;");
-                    }
-                    else {}
-                    var noteReductionChange = {
-                        userId: $(".active-user-id").val(),
-                        noteId: $("#active-note-id").val(),
-                        reduction: ui.value
-                    };
-                    socket.emit("note reduction", noteReductionChange);
-                }
-            });
-            $("#reduction-percentage").text(initialValue);
-        });*/
+        };
     }, 10);
 }
 
@@ -255,56 +225,19 @@ socket.on("note reduction text", function(summarizedText) {
 
 socket.on("new note confirm", function(newNote) {
     $(".notes .note-label").removeClass("active-note-label");
-    $(".notes").append("<div class='note-label active-note-label'onclick='document.getElementById(&quot;open-note-" + newNote.noteId + "-form&quot;).submit();'><img class='note-label-icon' src='/images/document-icon.png'>Untitled note<span class='note-label-date'>" + newNote.noteDate + "</span></div>");
+    $(".notes").append("<div class='note-label active-note-label' id='note-label-" + newNote.noteId + "'><textarea class=\"note-label-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><img class='note-label-icon' src='/images/document-icon.png'> Untitled note<span class='note-label-date'>" + newNote.noteDate + "</span></div>");
+    $(".note-interface-container").append("<div class=\"note-interface\" id=\"note-interface-" + newNote.noteId + "\"><input class=\"active-note-input active-note-title\" name=\"noteTitle\" type=\"text\" placeholder=\"Title here\" value=\"" + newNote.noteTitle + "\"><hr style=\"margin: 0; background-color: Black; height: 1px;\"><textarea class=\"active-note-input active-note-body\" name=\"noteBody\" type=\"text\" placeholder=\"Body here\"></textarea><textarea class=\"active-note-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><span></span><a class=\"active-note-delete\"><img class=\"active-note-delete-icon\" src=\"/images/trash-icon.png\"></a></div>");
 });
 
-/*
 $("body").on("click", ".note-label", function(event){
-   if (firstNoteOpened !== null && firstNoteOpened !== undefined) {
-        setTimeout(function(){
-            $('.side-panel').load('/ .side-panel > *');
-            $('.notes-panel').load('/ .notes-panel > *');
-            $('.note-interface').load('/ .note-interface > *');
-            loadReductionSlider();
-        }, 10);
-    }
-    else {
-        location.reload();
-        sessionStorage.setItem("firstNoteOpened", "no");
-    }
-});*/
-
-$(".note-label").click(function(){
-   /* var openNoteInfo = {
-        userId: $(".active-user-id").val(),
-        noteId: $(this).find(".note-label-id").val()
-    };
-    console.log($(this).find(".note-label-id").val());
-    socket.emit("open note", openNoteInfo);*/
     var activeNoteId = $(this).find(".note-label-id").val();
-/*   $(".active-note-interface").addClass("note-interface");
-    $(".active-note-interface").removeClass("active-note-interface");
-    $(".note-interface").addClass("note-interface");
-    $("#note-interface-" + activeNoteId).addClass("active-note-interface");
-    $("#note-interface-" + activeNoteId).removeClass("note-interface");*/
+    $(".notes > .active-note-label").removeClass("active-note-label");
+    $(this).addClass("active-note-label");
     $("#note-interface-" + lastNote).hide();
     $("#note-interface-" + activeNoteId).show();
     lastNote = activeNoteId;
-
 });
 
-/*socket.on("open note confirm", function(openedNote) {
-    console.log(openedNote.title);
-    $(".active-note-title").val(openedNote.noteTitle);
-    $(".active-note-body").val(openedNote.noteBody);
-});*/
-
-$("body").on("click", ".btn-new-note", function(event){
-/*    document.getElementById('new-note-form').submit();
-    setTimeout(function(){
-        $('.side-panel').load('/ .side-panel > *');
-        $('.note-interface').load('/ .note-interface > *');
-        loadReductionSlider();
-    }, 10);*/
+$(".btn-new-note").click(function() {
     socket.emit("new note", $(".active-user-id").val());
 });

@@ -13,19 +13,16 @@
                     <div class="notes">
                         <%if (currentUser.notes.length > 0) {%>
                             <% currentUser.notes.forEach(function(note){ %>
-                                <!--<form action="/openNote" method="POST" id="open-note-<%=note._id%>-form" target="open-note-<%=note._id%>-iframe">-->
-                                    <div class="note-label note-label<%if (note._id == activeNote) { %> active-note-label <%}%>" onclick="document.getElementById('open-note-<%=note._id%>-form').submit();">
-                                        <textarea class="note-label-id" name="noteId" type="text" style="display: none;"><%=note._id%></textarea>
-                                        <% if (note.type == "Text") {%>
-                                            <img class="note-label-icon" src="/images/document-icon.png">
-                                        <%} else {%>
-                                            <img class="note-label-icon" src="/images/microphone-icon.png">
-                                        <%}%>
-                                        <%=note.title%>
-                                        <span class="note-label-date"><%=note.dateOfCreation%></span>
-                                    </div>
-                             <!--   </form>
-                                <iframe id="open-note-<%=note._id%>-iframe" name="open-note-<%=note._id%>-iframe" style="display: none;"></iframe>-->
+                                <div class="note-label" id="note-label-<%=note._id%>">
+                                    <textarea class="note-label-id" name="noteId" type="text" style="display: none;"><%=note._id%></textarea>
+                                    <% if (note.type == "Text") {%>
+                                        <img class="note-label-icon" src="/images/document-icon.png">
+                                    <%} else {%>
+                                        <img class="note-label-icon" src="/images/microphone-icon.png">
+                                    <%}%>
+                                    <%=note.title%>
+                                    <span class="note-label-date"><%=note.dateOfCreation%></span>
+                                </div>
                         <% }); %>
                         <%}%>
                     </div>
@@ -35,27 +32,23 @@
                     <span class="control-panel-subtitle">REDUCTION: <span id="reduction-percentage"></span>%</span>
                     <div class="container-slider">
                         <div id="slider"></div>
-                    </div><!--
-                    <span class="control-panel-subtitle">PLAY TEXT-TO-SPEECH</span>-->
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-9 note-interface-container">
             <%if (currentUser.notes.length > 0) {%>
-            <% currentUser.notes.forEach(function(note){ %>
-            <div class="note-interface" id="note-interface-<%=note._id%>">
-               <!-- <form action="/updateNote" method="POST" id="update-note-form" target="update-note-iframe">-->
-                    <input class="active-note-input active-note-title" name="noteTitle" type="text" placeholder="Title here" value="<%=note.title%>">
-                    <hr style="margin: 0; background-color: Black; height: 1px;">
-                    <textarea class="active-note-input active-note-body" name="noteBody" type="text" placeholder="Body here"><%=note.bodyText%></textarea>
-                    <textarea id="active-note-id" name="noteId" type="text" style="display: none;"></textarea>
-                    <span></span>
-                    <a class="active-note-delete"><img class="active-note-delete-icon" src="/images/trash-icon.png"></a>
-     <!--           </form>
-                <iframe id="update-note-iframe" name="update-note-iframe" style="display: none;"></iframe>-->
-                <span class="text-save-status"></span>
-            </div>
-            <% }); %>
+                <% currentUser.notes.forEach(function(note){ %>
+                    <div class="note-interface" id="note-interface-<%=note._id%>">
+                        <input class="active-note-input active-note-title" name="noteTitle" type="text" placeholder="Title here" value="<%=note.title%>">
+                        <hr style="margin: 0; background-color: Black; height: 1px;">
+                        <textarea class="active-note-input active-note-body" name="noteBody" type="text" placeholder="Body here"><%=note.bodyText%></textarea>
+                        <textarea class="active-note-id" name="noteId" type="text" style="display: none;"><%=note._id%></textarea>
+                        <span></span>
+                        <a class="active-note-delete"><img class="active-note-delete-icon" src="/images/trash-icon.png"></a>
+                        <span class="text-save-status"></span>
+                    </div>
+                <% }); %>
             <%}%>
         </div>
     </div>

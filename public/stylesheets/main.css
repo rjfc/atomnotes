@@ -266,12 +266,17 @@ a:hover {
 }
 
 .note-label:hover{
-    background-color: #16171b;
+    background-color: #212227;
     cursor: pointer;
 }
 
 .active-note-label {
     background-color: #16171b;
+    font-weight: Bold;
+}
+
+.active-note-label:hover {
+    background-color: #16171b !important;
 }
 
 .note-label-date {

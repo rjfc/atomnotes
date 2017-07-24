@@ -206,6 +206,9 @@ io.on("connection", function(socket){
                 if (error) {
                     console.log(error);
                 }
+                else {
+                    socket.emit("delete note confirm", noteDelete.noteId);
+                }
             })
         })
     });
@@ -307,51 +310,11 @@ io.on("connection", function(socket){
     });*/
 });
 
-// POST ROUTE: create a note
-/*
-app.post("/newNote", function(req, res) {
-    req.user.notes.push({creator: req.user._id.toString(), title : "Untitled note"});
-    req.user.save(function(error) {
-        if (error) {
-            console.log(error);
-        }
-        else {
-            res.render("interface");
-        }
-    })
-});
-*/
-
 // POST ROUTE: open a note
 app.post("/openNote", function(req, res) {
-    /*User.findOne({"notes._id": req.body.noteId}, {'notes.$': 1}, function(error, note) {
-        if (error) {
-            console.log(error);
-        }
-        else {
-            activeNote = note.notes;
-            res.render("interface");
-        }
-    });*/
     activeNote = req.body.noteId;
     res.render("interface");
 });
-
-/*app.post("/newNote", function(req, res) {
-    User.findById(req.user._id, function(error, user){
-        user.notes.push({creator: req.user._id.toString(), title: "Untitled note"});
-        user.save(function(error, user) {
-            if (error) {
-                console.log(error);
-            }
-            else {
-                activeNote = user.notes[user.notes.length - 1]._id.toString();
-                res.render("interface");
-            }
-        })
-    })
-});*/
-
 
 /*// POST ROUTE: update a note
 app.post("/updateNote", function(req, res) {
@@ -375,11 +338,6 @@ app.post("/updateNote", function(req, res) {
             }
         }
     );
-});*/
-
-// GET ROUTE: main page
-/*app.get("/interface", function(req, res) {
-    res.render("interface", {activeNote: activeNote});
 });*/
 
 // Listen on set port
