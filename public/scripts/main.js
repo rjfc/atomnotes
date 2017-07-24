@@ -144,8 +144,7 @@ socket.on("delete note confirm", function(noteId) {
     if (deletedNote == noteId) {
         $("#note-label-" + noteId).next().addClass("active-note-label");
         activeNoteId = $("#note-label-" + noteId).next().find(".note-label-id").val();
-        console.log(noteId);
-        console.log(activeNoteId);
+
         $("#note-label-" + noteId).remove();
         $("#note-interface-" + noteId).remove();
     }
