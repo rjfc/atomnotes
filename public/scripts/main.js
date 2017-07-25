@@ -164,22 +164,24 @@ $(document).ready(function() {
                     bodyText: $(".active-note-body").val()
                 };
                 socket.emit("note update", noteChange);
-                setTimeout(function () {
+/*                setTimeout(function () {
                     $('.notes-panel').load("/ .notes-panel > *");
                     loadReductionSlider();
-                }, 15);
+                }, 15);*/
                 socket.on("note update confirm", function(noteId) {
                     if (noteId == noteChange.noteId) {
                         $(".text-save-status").html("changes saved");
                         $(".text-save-status").css("color", "#0780ff");
+                        setTimeout(function () {
+                            $(".text-save-status").html("");
+                        }, 400);
                     }
                 });
-            }, 400);
+            }, 100);
             $(".text-save-status").html("saving changes");
             $(".text-save-status").css("color", "orange");
         }
         else {
-
             $("#dark-overlay-interface").show();
         }
     });
