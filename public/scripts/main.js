@@ -3,6 +3,7 @@ var popupLogin = sessionStorage.getItem("loginPopup");
 var popupSignUp = sessionStorage.getItem("signUpPopup");
 var lastNote;
 var deletedNote;
+var userId = $(".active-user-id").val();
 
 /*var firstNoteOpened = sessionStorage.getItem("firstNoteOpened");*/
 
@@ -120,7 +121,7 @@ var delay = (function(){
 
 $(".active-note-delete").click(function() {
     var noteDelete = {
-        userId: $(".active-user-id").val(),
+        userId: userId,
         noteId: $(".note-interface:visible > .active-note-id").val()
     };
     deletedNote = noteDelete.noteId;
@@ -130,7 +131,7 @@ $(".active-note-delete").click(function() {
 $("body").keydown(function(e){
     if(e.keyCode == 46) {
         var noteDelete = {
-            userId: $(".active-user-id").val(),
+            userId: userId,
             noteId: $(".note-interface:visible > .active-note-id").val()
         };
         deletedNote = noteDelete.noteId;
@@ -157,7 +158,7 @@ $(document).ready(function() {
             $(".active-note-input").attr("onkeydown", "");
             delay(function(){
                 var noteChange = {
-                    userId: $(".active-user-id").val(),
+                    userId: userId,
                     noteId: $(".note-interface:visible").find(".active-note-id").val(),
                     title: $(".note-interface:visible").find(".active-note-title").val(),
                     bodyText: $(".note-interface:visible").find(".active-note-body").val()
@@ -195,7 +196,7 @@ loadReductionSlider();
 function loadReductionSlider() {
     setTimeout(function(){
         var noteInfo = {
-            userId: $(".active-user-id").val(),
+            userId: userId,
             noteId: $("#active-note-id").val()
         };
     }, 10);
@@ -214,8 +215,8 @@ socket.on("note reduction percent", function(initialValue) {
             $(".ui-slider-handle").css("background-color", "White");
             $(".ui-slider-handle").css("border", "none");
             var noteReductionChange = {
-                userId: $(".active-user-id").val(),
-                noteId: $("#active-note-id").val(),
+                userId: userId,
+                noteId: $(".note-interface:visible").find(".active-note-id").val(),
                 reduction: ui.value
             };
             socket.emit("note reduction", noteReductionChange);
@@ -243,8 +244,13 @@ $("body").on("click", ".note-label", function(event){
     $("#note-interface-" + lastNote).hide();
     $("#note-interface-" + activeNoteId).show();
     lastNote = activeNoteId;
+    var noteInfo = {
+        userId: userId,
+        noteId: activeNoteId
+    };
+    socket.emit("get note reduction", noteInfo);
 });
 
 $(".btn-new-note").click(function() {
-    socket.emit("new note", $(".active-user-id").val());
+    socket.emit("new note", userId);
 });
