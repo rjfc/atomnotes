@@ -175,6 +175,7 @@ io.on("connection", function(socket){
                     console.log(error);
                 }
                 else {
+                    console.log("note updated");
                     socket.emit("note update confirm", updatedNote.noteId);
                 }
             }

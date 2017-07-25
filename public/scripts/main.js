@@ -133,7 +133,6 @@ $("body").keydown(function(e){
             userId: $(".active-user-id").val(),
             noteId: $(".note-interface:visible > .active-note-id").val()
         };
-
         deletedNote = noteDelete.noteId;
         socket.emit("delete note", noteDelete);
     }
@@ -151,7 +150,7 @@ socket.on("delete note confirm", function(noteId) {
     $("#note-interface-" + activeNoteId).show();
     lastNote = activeNoteId;
 });
-
+/*
 $(document).ready(function() {
     $("body").on("keyup", ".active-note-input", function(event){
         if ($("#reduction-percentage").text() == 0) {
@@ -164,10 +163,10 @@ $(document).ready(function() {
                     bodyText: $(".active-note-body").val()
                 };
                 socket.emit("note update", noteChange);
-/*                setTimeout(function () {
+/!*                setTimeout(function () {
                     $('.notes-panel').load("/ .notes-panel > *");
                     loadReductionSlider();
-                }, 15);*/
+                }, 15);*!/
                 socket.on("note update confirm", function(noteId) {
                     if (noteId == noteChange.noteId) {
                         $(".text-save-status").html("changes saved");
@@ -185,7 +184,7 @@ $(document).ready(function() {
             $("#dark-overlay-interface").show();
         }
     });
-});
+});*/
 
 loadReductionSlider();
 function loadReductionSlider() {
@@ -228,6 +227,8 @@ socket.on("new note confirm", function(newNote) {
     $(".notes .note-label").removeClass("active-note-label");
     $(".notes").append("<div class='note-label active-note-label' id='note-label-" + newNote.noteId + "'><textarea class=\"note-label-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><img class='note-label-icon' src='/images/document-icon.png'> Untitled note<span class='note-label-date'>" + newNote.noteDate + "</span></div>");
     $(".note-interface-container").append("<div class=\"note-interface\" id=\"note-interface-" + newNote.noteId + "\"><input class=\"active-note-input active-note-title\" name=\"noteTitle\" type=\"text\" placeholder=\"Title here\" value=\"" + newNote.noteTitle + "\"><hr style=\"margin: 0; background-color: Black; height: 1px;\"><textarea class=\"active-note-input active-note-body\" name=\"noteBody\" type=\"text\" placeholder=\"Body here\"></textarea><textarea class=\"active-note-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><span></span><a class=\"active-note-delete\"><img class=\"active-note-delete-icon\" src=\"/images/trash-icon.png\"></a></div>");
+    $("#note-interface-" + lastNote).hide();
+    $("#note-interface-" + newNote.noteId).show();
 });
 
 $("body").on("click", ".note-label", function(event){
