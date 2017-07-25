@@ -150,7 +150,7 @@ socket.on("delete note confirm", function(noteId) {
     $("#note-interface-" + activeNoteId).show();
     lastNote = activeNoteId;
 });
-/*
+
 $(document).ready(function() {
     $("body").on("keyup", ".active-note-input", function(event){
         if ($("#reduction-percentage").text() == 0) {
@@ -158,15 +158,15 @@ $(document).ready(function() {
             delay(function(){
                 var noteChange = {
                     userId: $(".active-user-id").val(),
-                    noteId: $("#active-note-id").val(),
-                    title: $(".active-note-title").val(),
-                    bodyText: $(".active-note-body").val()
+                    noteId: $(".note-interface:visible").find(".active-note-id").val(),
+                    title: $(".note-interface:visible").find(".active-note-title").val(),
+                    bodyText: $(".note-interface:visible").find(".active-note-body").val()
                 };
                 socket.emit("note update", noteChange);
-/!*                setTimeout(function () {
+/*                setTimeout(function () {
                     $('.notes-panel').load("/ .notes-panel > *");
                     loadReductionSlider();
-                }, 15);*!/
+                }, 15);*/
                 socket.on("note update confirm", function(noteId) {
                     if (noteId == noteChange.noteId) {
                         $(".text-save-status").html("changes saved");
@@ -184,7 +184,7 @@ $(document).ready(function() {
             $("#dark-overlay-interface").show();
         }
     });
-});*/
+});
 
 loadReductionSlider();
 function loadReductionSlider() {
