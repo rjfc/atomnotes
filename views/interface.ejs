@@ -20,7 +20,11 @@
                                     <%} else {%>
                                         <img class="note-label-icon" src="/images/microphone-icon.png">
                                     <%}%>
-                                    <%=note.title%>
+                                    <% if (note.title.length > 22) {%>
+                                        <span class="note-label-title"><%=note.title.substring(0, 19)%>...</span>
+                                    <%} else {%>
+                                        <span class="note-label-title"><%=note.title%></span>
+                                    <%}%>
                                     <span class="note-label-date"><%=note.dateOfCreation%></span>
                                 </div>
                         <% }); %>

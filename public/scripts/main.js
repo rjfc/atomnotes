@@ -169,6 +169,11 @@ $(document).ready(function() {
                 }, 15);*/
                 socket.on("note update confirm", function(noteId) {
                     if (noteId == noteChange.noteId) {
+                        if (noteChange.title.length > 22) {
+                            $("#note-label-" + noteId).find(".note-label-title").html(noteChange.title.substring(0, 19) + "...");
+                        } else {
+                            $("#note-label-" + noteId).find(".note-label-title").html(noteChange.title);
+                        }
                         $(".text-save-status").html("changes saved");
                         $(".text-save-status").css("color", "#0780ff");
                         setTimeout(function () {
