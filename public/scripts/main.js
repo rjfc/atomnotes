@@ -226,7 +226,7 @@ socket.on("note reduction percent", function(initialValue) {
 });
 
 socket.on("note reduction text", function(summarizedText) {
-    $(".active-note-body").text(summarizedText);
+    $(".note-interface:visible").find(".active-note-body").text(summarizedText);
 });
 
 socket.on("new note confirm", function(newNote) {

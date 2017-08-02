@@ -239,7 +239,16 @@ io.on("connection", function(socket){
                         function(error, user) {
                             var text = user.notes[0].bodyText,
                                 numberSentences = (user.notes[0].bodyText.trim().split(/[\.\?\!]\s/).length) * (1 - (user.notes[0].reduction / 100)),
-                                summary = summarize.summary(text, numberSentences);
+                                summary,
+                                match = text.match(/[^\n]+/g),
+                                results = [];
+
+                            for (var i = 0; i < match.length; i++){
+                                results.push(summarize.summary(match[i], numberSentences));
+                            }
+
+                            summary = results.join("\n\n");
+
                             User.findOneAndUpdate(
                                 {
                                     "_id": noteReductionInfo.userId,
