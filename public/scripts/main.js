@@ -220,6 +220,12 @@ socket.on("note reduction percent", function(initialValue) {
                 reduction: ui.value
             };
             socket.emit("note reduction", noteReductionChange);
+            if (ui.value != 0) {
+                $(".active-note-body").prop("readonly", true);
+            }
+            else {
+                $(".active-note-body").prop("readonly", false);
+            }
         }
     });
     $("#reduction-percentage").text(initialValue);
