@@ -1,5 +1,10 @@
 <% include partials/header %>
-<div class="warn-reset-reduction"></div>
+<div style="display:flex;justify-content:center;align-items:center;" class="container">
+    <div class="warn-reset-reduction">WARNING<br>Editing this note will reset the reduction to 0%. Would you like to proceed?<br>
+        <a class="col-xs-6 warn-reset-reduction-proceed">✔</a>
+        <a class="col-xs-6 warn-reset-reduction-cancel" >X</a>
+    </div>
+</div>
 <div class="dark-overlay" id="dark-overlay-interface"></div>
 <textarea class="active-user-id" name="userId" type="text" style="display: none;"><%=currentUser._id%></textarea>
 <div class="container-fluid container-interface">

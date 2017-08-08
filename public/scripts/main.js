@@ -188,6 +188,7 @@ $(document).ready(function() {
         }
         else {
             $("#dark-overlay-interface").show();
+            $(".warn-reset-reduction").show();
         }
     });
 });
@@ -219,7 +220,6 @@ socket.on("note reduction percent", function(initialValue) {
                 noteId: $(".note-interface:visible").find(".active-note-id").val(),
                 reduction: ui.value
             };
-            console.log("note reducation detect");
             socket.emit("note reduction", noteReductionChange);
             if (ui.value != 0) {
                 $(".active-note-body").prop("readonly", true);
@@ -261,4 +261,27 @@ $("body").on("click", ".note-label", function(event){
 
 $(".btn-new-note").click(function() {
     socket.emit("new note", userId);
+});
+
+$(".warn-reset-reduction-proceed").click(function(){
+    $(this).parent().hide();
+    $("#dark-overlay-interface").hide();
+    var noteReductionChange = {
+        userId: userId,
+        noteId: $(".note-interface:visible").find(".active-note-id").val(),
+        reduction: 0
+    };
+    socket.emit("note reduction", noteReductionChange);
+    $("#slider").slider("value", 0);
+    $("#reduction-percentage").text(0);
+    $(".active-note-body").prop("readonly", false);
+});
+
+$(".warn-reset-reduction-cancel").click(function(){
+    $(this).parent().hide();
+    $("#dark-overlay-interface").hide();
+});
+
+$("#dark-overlay-interface").click(function() {
+    $(".warn-reset-reduction").hide();
 });
