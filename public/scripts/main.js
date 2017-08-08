@@ -153,42 +153,44 @@ socket.on("delete note confirm", function(noteId) {
 });
 
 $(document).ready(function() {
-    $("body").on("keyup", ".active-note-input", function(event){
-        if ($("#reduction-percentage").text() == 0) {
-            $(".active-note-input").attr("onkeydown", "");
-            delay(function(){
-                var noteChange = {
-                    userId: userId,
-                    noteId: $(".note-interface:visible").find(".active-note-id").val(),
-                    title: $(".note-interface:visible").find(".active-note-title").val(),
-                    bodyText: $(".note-interface:visible").find(".active-note-body").val()
-                };
-                socket.emit("note update", noteChange);
-/*                setTimeout(function () {
-                    $('.notes-panel').load("/ .notes-panel > *");
-                    loadReductionSlider();
-                }, 15);*/
-                socket.on("note update confirm", function(noteId) {
-                    if (noteId == noteChange.noteId) {
-                        if (noteChange.title.length > 22) {
-                            $("#note-label-" + noteId).find(".note-label-title").html(noteChange.title.substring(0, 19) + "...");
-                        } else {
-                            $("#note-label-" + noteId).find(".note-label-title").html(noteChange.title);
+    $("body").on("keydown", ".active-note-input", function(event){
+        if (!event.ctrlKey) {
+            if ($("#reduction-percentage").text() == 0) {
+                $(".active-note-input").attr("onkeydown", "");
+                delay(function(){
+                    var noteChange = {
+                        userId: userId,
+                        noteId: $(".note-interface:visible").find(".active-note-id").val(),
+                        title: $(".note-interface:visible").find(".active-note-title").val(),
+                        bodyText: $(".note-interface:visible").find(".active-note-body").val()
+                    };
+                    socket.emit("note update", noteChange);
+                    /*                setTimeout(function () {
+                                        $('.notes-panel').load("/ .notes-panel > *");
+                                        loadReductionSlider();
+                                    }, 15);*/
+                    socket.on("note update confirm", function(noteId) {
+                        if (noteId == noteChange.noteId) {
+                            if (noteChange.title.length > 22) {
+                                $("#note-label-" + noteId).find(".note-label-title").html(noteChange.title.substring(0, 19) + "...");
+                            } else {
+                                $("#note-label-" + noteId).find(".note-label-title").html(noteChange.title);
+                            }
+                            $(".text-save-status").html("changes saved");
+                            $(".text-save-status").css("color", "#0780ff");
+                            setTimeout(function () {
+                                $(".text-save-status").html("");
+                            }, 400);
                         }
-                        $(".text-save-status").html("changes saved");
-                        $(".text-save-status").css("color", "#0780ff");
-                        setTimeout(function () {
-                            $(".text-save-status").html("");
-                        }, 400);
-                    }
-                });
-            }, 100);
-            $(".text-save-status").html("saving changes");
-            $(".text-save-status").css("color", "orange");
-        }
-        else {
-            $("#dark-overlay-interface").show();
-            $(".warn-reset-reduction").show();
+                    });
+                }, 100);
+                $(".text-save-status").html("saving changes");
+                $(".text-save-status").css("color", "orange");
+            }
+            else {
+                $("#dark-overlay-interface").show();
+                $(".warn-reset-reduction").show();
+            }
         }
     });
 });
@@ -243,6 +245,7 @@ socket.on("new note confirm", function(newNote) {
     $(".note-interface-container").append("<div class=\"note-interface\" id=\"note-interface-" + newNote.noteId + "\"><input class=\"active-note-input active-note-title\" name=\"noteTitle\" type=\"text\" placeholder=\"Title here\" value=\"" + newNote.noteTitle + "\"><hr style=\"margin: 0; background-color: Black; height: 1px;\"><textarea class=\"active-note-input active-note-body\" name=\"noteBody\" type=\"text\" placeholder=\"Body here\"></textarea><textarea class=\"active-note-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><span></span><a class=\"active-note-delete\"><img class=\"active-note-delete-icon\" src=\"/images/trash-icon.png\"></a></div>");
     $("#note-interface-" + lastNote).hide();
     $("#note-interface-" + newNote.noteId).show();
+    $(".control-panel-subtitle").show();
 });
 
 $("body").on("click", ".note-label", function(event){
@@ -257,6 +260,7 @@ $("body").on("click", ".note-label", function(event){
         noteId: activeNoteId
     };
     socket.emit("get note reduction", noteInfo);
+    $(".control-panel-subtitle").show();
 });
 
 $(".btn-new-note").click(function() {
