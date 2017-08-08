@@ -219,6 +219,7 @@ socket.on("note reduction percent", function(initialValue) {
                 noteId: $(".note-interface:visible").find(".active-note-id").val(),
                 reduction: ui.value
             };
+            console.log("note reducation detect");
             socket.emit("note reduction", noteReductionChange);
             if (ui.value != 0) {
                 $(".active-note-body").prop("readonly", true);
@@ -232,7 +233,8 @@ socket.on("note reduction percent", function(initialValue) {
 });
 
 socket.on("note reduction text", function(summarizedText) {
-    $(".note-interface:visible").find(".active-note-body").text(summarizedText);
+    console.log(summarizedText);
+    $(".note-interface:visible").find(".active-note-body").val(summarizedText);
 });
 
 socket.on("new note confirm", function(newNote) {
