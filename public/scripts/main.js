@@ -165,10 +165,6 @@ $(document).ready(function() {
                         bodyText: $(".note-interface:visible").find(".active-note-body").val()
                     };
                     socket.emit("note update", noteChange);
-                    /*                setTimeout(function () {
-                                        $('.notes-panel').load("/ .notes-panel > *");
-                                        loadReductionSlider();
-                                    }, 15);*/
                     socket.on("note update confirm", function(noteId) {
                         if (noteId == noteChange.noteId) {
                             if (noteChange.title.length > 22) {
@@ -264,6 +260,17 @@ $("body").on("click", ".note-label", function(event){
 });
 
 $(".btn-new-note").click(function() {
+    if ($(".new-note-text").is(":visible")) {
+        $(".new-note-text").hide();
+        $(".new-note-type").show();
+    }
+    else {
+        $(".new-note-text").show();
+        $(".new-note-type").hide();
+    }
+});
+
+$(".btn-new-text-note").click(function() {
     socket.emit("new note", userId);
 });
 

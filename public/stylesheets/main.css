@@ -124,6 +124,7 @@ font-family: 'Lora', serif;
     margin-top: 16px;
     border-radius: 14px;
     transition: 0.2s;
+    z-index: 1;
 }
 
 .btn-new-note:hover {
@@ -454,4 +455,14 @@ a:hover {
 
 .warn-reset-reduction-cancel {
     background-color: #ff7c64;
+}
+
+.new-note-type {
+    display: none;
+    text-align: center;
+}
+
+.new-note-type img {
+    position: relative;
+    width: 1.7vw;
 }
