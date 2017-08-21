@@ -61,18 +61,18 @@ font-family: 'Lora', serif;
     padding-right: 90px;
 }
 
-.gn-logo-landing {
+.logo-landing {
     position: relative;
     top: 20vh;
     display: block;
     margin: 0 auto;
-    width: 22vw;
+    width: 25vw;
     height: auto;
 }
 
-.gn-logo-interface {
+.logo-interface {
     position: relative;
-    width: 8vw;
+    width: 9vw;
     opacity: 0.5;
 }
 

@@ -192,7 +192,28 @@ io.on("connection", function(socket){
                     var noteInfo = {
                         noteId: user.notes[user.notes.length - 1]._id.toString(),
                         noteTitle: user.notes[user.notes.length - 1].title,
-                        noteDate: user.notes[user.notes.length - 1].dateOfCreation
+                        noteDate: user.notes[user.notes.length - 1].dateOfCreation,
+                        type: "text"
+                    };
+                    socket.emit("new note confirm", noteInfo);
+                }
+            })
+        })
+    });
+    socket.on("new audio note", function(userId) {
+        User.findById(userId, function(error, user){
+            user.notes.push({creator: userId, title: "Untitled note", type: "Audio"});
+            user.save(function(error, user) {
+                if (error) {
+                    console.log(error);
+                }
+                else {
+                    activeNote = user.notes[user.notes.length - 1]._id.toString();
+                    var noteInfo = {
+                        noteId: user.notes[user.notes.length - 1]._id.toString(),
+                        noteTitle: user.notes[user.notes.length - 1].title,
+                        noteDate: user.notes[user.notes.length - 1].dateOfCreation,
+                        type: "audio"
                     };
                     socket.emit("new note confirm", noteInfo);
                 }

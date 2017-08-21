@@ -236,12 +236,17 @@ socket.on("note reduction text", function(summarizedText) {
 });
 
 socket.on("new note confirm", function(newNote) {
-    $(".notes .note-label").removeClass("active-note-label");
-    $(".notes").append("<div class='note-label active-note-label' id='note-label-" + newNote.noteId + "'><textarea class=\"note-label-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><img class='note-label-icon' src='/images/document-icon.png'> Untitled note<span class='note-label-date'>" + newNote.noteDate + "</span></div>");
-    $(".note-interface-container").append("<div class=\"note-interface\" id=\"note-interface-" + newNote.noteId + "\"><input class=\"active-note-input active-note-title\" name=\"noteTitle\" type=\"text\" placeholder=\"Title here\" value=\"" + newNote.noteTitle + "\"><hr style=\"margin: 0; background-color: Black; height: 1px;\"><textarea class=\"active-note-input active-note-body\" name=\"noteBody\" type=\"text\" placeholder=\"Body here\"></textarea><textarea class=\"active-note-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><span></span><a class=\"active-note-delete\"><img class=\"active-note-delete-icon\" src=\"/images/trash-icon.png\"></a></div>");
-    $("#note-interface-" + lastNote).hide();
-    $("#note-interface-" + newNote.noteId).show();
-    $(".control-panel-subtitle").show();
+    if (newNote.type == "text") {
+        $(".notes .note-label").removeClass("active-note-label");
+        $(".notes").append("<div class='note-label active-note-label' id='note-label-" + newNote.noteId + "'><textarea class=\"note-label-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><img class='note-label-icon' src='/images/document-icon.png'> Untitled note<span class='note-label-date'>" + newNote.noteDate + "</span></div>");
+        $(".note-interface-container").append("<div class=\"note-interface\" id=\"note-interface-" + newNote.noteId + "\"><input class=\"active-note-input active-note-title\" name=\"noteTitle\" type=\"text\" placeholder=\"Title here\" value=\"" + newNote.noteTitle + "\"><hr style=\"margin: 0; background-color: Black; height: 1px;\"><textarea class=\"active-note-input active-note-body\" name=\"noteBody\" type=\"text\" placeholder=\"Body here\"></textarea><textarea class=\"active-note-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><span></span><a class=\"active-note-delete\"><img class=\"active-note-delete-icon\" src=\"/images/trash-icon.png\"></a></div>");
+        $("#note-interface-" + lastNote).hide();
+        $("#note-interface-" + newNote.noteId).show();
+        $(".control-panel-subtitle").show();
+    }
+    else {
+
+    }
 });
 
 $("body").on("click", ".note-label", function(event){
@@ -272,6 +277,10 @@ $(".btn-new-note").click(function() {
 
 $(".btn-new-text-note").click(function() {
     socket.emit("new note", userId);
+});
+
+$(".btn-new-audio-note").click(function() {
+    socket.emit("new audio note", userId);
 });
 
 $(".warn-reset-reduction-proceed").click(function(){

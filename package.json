@@ -1,5 +1,5 @@
 {
-  "name": "gistnotes",
+  "name": "atomnotes",
   "version": "0.0.1",
   "description": "Audio summarization",
   "main": "app.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rjfc/gistnotes.git"
+    "url": "git+https://github.com/rjfc/atomnotes.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/rjfc/gistnotes/issues"
+    "url": "https://github.com/rjfc/atomnotes/issues"
   },
-  "homepage": "https://github.com/rjfc/gistnotes#readme",
+  "homepage": "https://github.com/rjfc/atomnotes#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "bluebird": "^3.5.0",
