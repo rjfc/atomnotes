@@ -33,7 +33,7 @@
                             <% currentUser.notes.forEach(function(note){ %>
                                 <div class="note-label" id="note-label-<%=note._id%>">
                                     <textarea class="note-label-id" name="noteId" type="text" style="display: none;"><%=note._id%></textarea>
-                                    <% if (note.type == "Text") {%>
+                                    <% if (note.type == "text") {%>
                                         <img class="note-label-icon" src="/images/document-icon.png">
                                     <%} else {%>
                                         <img class="note-label-icon" src="/images/microphone-icon.png">
@@ -64,7 +64,11 @@
                     <div class="note-interface" id="note-interface-<%=note._id%>">
                         <input class="active-note-input active-note-title" name="noteTitle" type="text" placeholder="Title here" value="<%=note.title%>">
                         <hr style="margin: 0; background-color: Black; height: 1px;">
-                        <textarea class="active-note-input active-note-body" name="noteBody" type="text" placeholder="Body here"><%=note.bodyText%></textarea>
+                        <% if (note.type == "text") {%>
+                            <textarea class="active-note-input active-note-body" name="noteBody" type="text" placeholder="Body here"><%=note.bodyText%></textarea>
+                        <%} else {%>
+                            <textarea readonly='true' class="active-note-transcript" name="noteBody" type="text" placeholder="Transcript will appear here"><%=note.bodyText%></textarea>
+                        <%}%>
                         <textarea class="active-note-id" name="noteId" type="text" style="display: none;"><%=note._id%></textarea>
                         <span></span>
                         <a class="active-note-delete"><img class="active-note-delete-icon" src="/images/trash-icon.png"></a>

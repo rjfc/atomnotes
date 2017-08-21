@@ -311,7 +311,6 @@ a:hover {
     padding-left: 9px;
 }
 
-
 .active-note-body {
     font-family: 'Lora', serif;
     color: #333333;
@@ -330,6 +329,24 @@ a:hover {
     outline: none;
     border: 1px dashed black;
     padding-left: 9px;
+}
+
+.active-note-transcript {
+    font-family: 'Lora', serif;
+    color: #333333;
+    resize: none;
+    width: 100%;
+    margin-top: 20px;
+    font-size: 2.2vh;
+    height: 80vh;
+    padding-left: 10px;
+    border: none;
+    overflow-y: auto;
+}
+
+.active-note-transcript:hover,
+.active-note-transcript:focus {
+    outline: none;
 }
 
 .note-interface {
@@ -357,21 +374,28 @@ a:hover {
 }
 
 .notes-panel {
-    height: 90%;
+    height: 80%;
     background-color: #2b2e37;
     padding: 18px;
     overflow-y: auto;
     position: relative;
 }
 
+.btn-record-audio {
+    border-radius: 50%;
+    height: 9vh;
+    width: 9vh;
+    background-color: rgb(43, 195, 119);
+    margin-bottom: 20px;
+}
+
 .control-panel {
-    position: absolute;
     bottom: 0;
     background-color: #1e2127;
     width: 100%;
     position: relative;
     padding: 15px;
-    height: 10%;
+    height: 20%;
 }
 
 .control-panel-subtitle {

@@ -21,7 +21,7 @@ var NoteSchema = mongoose.Schema({
     binder: String,
     type: {
         type: String,
-        default: "Text"
+        default: "text"
     },
     reduction:   {
         type: Number,

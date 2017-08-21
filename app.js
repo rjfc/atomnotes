@@ -202,7 +202,7 @@ io.on("connection", function(socket){
     });
     socket.on("new audio note", function(userId) {
         User.findById(userId, function(error, user){
-            user.notes.push({creator: userId, title: "Untitled note", type: "Audio"});
+            user.notes.push({creator: userId, title: "Untitled note", type: "audio"});
             user.save(function(error, user) {
                 if (error) {
                     console.log(error);
