@@ -381,11 +381,12 @@ a:hover {
     position: relative;
 }
 
-.btn-record-audio {
+.btn-audio {
     border-radius: 50%;
     height: 9vh;
     width: 9vh;
-    background-color: rgb(43, 195, 119);
+    border: 30px solid #2b2e37;
+    background-color: #22aecd;
     margin-bottom: 20px;
 }
 
@@ -489,4 +490,17 @@ a:hover {
 .new-note-type img {
     position: relative;
     width: 1.7vw;
+}
+
+#level {
+    display: none;
+}
+
+#record {
+    background-color: Green;
+}
+
+#base64 {
+    display: none;
+    background-color: Red;
 }
