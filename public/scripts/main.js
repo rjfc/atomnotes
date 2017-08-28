@@ -263,6 +263,7 @@ socket.on("new note confirm", function(newNote) {
         $("#base64").click(function() {
             $(this).hide();
             $("#record").show();
+            $("#audio-controls").attr("src", "")
         });
     }
 });
@@ -301,7 +302,7 @@ $(".btn-new-audio-note").click(function() {
     socket.emit("new audio note", userId);
 });
 
-$(".warn-reset-reduction-proceed").click(function(){
+$(".warn-reset-reduction-proceed").click(function() {
     $(this).parent().hide();
     $("#dark-overlay-interface").hide();
     var noteReductionChange = {
@@ -315,11 +316,20 @@ $(".warn-reset-reduction-proceed").click(function(){
     $(".active-note-body").prop("readonly", false);
 });
 
-$(".warn-reset-reduction-cancel").click(function(){
+$(".warn-reset-reduction-cancel").click(function() {
     $(this).parent().hide();
     $("#dark-overlay-interface").hide();
 });
 
 $("#dark-overlay-interface").click(function() {
     $(".warn-reset-reduction").hide();
+});
+
+socket.on("base64 audio confirm", function(base64URL) {
+    if ($(".control-panel").find("#audio-controls").length > 0){
+        $("#audio-controls").attr("src", base64URL);
+    }
+    else {
+        $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + base64URL + "'></audio>");
+    }
 });

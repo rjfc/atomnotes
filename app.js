@@ -337,6 +337,27 @@ io.on("connection", function(socket){
             }
         );
     });
+    socket.on("base64 audio", function(base64AudioInfo){
+        User.findOneAndUpdate(
+            {
+                "_id": base64AudioInfo.userId,
+                "notes._id": base64AudioInfo.noteId
+            },
+            {
+                "$set": {
+                    "notes.$.base64URL": base64AudioInfo.base64URL
+                }
+            },
+            function(error, doc) {
+                if (error) {
+                    console.log(error);
+                }
+                else {
+                    socket.emit("base64 audio confirm", base64AudioInfo.base64URL);
+                }
+            }
+        );
+    });
 });
 
 // POST ROUTE: open a note

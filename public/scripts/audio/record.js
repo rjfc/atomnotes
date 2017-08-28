@@ -67,12 +67,23 @@ $(document).ready(function(){
         if($(this).parent().data("type") === "mp3"){
             Fr.voice.exportMP3(function(url){
                 console.log("base64 URL : " + url);
+                var base64AudioInfo = {
+                    userId: $(".active-user-id").val(),
+                    noteId: $(".note-interface:visible > .active-note-id").val(),
+                    base64URL: url
+                };
+                socket.emit("base64 audio", base64AudioInfo);
                 $("<a href='"+ url +"' target='_blank'></a>")[0].click();
             }, "base64");
         }else{
             Fr.voice.export(function(url){
                 console.log("base64 URL: " + url);
-
+                var base64AudioInfo = {
+                    userId: $(".active-user-id").val(),
+                    noteId: $(".note-interface:visible > .active-note-id").val(),
+                    base64URL: url
+                };
+                socket.emit("base64 audio", base64AudioInfo);
                 $("<a href='"+ url +"' target='_blank'></a>")[0].click();
             }, "base64");
         }

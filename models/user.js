@@ -27,7 +27,7 @@ var NoteSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
-    audioPath: String,
+    base64URL: String,
     summarizedBodyText: String,
     summarizedAudioNote: String
 });
