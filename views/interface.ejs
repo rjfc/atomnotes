@@ -31,20 +31,37 @@
                     <div class="notes">
                         <%if (currentUser.notes.length > 0) {%>
                             <% currentUser.notes.forEach(function(note){ %>
-                                <div class="note-label" id="note-label-<%=note._id%>">
-                                    <textarea class="note-label-id" name="noteId" type="text" style="display: none;"><%=note._id%></textarea>
-                                    <% if (note.type == "text") {%>
+                                <% if(note.type == "text") {%>
+                                    <div class="note-label text-note-label" id="note-label-<%=note._id%>">
+                                        <textarea class="note-label-id" name="noteId" type="text" style="display: none;"><%=note._id%></textarea>
+                                        <% if (note.type == "text") {%>
+                                            <img class="note-label-icon" src="/images/document-icon.png">
+                                        <%} else {%>
+                                            <img class="note-label-icon" src="/images/microphone-icon.png">
+                                        <%}%>
+                                        <% if (note.title.length > 22) {%>
+                                            <span class="note-label-title"><%=note.title.substring(0, 19)%>...</span>
+                                        <%} else {%>
+                                            <span class="note-label-title"><%=note.title%></span>
+                                        <%}%>
+                                        <span class="note-label-date"><%=note.dateOfCreation%></span>
+                                    </div>
+                                <%} else {%>
+                                    <div class="note-label audio-note-label" id="note-label-<%=note._id%>">
+                                        <textarea class="note-label-id" name="noteId" type="text" style="display: none;"><%=note._id%></textarea>
+                                        <% if (note.type == "text") {%>
                                         <img class="note-label-icon" src="/images/document-icon.png">
-                                    <%} else {%>
+                                        <%} else {%>
                                         <img class="note-label-icon" src="/images/microphone-icon.png">
-                                    <%}%>
-                                    <% if (note.title.length > 22) {%>
+                                        <%}%>
+                                        <% if (note.title.length > 22) {%>
                                         <span class="note-label-title"><%=note.title.substring(0, 19)%>...</span>
-                                    <%} else {%>
+                                        <%} else {%>
                                         <span class="note-label-title"><%=note.title%></span>
-                                    <%}%>
-                                    <span class="note-label-date"><%=note.dateOfCreation%></span>
-                                </div>
+                                        <%}%>
+                                        <span class="note-label-date"><%=note.dateOfCreation%></span>
+                                    </div>
+                                <%}%>
                         <% }); %>
                         <%}%>
                     </div>

@@ -246,7 +246,7 @@ socket.on("new note confirm", function(newNote) {
     }
     else {
         $(".notes .note-label").removeClass("active-note-label");
-        $(".notes").append("<div class='note-label active-note-label microphone-note-label' id='note-label-" + newNote.noteId + "'><textarea class=\"note-label-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><img class='note-label-icon' src='/images/microphone-icon.png'> Untitled note<span class='note-label-date'>" + newNote.noteDate + "</span></div>");
+        $(".notes").append("<div class='note-label active-note-label audio-note-label' id='note-label-" + newNote.noteId + "'><textarea class=\"note-label-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><img class='note-label-icon' src='/images/microphone-icon.png'> Untitled note<span class='note-label-date'>" + newNote.noteDate + "</span></div>");
         $(".note-interface-container").append("<div class=\"note-interface\" id=\"note-interface-" + newNote.noteId + "\"><input class=\"active-note-input active-note-title\" name=\"noteTitle\" type=\"text\" placeholder=\"Title here\" value=\"" + newNote.noteTitle + "\"><hr style=\"margin: 0; background-color: Black; height: 1px;\"><textarea readonly='true' class=\"active-note-transcript\" name=\"noteBody\" type=\"text\" placeholder=\"Transcript will appear here\"></textarea><textarea class=\"active-note-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><span></span><a class=\"active-note-delete\"><img class=\"active-note-delete-icon\" src=\"/images/trash-icon.png\"></a></div>");
         $("#note-interface-" + lastNote).hide();
         $("#note-interface-" + newNote.noteId).show();
@@ -268,7 +268,7 @@ socket.on("new note confirm", function(newNote) {
     }
 });
 
-$("body").on("click", ".note-label", function(event){
+$(".note-label").click(function() {
     var activeNoteId = $(this).find(".note-label-id").val();
     $(".notes > .active-note-label").removeClass("active-note-label");
     $(this).addClass("active-note-label");
@@ -281,6 +281,18 @@ $("body").on("click", ".note-label", function(event){
     };
     socket.emit("get note reduction", noteInfo);
     $(".control-panel-subtitle").show();
+    if ($(this).hasClass("audio-note-label")) {
+        var noteInfo = {
+            userId: $(".active-user-id").val(),
+            noteId: $(".note-interface:visible > .active-note-id").val(),
+        };
+        socket.emit("get base64 audio", noteInfo);
+    }
+    else {
+        if ($(this).find("#audio-controls")) {
+            $("#audio-controls").remove();
+        }
+    }
 });
 
 $(".btn-new-note").click(function() {
@@ -325,11 +337,20 @@ $("#dark-overlay-interface").click(function() {
     $(".warn-reset-reduction").hide();
 });
 
-socket.on("base64 audio confirm", function(base64URL) {
+socket.on("base64 audio confirm", function(base64AudioInfo) {
     if ($(".control-panel").find("#audio-controls").length > 0){
         $("#audio-controls").attr("src", base64URL);
     }
     else {
-        $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + base64URL + "'></audio>");
+        $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + base64AudioInfo.base64URL + "'></audio>");
+    }
+});
+
+socket.on("base64 audio url", function(base64AudioURL) {
+    if ($(".control-panel").find("#audio-controls").length > 0){
+        $("#audio-controls").attr("src", base64URL);
+    }
+    else {
+        $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + base64AudioURL + "'></audio>");
     }
 });

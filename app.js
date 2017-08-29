@@ -353,7 +353,26 @@ io.on("connection", function(socket){
                     console.log(error);
                 }
                 else {
-                    socket.emit("base64 audio confirm", base64AudioInfo.base64URL);
+                    socket.emit("base64 audio confirm", base64AudioInfo);
+                }
+            }
+        );
+    });
+    socket.on("get base64 audio", function(noteInfo){
+        User.findOne(
+            {
+                "_id": noteInfo.userId,
+                "notes._id": noteInfo.noteId
+            },
+            {
+                "notes.$": 1
+            },
+            function(error, user) {
+                if (error) {
+                    console.log(error);
+                }
+                else if (user) {
+                    socket.emit("base64 audio url", user.notes[0].base64URL);
                 }
             }
         );
