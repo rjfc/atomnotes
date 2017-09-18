@@ -383,11 +383,15 @@ a:hover {
 
 .btn-audio {
     border-radius: 50%;
-    height: 9vh;
-    width: 9vh;
-    border: 30px solid #2b2e37;
+    height: 7vh;
+    width: 7vh;
+    border: 24px solid #2b2e37;
     background-color: #22aecd;
     margin-bottom: 20px;
+}
+
+.btn-audio:hover {
+    cursor: pointer;
 }
 
 .control-panel {
@@ -503,4 +507,8 @@ a:hover {
 #base64 {
     display: none;
     background-color: Red;
+}
+
+#audio-controls {
+    width: 50%;
 }
