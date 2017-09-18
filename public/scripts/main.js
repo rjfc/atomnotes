@@ -238,7 +238,7 @@ socket.on("note reduction text", function(summarizedText) {
 socket.on("new note confirm", function(newNote) {
     if (newNote.type == "text") {
         $(".notes .note-label").removeClass("active-note-label");
-        $(".notes").append("<div class='note-label active-note-label text-note-label' id='note-label-" + newNote.noteId + "'><textarea class=\"note-label-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><img class='note-label-icon' src='/images/document-icon.png'> Untitled note<span class='note-label-date'>" + newNote.noteDate + "</span></div>");
+        $(".notes").append("<div class='note-label active-note-label text-note-label' id='note-label-" + newNote.noteId + "'><textarea class=\"note-label-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><img class='note-label-icon' src='/images/document-icon.png'><span class='note-label-title'>Untitled note</span><span class='note-label-date'>" + newNote.noteDate + "</span></div>");
         $(".note-interface-container").append("<div class=\"note-interface\" id=\"note-interface-" + newNote.noteId + "\"><input class=\"active-note-input active-note-title\" name=\"noteTitle\" type=\"text\" placeholder=\"Title here\" value=\"" + newNote.noteTitle + "\"><hr style=\"margin: 0; background-color: Black; height: 1px;\"><textarea class=\"active-note-input active-note-body\" name=\"noteBody\" type=\"text\" placeholder=\"Body here\"></textarea><textarea class=\"active-note-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><span></span><a class=\"active-note-delete\"><img class=\"active-note-delete-icon\" src=\"/images/trash-icon.png\"></a></div>");
         $("#note-interface-" + lastNote).hide();
         $("#note-interface-" + newNote.noteId).show();
@@ -246,7 +246,7 @@ socket.on("new note confirm", function(newNote) {
     }
     else {
         $(".notes .note-label").removeClass("active-note-label");
-        $(".notes").append("<div class='note-label active-note-label audio-note-label' id='note-label-" + newNote.noteId + "'><textarea class=\"note-label-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><img class='note-label-icon' src='/images/microphone-icon.png'> Untitled note<span class='note-label-date'>" + newNote.noteDate + "</span></div>");
+        $(".notes").append("<div class='note-label active-note-label audio-note-label' id='note-label-" + newNote.noteId + "'><textarea class=\"note-label-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><img class='note-label-icon' src='/images/microphone-icon.png'><span class='note-label-title'>Untitled note</span><span class='note-label-date'>" + newNote.noteDate + "</span></div>");
         $(".note-interface-container").append("<div class=\"note-interface\" id=\"note-interface-" + newNote.noteId + "\"><input class=\"active-note-input active-note-title\" name=\"noteTitle\" type=\"text\" placeholder=\"Title here\" value=\"" + newNote.noteTitle + "\"><hr style=\"margin: 0; background-color: Black; height: 1px;\"><textarea readonly='true' class=\"active-note-transcript\" name=\"noteBody\" type=\"text\" placeholder=\"Transcript will appear here\"></textarea><textarea class=\"active-note-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><span></span><a class=\"active-note-delete\"><img class=\"active-note-delete-icon\" src=\"/images/trash-icon.png\"></a></div>");
         $("#note-interface-" + lastNote).hide();
         $("#note-interface-" + newNote.noteId).show();
@@ -266,9 +266,11 @@ socket.on("new note confirm", function(newNote) {
             $("#audio-controls").attr("src", "")
         });
     }
+    lastNote = newNote.noteId;
 });
 
-$(".note-label").click(function() {
+// on("click") is important for making sure this works on appended elements
+$("body").on("click", ".note-label", function (){
     var activeNoteId = $(this).find(".note-label-id").val();
     $(".notes > .active-note-label").removeClass("active-note-label");
     $(this).addClass("active-note-label");

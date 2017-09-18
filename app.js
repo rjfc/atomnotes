@@ -2,12 +2,14 @@ var express          = require("express"),
     app              = express(),
     http             = require("http").Server(app);
     io               = require("socket.io")(http);
-    mongoose         = require("mongoose")
+    fs               = require("fs")
+    mongoose         = require("mongoose"),
     passport         = require("passport"),
     summarize        = require("text-summary"),
     bodyParser       = require("body-parser"),
     flash            = require("connect-flash"),
     expressSession   = require("express-session"),
+    Speech           = require('@google-cloud/speech');
     LocalStrategy    = require("passport-local").Strategy,
 /*  Note             = require("./models/note"),*/
     User             = require("./models/user"),
@@ -15,7 +17,10 @@ var express          = require("express"),
 
 
 // Port for server to listen on
-var port = 80;
+var port = 8080;
+
+// Google Cloud Platform project ID
+var projectId = "atomnotes-178218";
 
 mongoose.connect("mongodb://localhost/gistnotes");
 app.use(bodyParser.urlencoded({extended: true}));
@@ -29,6 +34,9 @@ app.use(express.static(__dirname + "/public"));
 // Current time in UTC
 var currentTime = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
 var activeNote;
+
+// Instantiates a Google Cloud Platform speech client
+var speechClient = Speech();
 
 // PASSPORT CONFIGURATION
 app.use(expressSession({
@@ -353,6 +361,28 @@ io.on("connection", function(socket){
                     console.log(error);
                 }
                 else {
+                    var audio = {
+                        content: base64AudioInfo.base64URL.substr(22)
+                    };
+                    var config = {
+                        encoding: 'LINEAR16',
+                        sampleRateHertz: 48000,
+                        languageCode: 'en-US'
+                    };
+                    var request = {
+                        audio: audio,
+                        config: config
+                    };
+                    speechClient.recognize(request)
+                        .then((data) => {
+                            const response = data[0];
+                            const transcription = response.results.map(result =>
+                                result.alternatives[0].transcript).join('\n');
+                            console.log(`Transcription: `, transcription);
+                        })
+                        .catch((err) => {
+                            console.error('ERROR:', err);
+                        });
                     socket.emit("base64 audio confirm", base64AudioInfo);
                 }
             }
