@@ -2,7 +2,8 @@ var express          = require("express"),
     app              = express(),
     http             = require("http").Server(app);
     io               = require("socket.io")(http);
-    fs               = require("fs")
+    fs               = require("fs"),
+    mkdirp           = require("mkdirp"),
     mongoose         = require("mongoose"),
     passport         = require("passport"),
     summarize        = require("text-summary"),
@@ -346,6 +347,14 @@ io.on("connection", function(socket){
         );
     });
     socket.on("base64 audio", function(base64AudioInfo){
+        var audioPath = "doc_files/" + base64AudioInfo.userId + "/audio_notes/";
+        mkdirp(audioPath, function (err) {
+            if (err) console.error(err)
+            //else console.log("Audio note path created:");
+        });
+        fs.writeFile(audioPath + base64AudioInfo.noteId + ".wav", base64AudioInfo.base64URL.replace(/^data:audio\/wav;base64,/, ""), {encoding: 'base64'}, function(err){
+            console.log("Audio note saved");
+        });
         User.findOneAndUpdate(
             {
                 "_id": base64AudioInfo.userId,
@@ -353,7 +362,7 @@ io.on("connection", function(socket){
             },
             {
                 "$set": {
-                    "notes.$.base64URL": base64AudioInfo.base64URL
+                    "notes.$.noteUrl": audioPath + base64AudioInfo.noteId + ".wav"
                 }
             },
             function(error, doc) {
@@ -361,8 +370,9 @@ io.on("connection", function(socket){
                     console.log(error);
                 }
                 else {
+
                     var audio = {
-                        content: base64AudioInfo.base64URL.substr(22)
+                        content: base64AudioInfo.base64URL.replace(/^data:audio\/wav;base64,/, "")
                     };
                     var config = {
                         encoding: 'LINEAR16',
