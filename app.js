@@ -349,54 +349,56 @@ io.on("connection", function(socket){
     socket.on("base64 audio", function(base64AudioInfo){
         var audioPath = "doc_files/" + base64AudioInfo.userId + "/audio_notes/";
         mkdirp(audioPath, function (err) {
-            if (err) console.error(err)
-            //else console.log("Audio note path created:");
-        });
-        fs.writeFile(audioPath + base64AudioInfo.noteId + ".wav", base64AudioInfo.base64URL.replace(/^data:audio\/wav;base64,/, ""), {encoding: 'base64'}, function(err){
-            console.log("Audio note saved");
-        });
-        User.findOneAndUpdate(
-            {
-                "_id": base64AudioInfo.userId,
-                "notes._id": base64AudioInfo.noteId
-            },
-            {
-                "$set": {
-                    "notes.$.noteUrl": audioPath + base64AudioInfo.noteId + ".wav"
-                }
-            },
-            function(error, doc) {
-                if (error) {
-                    console.log(error);
-                }
-                else {
-
-                    var audio = {
-                        content: base64AudioInfo.base64URL.replace(/^data:audio\/wav;base64,/, "")
-                    };
-                    var config = {
-                        encoding: 'LINEAR16',
-                        sampleRateHertz: 48000,
-                        languageCode: 'en-US'
-                    };
-                    var request = {
-                        audio: audio,
-                        config: config
-                    };
-                    speechClient.recognize(request)
-                        .then((data) => {
-                            const response = data[0];
-                            const transcription = response.results.map(result =>
-                                result.alternatives[0].transcript).join('\n');
-                            console.log(`Transcription: `, transcription);
-                        })
-                        .catch((err) => {
-                            console.error('ERROR:', err);
-                        });
-                    socket.emit("base64 audio confirm", base64AudioInfo);
-                }
+            if (err)  {
+                console.error(err)
             }
-        );
+            else{
+                fs.writeFile(audioPath + base64AudioInfo.noteId + ".wav", base64AudioInfo.base64URL.replace(/^data:audio\/wav;base64,/, ""), {encoding: 'base64'}, function(err){
+                    console.log("Audio note saved");
+                });
+                User.findOneAndUpdate(
+                    {
+                        "_id": base64AudioInfo.userId,
+                        "notes._id": base64AudioInfo.noteId
+                    },
+                    {
+                        "$set": {
+                            "notes.$.noteUrl": audioPath + base64AudioInfo.noteId + ".wav"
+                        }
+                    },
+                    function(error, doc) {
+                        if (error) {
+                            console.log(error);
+                        }
+                        else {
+                            var audio = {
+                                content: base64AudioInfo.base64URL.replace(/^data:audio\/wav;base64,/, "")
+                            };
+                            var config = {
+                                encoding: 'LINEAR16',
+                                sampleRateHertz: 48000,
+                                languageCode: 'en-US'
+                            };
+                            var request = {
+                                audio: audio,
+                                config: config
+                            };
+                            speechClient.recognize(request)
+                                .then((data) => {
+                                    const response = data[0];
+                                    const transcription = response.results.map(result =>
+                                        result.alternatives[0].transcript).join('\n');
+                                    console.log(`Transcription: `, transcription);
+                                })
+                                .catch((err) => {
+                                    console.error('ERROR:', err);
+                                });
+                            socket.emit("base64 audio confirm", base64AudioInfo);
+                        }
+                    }
+                );
+            }
+        });
     });
     socket.on("get base64 audio", function(noteInfo){
         User.findOne(
@@ -412,7 +414,9 @@ io.on("connection", function(socket){
                     console.log(error);
                 }
                 else if (user) {
-                    socket.emit("base64 audio url", user.notes[0].base64URL);
+                    var filePath = fs.readFileSync(user.notes[0].noteUrl);
+                    var wavBase64 = new Buffer(filePath).toString("base64");
+                    socket.emit("base64 audio url", wavBase64);
                 }
             }
         );
