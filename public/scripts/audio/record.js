@@ -72,7 +72,7 @@ $(document).ready(function(){
                     noteId: $(".note-interface:visible > .active-note-id").val(),
                     base64URL: url
                 };
-                socket.emit("base64 audio", base64AudioInfo);
+                socket.emit("set base64 audio", base64AudioInfo);
                 $("<a href='"+ url +"' target='_blank'></a>")[0].click();
             }, "base64");
         }else{
@@ -83,7 +83,7 @@ $(document).ready(function(){
                     noteId: $(".note-interface:visible > .active-note-id").val(),
                     base64URL: url
                 };
-                socket.emit("base64 audio", base64AudioInfo);
+                socket.emit("set base64 audio", base64AudioInfo);
                 $("<a href='"+ url +"' target='_blank'></a>")[0].click();
             }, "base64");
         }

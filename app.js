@@ -242,7 +242,7 @@ io.on("connection", function(socket){
             })
         })
     });
-    socket.on("note reduction", function(noteReductionInfo){
+    socket.on("set note reduction", function(noteReductionInfo){
         User.findOneAndUpdate(
             {
                 "_id": noteReductionInfo.userId,
@@ -346,7 +346,7 @@ io.on("connection", function(socket){
             }
         );
     });
-    socket.on("base64 audio", function(base64AudioInfo){
+    socket.on("set base64 audio", function(base64AudioInfo){
         var audioPath = "doc_files/" + base64AudioInfo.userId + "/audio_notes/";
         mkdirp(audioPath, function (err) {
             if (err)  {
@@ -389,11 +389,13 @@ io.on("connection", function(socket){
                                     const transcription = response.results.map(result =>
                                         result.alternatives[0].transcript).join('\n');
                                     console.log(`Transcription: `, transcription);
+                                    base64AudioInfo.transcript = transcription;
+                                    socket.emit("base64 audio confirm", base64AudioInfo);
                                 })
                                 .catch((err) => {
                                     console.error('ERROR:', err);
                                 });
-                            socket.emit("base64 audio confirm", base64AudioInfo);
+
                         }
                     }
                 );

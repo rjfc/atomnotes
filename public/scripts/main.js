@@ -218,7 +218,7 @@ socket.on("note reduction percent", function(initialValue) {
                 noteId: $(".note-interface:visible").find(".active-note-id").val(),
                 reduction: ui.value
             };
-            socket.emit("note reduction", noteReductionChange);
+            socket.emit("set note reduction", noteReductionChange);
             if (ui.value != 0) {
                 $(".active-note-body").prop("readonly", true);
             }
@@ -324,7 +324,7 @@ $(".warn-reset-reduction-proceed").click(function() {
         noteId: $(".note-interface:visible").find(".active-note-id").val(),
         reduction: 0
     };
-    socket.emit("note reduction", noteReductionChange);
+    socket.emit("set note reduction", noteReductionChange);
     $("#slider").slider("value", 0);
     $("#reduction-percentage").text(0);
     $(".active-note-body").prop("readonly", false);
@@ -346,6 +346,8 @@ socket.on("base64 audio confirm", function(base64AudioInfo) {
     else {
         $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + base64AudioInfo.base64URL + "'></audio>");
     }
+    console.log(base64AudioInfo);
+    $(".active-note-transcript").val(base64AudioInfo.transcript);
 });
 
 socket.on("base64 audio url", function(base64AudioURL) {
