@@ -23,11 +23,14 @@ var NoteSchema = mongoose.Schema({
         type: String,
         default: "text"
     },
-    reduction:   {
+    reduction: {
         type: Number,
         default: 0
     },
-    noteUrl: String,
+    noteUrl: {
+        type: String,
+        default: "empty"
+    },
     summarizedBodyText: String,
     summarizedAudioNote: String
 });

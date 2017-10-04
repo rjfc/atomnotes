@@ -413,10 +413,16 @@ io.on("connection", function(socket){
                 if (error) {
                     console.log(error);
                 }
-                else if (user) {
-                    var filePath = fs.readFileSync(user.notes[0].noteUrl);
-                    var wavBase64 = new Buffer(filePath).toString("base64");
-                    socket.emit("base64 audio url", wavBase64);
+                else {
+                    console.log(user.notes[0].noteUrl);
+                    if (user.notes[0].noteUrl !== "empty") {
+                        var filePath = fs.readFileSync(user.notes[0].noteUrl);
+                        var wavBase64 = new Buffer(filePath).toString("base64");
+                        socket.emit("base64 audio url", wavBase64);
+                    }
+                    else {
+                        socket.emit("base64 audio url", "empty");
+                    }
                 }
             }
         );
