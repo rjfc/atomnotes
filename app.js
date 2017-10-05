@@ -386,11 +386,29 @@ io.on("connection", function(socket){
                             speechClient.recognize(request)
                                 .then((data) => {
                                     const response = data[0];
-                                    const transcription = response.results.map(result =>
+                                    const transcript = response.results.map(result =>
                                         result.alternatives[0].transcript).join('\n');
-                                    console.log(`Transcription: `, transcription);
-                                    base64AudioInfo.transcript = transcription;
-                                    socket.emit("base64 audio confirm", base64AudioInfo);
+                                    console.log(`Transcription: `, transcript);
+                                    base64AudioInfo.transcript = transcript;
+                                    User.findOneAndUpdate(
+                                        {
+                                            "_id": base64AudioInfo.userId,
+                                            "notes._id": base64AudioInfo.noteId
+                                        },
+                                        {
+                                            "$set": {
+                                                "notes.$.bodyText": transcript
+                                            }
+                                        },
+                                        function(error, doc) {
+                                            if (error) {
+                                                console.log(error);
+                                            }
+                                            else {
+                                                socket.emit("base64 audio confirm", base64AudioInfo);
+                                            }
+                                        }
+                                    );
                                 })
                                 .catch((err) => {
                                     console.error('ERROR:', err);
