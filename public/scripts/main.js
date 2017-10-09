@@ -251,7 +251,9 @@ socket.on("new note confirm", function(newNote) {
         $("#note-interface-" + lastNote).hide();
         $("#note-interface-" + newNote.noteId).show();
         $(".control-panel-subtitle").show();
-        $(".control-panel").prepend("<div class='btn-audio' id='record'></div><div class='btn-audio' id='base64'></div>");
+        if ($(".control-panel").children(".btn-audio").length == 0) {
+            $(".control-panel").prepend("<div class='btn-audio' id='record'></div><div class='btn-audio' id='base64'></div>");
+        }
 /*      $(".control-panel").append("<a class='btn-stop-audio' id='stop' style='color: White;'>STOP</a>");
         $(".control-panel").append("<a class=\"button\" id=\"download\" style='color: White;'>Download</a>");
         $(".control-panel").append("<a class=\"button\" id=\"play\" style='color: White;'>Play</a>");

@@ -374,7 +374,7 @@ a:hover {
 }
 
 .notes-panel {
-    height: 80%;
+    height: 75%;
     background-color: #2b2e37;
     padding: 18px;
     overflow-y: auto;
@@ -400,7 +400,7 @@ a:hover {
     width: 100%;
     position: relative;
     padding: 15px;
-    height: 20%;
+    height: 25%;
 }
 
 .control-panel-subtitle {
