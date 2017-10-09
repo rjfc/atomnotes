@@ -353,7 +353,7 @@ io.on("connection", function(socket){
                 console.error(err)
             }
             else{
-                fs.writeFile(audioPath + base64AudioInfo.noteId + ".wav", base64AudioInfo.base64URL.replace(/^data:audio\/wav;base64,/, ""), {encoding: 'base64'}, function(err){
+                fs.writeFile(audioPath + base64AudioInfo.noteId + ".wav", base64AudioInfo.base64URL.replace(/^data:audio\/wav;base64,/, ""), {encoding: "base64"}, function(err){
                     console.log("Audio note saved");
                 });
                 User.findOneAndUpdate(
@@ -438,7 +438,7 @@ io.on("connection", function(socket){
                     if (user.notes[0].noteUrl !== "empty") {
                         var filePath = fs.readFileSync(user.notes[0].noteUrl);
                         var wavBase64 = new Buffer(filePath).toString("base64");
-                        socket.emit("base64 audio url", wavBase64);
+                        socket.emit("base64 audio url", "data:audio/wav;base64," + wavBase64);
                     }
                     else {
                         socket.emit("base64 audio url", "empty");
