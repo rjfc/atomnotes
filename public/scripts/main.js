@@ -291,6 +291,7 @@ $("body").on("click", ".note-label", function (){
             noteId: $(".note-interface:visible > .active-note-id").val(),
         };
         socket.emit("get base64 audio", noteInfo);
+        console.log("ayy lmao");
     }
     else {
         if ($(this).find("#audio-controls")) {
@@ -343,7 +344,7 @@ $("#dark-overlay-interface").click(function() {
 
 socket.on("base64 audio confirm", function(base64AudioInfo) {
     if ($(".control-panel").find("#audio-controls").length > 0){
-        $("#audio-controls").attr("src", base64URL);
+        $("#audio-controls").attr("src", base64AudioInfo.base64URL);
     }
     else {
         $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + base64AudioInfo.base64URL + "'></audio>");
@@ -354,7 +355,7 @@ socket.on("base64 audio confirm", function(base64AudioInfo) {
 
 socket.on("base64 audio url", function(base64AudioURL) {
     if ($(".control-panel").find("#audio-controls").length > 0){
-        $("#audio-controls").attr("src", base64URL);
+        $("#audio-controls").attr("src", base64AudioURL);
     }
     else {
         $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + base64AudioURL + "'></audio>");
