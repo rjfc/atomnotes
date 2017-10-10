@@ -441,7 +441,7 @@ io.on("connection", function(socket){
                         socket.emit("base64 audio url", "data:audio/wav;base64," + wavBase64);
                     }
                     else {
-                        socket.emit("base64 audio url", "empty");
+                        socket.emit("base64 audio url", "");
                     }
                 }
             }

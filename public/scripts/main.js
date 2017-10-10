@@ -269,6 +269,12 @@ socket.on("new note confirm", function(newNote) {
         });
     }
     lastNote = newNote.noteId;
+    if ($(".control-panel").find("#audio-controls").length > 0){
+        $("#audio-controls").attr("src", "");
+    }
+    else {
+        $(".control-panel").append("<audio controls id=\"audio-controls\" src=''></audio>");
+    }
 });
 
 // on("click") is important for making sure this works on appended elements
