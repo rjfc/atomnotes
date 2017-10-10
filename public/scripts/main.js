@@ -291,7 +291,6 @@ $("body").on("click", ".note-label", function (){
             noteId: $(".note-interface:visible > .active-note-id").val(),
         };
         socket.emit("get base64 audio", noteInfo);
-        console.log("ayy lmao");
     }
     else {
         if ($(this).find("#audio-controls")) {
@@ -349,7 +348,6 @@ socket.on("base64 audio confirm", function(base64AudioInfo) {
     else {
         $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + base64AudioInfo.base64URL + "'></audio>");
     }
-    console.log(base64AudioInfo);
     $(".active-note-transcript").val(base64AudioInfo.transcript);
 });
 
