@@ -242,7 +242,7 @@ socket.on("new note confirm", function(newNote) {
         $(".note-interface-container").append("<div class=\"note-interface\" id=\"note-interface-" + newNote.noteId + "\"><input class=\"active-note-input active-note-title\" name=\"noteTitle\" type=\"text\" placeholder=\"Title here\" value=\"" + newNote.noteTitle + "\"><hr style=\"margin: 0; background-color: Black; height: 1px;\"><textarea class=\"active-note-input active-note-body\" name=\"noteBody\" type=\"text\" placeholder=\"Body here\"></textarea><textarea class=\"active-note-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><span></span><a class=\"active-note-delete\"><img class=\"active-note-delete-icon\" src=\"/images/trash-icon.png\"></a></div>");
         $("#note-interface-" + lastNote).hide();
         $("#note-interface-" + newNote.noteId).show();
-        $(".control-panel-subtitle").show();
+        $("#control-panel-reduction").show();
     }
     else {
         $(".notes .note-label").removeClass("active-note-label");
@@ -250,7 +250,7 @@ socket.on("new note confirm", function(newNote) {
         $(".note-interface-container").append("<div class=\"note-interface\" id=\"note-interface-" + newNote.noteId + "\"><input class=\"active-note-input active-note-title\" name=\"noteTitle\" type=\"text\" placeholder=\"Title here\" value=\"" + newNote.noteTitle + "\"><hr style=\"margin: 0; background-color: Black; height: 1px;\"><textarea readonly='true' class=\"active-note-transcript\" name=\"noteBody\" type=\"text\" placeholder=\"Transcript will appear here\"></textarea><textarea class=\"active-note-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><span></span><a class=\"active-note-delete\"><img class=\"active-note-delete-icon\" src=\"/images/trash-icon.png\"></a></div>");
         $("#note-interface-" + lastNote).hide();
         $("#note-interface-" + newNote.noteId).show();
-        $(".control-panel-subtitle").show();
+        $("#control-panel-reduction").show();
         if ($(".control-panel").children(".btn-audio").length == 0) {
             $(".control-panel").prepend("<div class='btn-audio' id='record'></div><div class='btn-audio' id='base64'></div>");
         }
@@ -267,14 +267,14 @@ socket.on("new note confirm", function(newNote) {
             $("#record").show();
             $("#audio-controls").attr("src", "")
         });
+        if ($(".control-panel").find("#audio-controls").length > 0){
+            $("#audio-controls").attr("src", "");
+        }
+        else {
+            $(".control-panel").append("<audio controls id=\"audio-controls\" src=''></audio>");
+        }
     }
     lastNote = newNote.noteId;
-    if ($(".control-panel").find("#audio-controls").length > 0){
-        $("#audio-controls").attr("src", "");
-    }
-    else {
-        $(".control-panel").append("<audio controls id=\"audio-controls\" src=''></audio>");
-    }
 });
 
 // on("click") is important for making sure this works on appended elements
@@ -290,7 +290,7 @@ $("body").on("click", ".note-label", function (){
         noteId: activeNoteId
     };
     socket.emit("get note reduction", noteInfo);
-    $(".control-panel-subtitle").show();
+    $("#control-panel-reduction").show();
     if ($(this).hasClass("audio-note-label")) {
         var noteInfo = {
             userId: $(".active-user-id").val(),
@@ -299,7 +299,7 @@ $("body").on("click", ".note-label", function (){
         socket.emit("get base64 audio", noteInfo);
     }
     else {
-        if ($(this).find("#audio-controls")) {
+        if ($("#control-panel").find("#audio-controls")) {
             $("#audio-controls").remove();
         }
     }
@@ -318,6 +318,9 @@ $(".btn-new-note").click(function() {
 
 $(".btn-new-text-note").click(function() {
     socket.emit("new note", userId);
+    if ($("#control-panel").find("#audio-controls")) {
+        $("#audio-controls").remove();
+    }
 });
 
 $(".btn-new-audio-note").click(function() {
