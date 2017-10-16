@@ -23,7 +23,7 @@ var port = 8080;
 // Google Cloud Platform project ID
 var projectId = "atomnotes-178218";
 
-mongoose.connect("mongodb://localhost/gistnotes");
+mongoose.connect("mongodb://localhost/atomnotes");
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(flash());
