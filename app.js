@@ -389,7 +389,7 @@ io.on("connection", function(socket){
                                     const transcript = response.results.map(result =>
                                         result.alternatives[0].transcript).join('\n');
                                     console.log(`Transcription: `, transcript);
-                                    base64AudioInfo.transcript = transcript;
+                                    base64AudioInfo.transcript = transcript.replace(/\n/g, ".") + ".";
                                     User.findOneAndUpdate(
                                         {
                                             "_id": base64AudioInfo.userId,
