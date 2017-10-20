@@ -387,7 +387,6 @@ a:hover {
     width: 7vh;
     border: 24px solid #2b2e37;
     background-color: #22aecd;
-    margin-bottom: 20px;
 }
 
 .btn-audio:hover {
@@ -511,4 +510,10 @@ a:hover {
 
 #audio-controls {
     width: 50%;
+}
+
+.control-panel-hint {
+    color: Green;
+    font-family: Lato, 'sans-serif';
+    margin-bottom: 20px;
 }

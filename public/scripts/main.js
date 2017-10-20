@@ -253,6 +253,8 @@ socket.on("new note confirm", function(newNote) {
         $("#control-panel-reduction").show();
         if ($(".control-panel").children(".btn-audio").length == 0) {
             $(".control-panel").prepend("<div class='btn-audio' id='record'></div><div class='btn-audio' id='base64'></div>");
+            $(".control-panel-hint").css("color", "Green");
+            $(".control-panel-hint").text("Click the above button to start recording");
         }
 /*      $(".control-panel").append("<a class='btn-stop-audio' id='stop' style='color: White;'>STOP</a>");
         $(".control-panel").append("<a class=\"button\" id=\"download\" style='color: White;'>Download</a>");
@@ -261,11 +263,15 @@ socket.on("new note confirm", function(newNote) {
         $("#record").click(function() {
             $(this).hide();
             $("#base64").show();
+            $(".control-panel-hint").css("color", "Red");
+            $(".control-panel-hint").text("Click the above button to stop recording");
         });
         $("#base64").click(function() {
             $(this).hide();
             $("#record").show();
             $("#audio-controls").attr("src", "")
+            $(".control-panel-hint").css("color", "Green");
+            $(".control-panel-hint").text("Click the above button to start recording");
         });
         if ($(".control-panel").find("#audio-controls").length > 0){
             $("#audio-controls").attr("src", "");
@@ -296,7 +302,7 @@ $("body").on("click", ".note-label", function (){
             userId: $(".active-user-id").val(),
             noteId: $(".note-interface:visible > .active-note-id").val(),
         };
-        socket.emit("get base64 audio", noteInfo);
+        socket.emit("get audio note", noteInfo);
     }
     else {
         if ($("#control-panel").find("#audio-controls")) {
@@ -350,21 +356,22 @@ $("#dark-overlay-interface").click(function() {
     $(".warn-reset-reduction").hide();
 });
 
-socket.on("base64 audio confirm", function(base64AudioInfo) {
+socket.on("base64 audio confirm", function(audioInfo) {
     if ($(".control-panel").find("#audio-controls").length > 0){
-        $("#audio-controls").attr("src", base64AudioInfo.base64URL);
+        $("#audio-controls").attr("src", audioInfo.base64URL);
     }
     else {
-        $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + base64AudioInfo.base64URL + "'></audio>");
+        $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + audioInfo.base64URL + "'></audio>");
     }
-    $(".active-note-transcript").val(base64AudioInfo.transcript);
+    $(".active-note-transcript").val(audioInfo.transcript);
 });
 
-socket.on("base64 audio url", function(base64AudioURL) {
+socket.on("audio note info", function(audioNoteInfo) {
     if ($(".control-panel").find("#audio-controls").length > 0){
-        $("#audio-controls").attr("src", base64AudioURL);
+        $("#audio-controls").attr("src", audioNoteInfo.base64AudioURL);
     }
     else {
         $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + base64AudioURL + "'></audio>");
     }
+    $(".active-note-transcript").val(audioNoteInfo.transcript);
 });

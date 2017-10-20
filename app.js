@@ -386,10 +386,9 @@ io.on("connection", function(socket){
                             speechClient.recognize(request)
                                 .then((data) => {
                                     const response = data[0];
-                                    const transcript = response.results.map(result =>
-                                        result.alternatives[0].transcript).join('\n');
+                                    const transcript = response.results.map(result => result.alternatives[0].transcript).join('\n').replace(/\n/g, ".") + ".";
                                     console.log(`Transcription: `, transcript);
-                                    base64AudioInfo.transcript = transcript.replace(/\n/g, ".") + ".";
+                                    base64AudioInfo.transcript = transcript;
                                     User.findOneAndUpdate(
                                         {
                                             "_id": base64AudioInfo.userId,
@@ -420,7 +419,7 @@ io.on("connection", function(socket){
             }
         });
     });
-    socket.on("get base64 audio", function(noteInfo){
+    socket.on("get audio note", function(noteInfo){
         User.findOne(
             {
                 "_id": noteInfo.userId,
@@ -435,14 +434,16 @@ io.on("connection", function(socket){
                 }
                 else {
                     console.log(user.notes[0].noteUrl);
+                    var audioNoteInfo = {
+                        base64Url: "",
+                        transcript: user.notes[0].bodyText
+                    };
                     if (user.notes[0].noteUrl !== "empty") {
                         var filePath = fs.readFileSync(user.notes[0].noteUrl);
                         var wavBase64 = new Buffer(filePath).toString("base64");
-                        socket.emit("base64 audio url", "data:audio/wav;base64," + wavBase64);
+                        audioNoteInfo.base64Url = "data:audio/wav;base64," + wavBase64;
                     }
-                    else {
-                        socket.emit("base64 audio url", "");
-                    }
+                    socket.emit("audio note info", audioNoteInfo)
                 }
             }
         );

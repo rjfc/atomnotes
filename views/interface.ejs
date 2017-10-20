@@ -67,6 +67,8 @@
                     </div>
                 </div>
                 <div class="control-panel">
+                    <br>
+                    <span class="control-panel-hint"></span><br><br>
                     <textarea class="control-panel-reduction-percent" style="display: none;"></textarea>
                     <span class="control-panel-subtitle" id="control-panel-reduction">REDUCTION: <span id="reduction-percentage"></span>%</span>
                     <div class="container-slider">
@@ -90,7 +92,7 @@
                         <%}%>
                         <textarea class="active-note-id" name="noteId" type="text" style="display: none;"><%=note._id%></textarea>
                         <span></span>
-                        <a class="active-note-delete"><img class="active-note-delete-icon" src="/images/trash-icon.png"></a>
+                        <a class="active-note-delete"><img class="active-note-delete-icon" src="/images/trash-icon.png"></a>,
                         <span class="text-save-status"></span>
                     </div>
                 <% }); %>
