@@ -41,11 +41,10 @@ font-family: 'Lora', serif;
 .container-landing {
     width: 100vw;
     height: 100vh;
-    background: url("/images/bluegradient.png") no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+    background: #338fce;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #2c4358, #306993, #3493d4);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #2c4358, #306993, #3493d4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
     padding: 0;
     overflow: hidden;
 }
