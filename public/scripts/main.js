@@ -269,9 +269,10 @@ socket.on("new note confirm", function(newNote) {
         $("#base64").click(function() {
             $(this).hide();
             $("#record").show();
-            $("#audio-controls").attr("src", "")
+            $("#audio-controls").attr("src", "");
             $(".control-panel-hint").css("color", "Green");
             $(".control-panel-hint").text("Click the above button to start recording");
+            $(".active-note-transcript").text("Processing...");
         });
         if ($(".control-panel").find("#audio-controls").length > 0){
             $("#audio-controls").attr("src", "");
