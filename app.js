@@ -383,11 +383,21 @@ io.on("connection", function(socket){
                                 audio: audio,
                                 config: config
                             };
+                            function sentenceCase(input, lowercaseBefore) {
+                                input = ( input === undefined || input === null ) ? '' : input;
+                                if (lowercaseBefore) { input = input.toLowerCase(); }
+                                return input.toString().replace( /(^|\. *)([a-z])/g, function(match, separator, char) {
+                                    return separator + char.toUpperCase();
+                                });
+                            }
                             speechClient.recognize(request)
                                 .then((data) => {
-                                    const response = data[0];
-                                    const transcript = response.results.map(result => result.alternatives[0].transcript).join('\n').replace(/\n/g, ".") + ".";
+                                    var response = data[0];
+                                    var transcript = response.results.map(result => result.alternatives[0].transcript).join('\n').replace(/\n/g, ".") + ".";
+                                    if (transcript == ".") transcript = "";
+                                    transcript = sentenceCase(transcript);
                                     console.log(`Transcription: `, transcript);
+                                    // https://www.npmjs.com/package/pitchfinder for question mark implementation
                                     base64AudioInfo.transcript = transcript;
                                     User.findOneAndUpdate(
                                         {
