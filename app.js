@@ -10,7 +10,8 @@ var express          = require("express"),
     bodyParser       = require("body-parser"),
     flash            = require("connect-flash"),
     expressSession   = require("express-session"),
-    Speech           = require('@google-cloud/speech');
+    Speech           = require('@google-cloud/speech'),
+    Storage          = require("@google-cloud/storage"),
     LocalStrategy    = require("passport-local").Strategy,
 /*  Note             = require("./models/note"),*/
     User             = require("./models/user"),
@@ -20,8 +21,12 @@ var express          = require("express"),
 // Port for server to listen on
 var port = 8080;
 
-// Google Cloud Platform project ID
+// Google Cloud Platform
 var projectId = "atomnotes-178218";
+var gcs = Storage({
+    projectId: projectId
+});
+var bucket = gcs.bucket("audio-notes");
 
 mongoose.connect("mongodb://localhost/atomnotes");
 app.use(bodyParser.urlencoded({extended: true}));
@@ -355,6 +360,10 @@ io.on("connection", function(socket){
             else{
                 fs.writeFile(audioPath + base64AudioInfo.noteId + ".wav", base64AudioInfo.base64URL.replace(/^data:audio\/wav;base64,/, ""), {encoding: "base64"}, function(err){
                     console.log("Audio note saved");
+                    bucket.upload(audioPath + base64AudioInfo.noteId + ".wav", function(err, file) {
+                        if (err) throw new Error(err);
+                        console.log("Audio note uploaded to Google Cloud Storage");
+                    });
                 });
                 User.findOneAndUpdate(
                     {
@@ -422,7 +431,6 @@ io.on("connection", function(socket){
                                 .catch((err) => {
                                     console.error('ERROR:', err);
                                 });
-
                         }
                     }
                 );

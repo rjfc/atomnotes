@@ -19,6 +19,7 @@
   "homepage": "https://github.com/rjfc/atomnotes#readme",
   "dependencies": {
     "@google-cloud/speech": "^0.10.3",
+    "@google-cloud/storage": "^1.4.0",
     "bcryptjs": "^2.4.3",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
