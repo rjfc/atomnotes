@@ -352,98 +352,117 @@ io.on("connection", function(socket){
         );
     });
     socket.on("set base64 audio", function(base64AudioInfo){
-        var audioPath = "doc_files/" + base64AudioInfo.userId + "/audio_notes/";
-        var gcsUri;
-        mkdirp(audioPath, function (err) {
-            if (err)  {
-                console.error(err)
-            }
-            else{
-                fs.writeFile(audioPath + base64AudioInfo.noteId + ".wav", base64AudioInfo.base64URL.replace(/^data:audio\/wav;base64,/, ""), {encoding: "base64"}, function(err){
-                    console.log("Audio note saved");
-                    bucket.upload(audioPath + base64AudioInfo.noteId + ".wav", function(err, file) {
-                        if (err) throw new Error(err);
-                        console.log("Audio note uploaded to Google Cloud Storage");
-                        gcsUri = "gs://audio-notes/" + base64AudioInfo.noteId + ".wav";
-                        User.findOneAndUpdate(
-                            {
-                                "_id": base64AudioInfo.userId,
-                                "notes._id": base64AudioInfo.noteId
-                            },
-                            {
-                                "$set": {
-                                    "notes.$.noteUrl": audioPath + base64AudioInfo.noteId + ".wav"
-                                }
-                            },
-                            function(error, doc) {
-                                if (error) {
-                                    console.log(error);
-                                }
-                                else {
-                                    console.log(gcsUri);
-                                    var audio = {
-                                        //content: base64AudioInfo.base64URL.replace(/^data:audio\/wav;base64,/, "")
-                                        uri: gcsUri
-                                    };
-                                    var config = {
-                                        encoding: 'LINEAR16',
-                                        sampleRateHertz: 48000,
-                                        languageCode: 'en-US'
-                                    };
-                                    var request = {
-                                        audio: audio,
-                                        config: config
-                                    };
-                                    function sentenceCase(input, lowercaseBefore) {
-                                        input = ( input === undefined || input === null ) ? '' : input;
-                                        if (lowercaseBefore) { input = input.toLowerCase(); }
-                                        return input.toString().replace( /(^|\. *)([a-z])/g, function(match, separator, char) {
-                                            return separator + char.toUpperCase();
-                                        });
-                                    }
-                                    speechClient.longRunningRecognize(request)
-                                        .then((data) => {
-                                            var operation = data[0];
-                                            return operation.promise();
-                                        })
-                                        .then((data) => {
-                                        var response = data[0];
-                                            var transcript = response.results.map(result => result.alternatives[0].transcript).join('\n').replace(/\n/g, ".") + ".";
-                                            if (transcript == ".") transcript = "";
-                                            transcript = sentenceCase(transcript);
-                                            console.log(`Transcription: `, transcript);
-                                            // https://www.npmjs.com/package/pitchfinder for question mark implementation
-                                            base64AudioInfo.transcript = transcript;
-                                            User.findOneAndUpdate(
-                                                {
-                                                    "_id": base64AudioInfo.userId,
-                                                    "notes._id": base64AudioInfo.noteId
-                                                },
-                                                {
-                                                    "$set": {
-                                                        "notes.$.bodyText": transcript
-                                                    }
-                                                },
-                                                function(error, doc) {
-                                                    if (error) {
-                                                        console.log(error);
-                                                    }
-                                                    else {
-                                                        socket.emit("base64 audio confirm", base64AudioInfo);
-                                                    }
+        User.findOneAndUpdate(
+            {
+                "_id": base64AudioInfo.userId,
+                "notes._id": base64AudioInfo.noteId
+            },
+            {
+                "$set": {
+                    "notes.$.bodyText": "Processing...check back later!"
+                }
+            },
+            function(error, doc) {
+                if (error) {
+                    console.log("ERROR" + error);
+                }
+                else {
+                    var audioPath = "doc_files/" + base64AudioInfo.userId + "/audio_notes/";
+                    var gcsUri;
+                    mkdirp(audioPath, function (err) {
+                        if (err)  {
+                            console.error(err)
+                        }
+                        else{
+                            fs.writeFile(audioPath + base64AudioInfo.noteId + ".wav", base64AudioInfo.base64URL.replace(/^data:audio\/wav;base64,/, ""), {encoding: "base64"}, function(err){
+                                console.log("Audio note saved");
+                                bucket.upload(audioPath + base64AudioInfo.noteId + ".wav", function(err, file) {
+                                    if (err) throw new Error(err);
+                                    console.log("Audio note uploaded to Google Cloud Storage");
+                                    gcsUri = "gs://audio-notes/" + base64AudioInfo.noteId + ".wav";
+                                    User.findOneAndUpdate(
+                                        {
+                                            "_id": base64AudioInfo.userId,
+                                            "notes._id": base64AudioInfo.noteId
+                                        },
+                                        {
+                                            "$set": {
+                                                "notes.$.noteUrl": audioPath + base64AudioInfo.noteId + ".wav"
+                                            }
+                                        },
+                                        function(error, doc) {
+                                            if (error) {
+                                                console.log(error);
+                                            }
+                                            else {
+                                                console.log(gcsUri);
+                                                var audio = {
+                                                    //content: base64AudioInfo.base64URL.replace(/^data:audio\/wav;base64,/, "")
+                                                    uri: gcsUri
+                                                };
+                                                var config = {
+                                                    encoding: 'LINEAR16',
+                                                    sampleRateHertz: 48000,
+                                                    languageCode: 'en-US'
+                                                };
+                                                var request = {
+                                                    audio: audio,
+                                                    config: config
+                                                };
+                                                function sentenceCase(input, lowercaseBefore) {
+                                                    input = ( input === undefined || input === null ) ? '' : input;
+                                                    if (lowercaseBefore) { input = input.toLowerCase(); }
+                                                    return input.toString().replace( /(^|\. *)([a-z])/g, function(match, separator, char) {
+                                                        return separator + char.toUpperCase();
+                                                    });
                                                 }
-                                            );
-                                        })
-                                        .catch((err) => {
-                                            console.error('ERROR:', err);
-                                        });
-                                }
-                            }
-                        );
+                                                speechClient.longRunningRecognize(request)
+                                                    .then((data) => {
+                                                        var operation = data[0];
+                                                        return operation.promise();
+                                                    })
+                                                    .then((data) => {
+                                                    var response = data[0];
+                                                        var transcript = response.results.map(result => result.alternatives[0].transcript).join('\n').replace(/\n/g, ".") + ".";
+                                                        if (transcript == ".") transcript = "";
+                                                        transcript = sentenceCase(transcript);
+                                                        console.log(`Transcription: `, transcript);
+                                                        // https://www.npmjs.com/package/pitchfinder for question mark implementation
+                                                        base64AudioInfo.transcript = transcript;
+                                                        User.findOneAndUpdate(
+                                                            {
+                                                                "_id": base64AudioInfo.userId,
+                                                                "notes._id": base64AudioInfo.noteId
+                                                            },
+                                                            {
+                                                                "$set": {
+                                                                    "notes.$.bodyText": transcript
+                                                                }
+                                                            },
+                                                            function(error, doc) {
+                                                                if (error) {
+                                                                    console.log(error);
+                                                                }
+                                                                else {
+                                                                    console.log("base64 audio confirm emitted");
+                                                                    socket.emit("base64 audio confirm", base64AudioInfo);
+                                                                }
+                                                            }
+                                                        );
+                                                    })
+                                                    .catch((err) => {
+                                                        console.error('ERROR:', err);
+                                                    });
+                                            }
+                                        }
+                                    );
+                                });
+                            });
+                        }
                     });
-                });
+                }
             }
-        });
+        );
     });
     socket.on("get audio note", function(noteInfo){
         User.findOne(

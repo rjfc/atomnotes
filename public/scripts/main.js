@@ -272,7 +272,7 @@ socket.on("new note confirm", function(newNote) {
             $("#audio-controls").attr("src", "");
             $(".control-panel-hint").css("color", "Green");
             $(".control-panel-hint").text("Click the above button to start recording");
-            $(".active-note-transcript").text("Processing...");
+            $(".active-note-transcript").text("Processing...check back later!");
         });
         if ($(".control-panel").find("#audio-controls").length > 0){
             $("#audio-controls").attr("src", "");
@@ -357,7 +357,12 @@ $("#dark-overlay-interface").click(function() {
     $(".warn-reset-reduction").hide();
 });
 
+socket.on("hi", function() {
+   console.log("hi");
+});
+
 socket.on("base64 audio confirm", function(audioInfo) {
+    console.log("b64 client recieved");
     if ($(".control-panel").find("#audio-controls").length > 0){
         $("#audio-controls").attr("src", audioInfo.base64URL);
     }
@@ -369,10 +374,10 @@ socket.on("base64 audio confirm", function(audioInfo) {
 
 socket.on("audio note info", function(audioNoteInfo) {
     if ($(".control-panel").find("#audio-controls").length > 0){
-        $("#audio-controls").attr("src", audioNoteInfo.base64AudioURL);
+        $("#audio-controls").attr("src", audioNoteInfo.base64URL);
     }
     else {
-        $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + base64AudioURL + "'></audio>");
+        $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + audioNoteInfo.base64URL + "'></audio>");
     }
     $(".active-note-transcript").val(audioNoteInfo.transcript);
 });
