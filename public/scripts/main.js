@@ -153,7 +153,7 @@ socket.on("delete note confirm", function(noteId) {
 });
 
 $(document).ready(function() {
-    $("body").on("keydown", ".active-note-input", function(event){
+    $("body").on("change keydown paste cut", ".active-note-input", function(event){
         if (!event.ctrlKey) {
             if ($("#reduction-percentage").text() == 0) {
                 $(".active-note-input").attr("onkeydown", "");
