@@ -86,7 +86,7 @@
                         <input class="active-note-input active-note-title" name="noteTitle" type="text" placeholder="Title here" value="<%=note.title%>">
                         <hr style="margin: 0; background-color: Black; height: 1px;">
                         <% if (note.type == "text") {%>
-                            <textarea class="active-note-input active-note-body" name="noteBody" type="text" placeholder="Body here"><%=note.bodyText%></textarea>
+                            <textarea class="active-note-input active-note-body" name="noteBody" type="text" placeholder="Body here"><%=note.summarizedBodyText%></textarea>
                         <%} else {%>
                             <textarea readonly='true' class="active-note-transcript" name="noteBody" type="text" placeholder="Transcript will appear here"><%=note.bodyText%></textarea>
                         <%}%>
