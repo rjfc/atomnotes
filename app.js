@@ -359,7 +359,7 @@ io.on("connection", function(socket){
             },
             {
                 "$set": {
-                    "notes.$.bodyText": "Processing...check back later!"
+                    "notes.$.bodyText": "Processing...refresh or check back later!"
                 }
             },
             function(error, doc) {
@@ -480,6 +480,7 @@ io.on("connection", function(socket){
                 else {
                     console.log(user.notes[0].noteUrl);
                     var audioNoteInfo = {
+                        id: user.notes[0]._id,
                         base64Url: "",
                         transcript: user.notes[0].bodyText
                     };

@@ -272,7 +272,7 @@ socket.on("new note confirm", function(newNote) {
             $("#audio-controls").attr("src", "");
             $(".control-panel-hint").css("color", "Green");
             $(".control-panel-hint").text("Click the above button to start recording");
-            $(".active-note-transcript").text("Processing...check back later!");
+            $(".active-note-transcript").text("Processing...refresh or check back later!");
         });
         if ($(".control-panel").find("#audio-controls").length > 0){
             $("#audio-controls").attr("src", "");
@@ -380,4 +380,15 @@ socket.on("audio note info", function(audioNoteInfo) {
         $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + audioNoteInfo.base64URL + "'></audio>");
     }
     $(".active-note-transcript").val(audioNoteInfo.transcript);
+    /*if (audioNoteInfo.transcript == "Processing...refresh or check back later!") {
+        console.log("hello");
+        (function loop() {
+        setTimeout(function () {
+            console.log("hello");
+            $("#note-interface-" + audioNoteInfo.id).load(location.href + " .note-interface" + audioNoteInfo.id);
+            loop()
+        }, 2000);
+        }());
+    }*/
 });
+
