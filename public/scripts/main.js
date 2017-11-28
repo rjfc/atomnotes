@@ -232,7 +232,13 @@ socket.on("note reduction percent", function(initialValue) {
 
 socket.on("note reduction text", function(summarizedText) {
     console.log(summarizedText);
-    $(".note-interface:visible").find(".active-note-body").val(summarizedText);
+    if ($(".note-interface:visible").find(".active-note-body").length) {
+        $(".note-interface:visible").find(".active-note-body").val(summarizedText);
+    }
+    else {
+        $(".note-interface:visible").find(".active-note-transcript").val(summarizedText);
+    }
+
 });
 
 socket.on("new note confirm", function(newNote) {
