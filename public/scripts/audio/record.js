@@ -70,7 +70,7 @@ $(document).ready(function(){
                 var base64AudioInfo = {
                     userId: $(".active-user-id").val(),
                     noteId: $(".note-interface:visible > .active-note-id").val(),
-                    base64URL: url
+                    base64URL: LZString.compressToEncodedURIComponent(url)
                 };
                 socket.emit("set base64 audio", base64AudioInfo);
                 $("<a href='"+ url +"' target='_blank'></a>")[0].click();
@@ -81,7 +81,7 @@ $(document).ready(function(){
                 var base64AudioInfo = {
                     userId: $(".active-user-id").val(),
                     noteId: $(".note-interface:visible > .active-note-id").val(),
-                    base64URL: url
+                    base64URL: LZString.compressToEncodedURIComponent(url)
                 };
                 socket.emit("set base64 audio", base64AudioInfo);
                 $("<a href='"+ url +"' target='_blank'></a>")[0].click();

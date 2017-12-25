@@ -368,7 +368,7 @@ socket.on("hi", function() {
 });
 
 socket.on("base64 audio confirm", function(audioInfo) {
-    console.log("b64 client recieved");
+    console.log("b64 client received");
     if ($(".control-panel").find("#audio-controls").length > 0){
         $("#audio-controls").attr("src", audioInfo.base64URL);
     }

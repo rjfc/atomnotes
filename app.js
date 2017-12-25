@@ -10,6 +10,7 @@ var express          = require("express"),
     bodyParser       = require("body-parser"),
     flash            = require("connect-flash"),
     expressSession   = require("express-session"),
+    LZString         = require("lz-string"),
     Speech           = require('@google-cloud/speech'),
     Storage          = require("@google-cloud/storage"),
     LocalStrategy    = require("passport-local").Strategy,
@@ -374,7 +375,8 @@ io.on("connection", function(socket){
                             console.error(err)
                         }
                         else{
-                            fs.writeFile(audioPath + base64AudioInfo.noteId + ".wav", base64AudioInfo.base64URL.replace(/^data:audio\/wav;base64,/, ""), {encoding: "base64"}, function(err){
+                            var decompressedAudio = LZString.decompressFromEncodedURIComponent(base64AudioInfo.base64URL);
+                            fs.writeFile(audioPath + base64AudioInfo.noteId + ".wav", decompressedAudio.replace(/^data:audio\/wav;base64,/, ""), {encoding: "base64"}, function(err){
                                 console.log("Audio note saved");
                                 bucket.upload(audioPath + base64AudioInfo.noteId + ".wav", function(err, file) {
                                     if (err) throw new Error(err);
