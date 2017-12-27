@@ -370,7 +370,7 @@ socket.on("hi", function() {
 socket.on("base64 audio confirm", function(audioInfo) {
     console.log("b64 client received");
     if ($(".control-panel").find("#audio-controls").length > 0){
-        $("#audio-controls").attr("src", audioInfo.base64URL);
+        $("#audio-controls").attr("src", LZString.decompressFromEncodedURIComponent(audioInfo.base64URL));
     }
     else {
         $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + audioInfo.base64URL + "'></audio>");

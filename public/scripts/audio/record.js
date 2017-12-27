@@ -72,6 +72,7 @@ $(document).ready(function(){
                     noteId: $(".note-interface:visible > .active-note-id").val(),
                     base64URL: LZString.compressToEncodedURIComponent(url)
                 };
+                console.log(base64AudioInfo.base64URL.length);
                 socket.emit("set base64 audio", base64AudioInfo);
                 $("<a href='"+ url +"' target='_blank'></a>")[0].click();
             }, "base64");
@@ -83,6 +84,7 @@ $(document).ready(function(){
                     noteId: $(".note-interface:visible > .active-note-id").val(),
                     base64URL: LZString.compressToEncodedURIComponent(url)
                 };
+                console.log(base64AudioInfo.base64URL.length);
                 socket.emit("set base64 audio", base64AudioInfo);
                 $("<a href='"+ url +"' target='_blank'></a>")[0].click();
             }, "base64");

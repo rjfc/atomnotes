@@ -376,6 +376,7 @@ io.on("connection", function(socket){
                         }
                         else{
                             var decompressedAudio = LZString.decompressFromEncodedURIComponent(base64AudioInfo.base64URL);
+                            console.log("length = " + decompressedAudio.length)
                             fs.writeFile(audioPath + base64AudioInfo.noteId + ".wav", decompressedAudio.replace(/^data:audio\/wav;base64,/, ""), {encoding: "base64"}, function(err){
                                 console.log("Audio note saved");
                                 bucket.upload(audioPath + base64AudioInfo.noteId + ".wav", function(err, file) {
