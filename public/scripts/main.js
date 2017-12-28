@@ -307,7 +307,7 @@ $("body").on("click", ".note-label", function (){
     if ($(this).hasClass("audio-note-label")) {
         var noteInfo = {
             userId: $(".active-user-id").val(),
-            noteId: $(".note-interface:visible > .active-note-id").val(),
+            noteId: $(".note-interface:visible > .active-note-id").val()
         };
         socket.emit("get audio note", noteInfo);
     }
@@ -361,10 +361,6 @@ $(".warn-reset-reduction-cancel").click(function() {
 
 $("#dark-overlay-interface").click(function() {
     $(".warn-reset-reduction").hide();
-});
-
-socket.on("hi", function() {
-   console.log("hi");
 });
 
 socket.on("base64 audio confirm", function(audioInfo) {

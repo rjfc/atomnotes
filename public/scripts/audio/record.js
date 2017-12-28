@@ -88,6 +88,12 @@ $(document).ready(function(){
             }, "base64");
         }
         restore();
+        var noteInfo = {
+            userId: $(".active-user-id").val(),
+            noteId: $(".note-interface:visible > .active-note-id").val()
+        };
+        socket.emit("get note reduction", noteInfo);
+        $("#control-panel-reduction").show();
     });
 /*
     $(document).on("click", "#recordFor5:not(.disabled)", function(){
