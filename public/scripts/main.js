@@ -379,11 +379,12 @@ socket.on("base64 audio confirm", function(audioInfo) {
 });
 
 socket.on("audio note info", function(audioNoteInfo) {
+    console.log(audioNoteInfo);
     if ($(".control-panel").find("#audio-controls").length > 0){
-        $("#audio-controls").attr("src", audioNoteInfo.base64URL);
+        $("#audio-controls").attr("src", LZString.decompressFromEncodedURIComponent(audioNoteInfo.base64Url));
     }
     else {
-        $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + audioNoteInfo.base64URL + "'></audio>");
+        $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + LZString.decompressFromEncodedURIComponent(audioNoteInfo.base64Url) + "'></audio>");
     }
     $(".active-note-transcript").val(audioNoteInfo.transcript);
     /*if (audioNoteInfo.transcript == "Processing...refresh or check back later!") {

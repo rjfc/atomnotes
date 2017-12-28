@@ -22,7 +22,7 @@
         <script src="/scripts/audio/recorder.js"></script>
         <script src="/scripts/audio/Fr.voice.js"></script>
         <script src="/scripts/audio/record.js"></script>
-        <script>var socket = io();</script>
+        <script>var socket = io({transports: ['websocket']});</script>
         <!-- Title -->
         <title>AtomNotes</title>
     </head>

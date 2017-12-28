@@ -376,7 +376,7 @@ io.on("connection", function(socket){
                         }
                         else{
                             var decompressedAudio = LZString.decompressFromEncodedURIComponent(base64AudioInfo.base64URL);
-                            console.log("length = " + decompressedAudio.length)
+                            console.log("length = " + decompressedAudio.length);
                             fs.writeFile(audioPath + base64AudioInfo.noteId + ".wav", decompressedAudio.replace(/^data:audio\/wav;base64,/, ""), {encoding: "base64"}, function(err){
                                 console.log("Audio note saved");
                                 bucket.upload(audioPath + base64AudioInfo.noteId + ".wav", function(err, file) {
@@ -490,7 +490,7 @@ io.on("connection", function(socket){
                     if (user.notes[0].noteUrl !== "empty") {
                         var filePath = fs.readFileSync(user.notes[0].noteUrl);
                         var wavBase64 = new Buffer(filePath).toString("base64");
-                        audioNoteInfo.base64Url = "data:audio/wav;base64," + wavBase64;
+                        audioNoteInfo.base64Url = LZString.compressToEncodedURIComponent("data:audio/wav;base64," + wavBase64);
                     }
                     socket.emit("audio note info", audioNoteInfo)
                 }

@@ -66,7 +66,6 @@ $(document).ready(function(){
     $(document).on("click", "#base64:not(.disabled)", function(){
         if($(this).parent().data("type") === "mp3"){
             Fr.voice.exportMP3(function(url){
-                console.log("base64 URL : " + url);
                 var base64AudioInfo = {
                     userId: $(".active-user-id").val(),
                     noteId: $(".note-interface:visible > .active-note-id").val(),
@@ -78,7 +77,6 @@ $(document).ready(function(){
             }, "base64");
         }else{
             Fr.voice.export(function(url){
-                console.log("base64 URL: " + url);
                 var base64AudioInfo = {
                     userId: $(".active-user-id").val(),
                     noteId: $(".note-interface:visible > .active-note-id").val(),
