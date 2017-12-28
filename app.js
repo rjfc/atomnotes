@@ -273,37 +273,39 @@ io.on("connection", function(socket){
                             "notes.$": 1
                         },
                         function(error, user) {
-                            var text = user.notes[0].bodyText,
-                                numberSentences = (user.notes[0].bodyText.trim().split(/[\.\?\!]\s/).length) * (1 - (user.notes[0].reduction / 100)),
-                                summary,
-                                match = text.match(/[^\n]+/g),
-                                results = [];
+                            if (user.notes[0].bodyText.length > 0) {
+                                var text = user.notes[0].bodyText,
+                                    numberSentences = (user.notes[0].bodyText.trim().split(/[\.\?\!]\s/).length) * (1 - (user.notes[0].reduction / 100)),
+                                    summary,
+                                    match = text.match(/[^\n]+/g),
+                                    results = [];
 
-                            for (var i = 0; i < match.length; i++){
-                                results.push(summarize.summary(match[i], numberSentences));
-                            }
-
-                            summary = results.join("\n\n");
-
-                            User.findOneAndUpdate(
-                                {
-                                    "_id": noteReductionInfo.userId,
-                                    "notes._id": noteReductionInfo.noteId
-                                },
-                                {
-                                    "$set": {
-                                        "notes.$.summarizedBodyText": summary
-                                    }
-                                },
-                                function(error, userNote) {
-                                    if (error) {
-                                        console.log(error);
-                                    }
-                                    else {
-                                        socket.emit("note reduction text", summary);
-                                    }
+                                for (var i = 0; i < match.length; i++) {
+                                    results.push(summarize.summary(match[i], numberSentences));
                                 }
-                            );
+
+                                summary = results.join("\n\n");
+
+                                User.findOneAndUpdate(
+                                    {
+                                        "_id": noteReductionInfo.userId,
+                                        "notes._id": noteReductionInfo.noteId
+                                    },
+                                    {
+                                        "$set": {
+                                            "notes.$.summarizedBodyText": summary
+                                        }
+                                    },
+                                    function (error, userNote) {
+                                        if (error) {
+                                            console.log(error);
+                                        }
+                                        else {
+                                            socket.emit("note reduction text", summary);
+                                        }
+                                    }
+                                );
+                            }
                         }
                     );
                 }
