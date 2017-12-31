@@ -386,6 +386,7 @@ a:hover {
     width: 7vh;
     border: 24px solid #2b2e37;
     background-color: #22aecd;
+    margin-bottom: 10px;
 }
 
 .btn-audio:hover {

@@ -87,6 +87,8 @@ $(document).ready(function(){
                 $("<a href='"+ url +"' target='_blank'></a>")[0].click();
             }, "base64");
         }
+        $(".btn-audio").remove();
+        $(".control-panel-hint").hide();
         restore();
         var noteInfo = {
             userId: $(".active-user-id").val(),
@@ -94,6 +96,7 @@ $(document).ready(function(){
         };
         socket.emit("get note reduction", noteInfo);
         $("#control-panel-reduction").show();
+
     });
 /*
     $(document).on("click", "#recordFor5:not(.disabled)", function(){

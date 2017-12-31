@@ -119,7 +119,7 @@ var delay = (function(){
     };
 })();
 
-$(".active-note-delete").click(function() {
+$(".active-note-delete").click(function(){
     var noteDelete = {
         userId: userId,
         noteId: $(".note-interface:visible > .active-note-id").val()
@@ -258,6 +258,7 @@ socket.on("new note confirm", function(newNote) {
         $("#note-interface-" + newNote.noteId).show();
         $("#control-panel-reduction").show();
         if ($(".control-panel").children(".btn-audio").length == 0) {
+            $(".control-panel").prepend("<span class='control-panel-hint'></span>");
             $(".control-panel").prepend("<div class='btn-audio' id='record'></div><div class='btn-audio' id='base64'></div>");
             $(".control-panel-hint").css("color", "Green");
             $(".control-panel-hint").text("Click the above button to start recording");
@@ -349,8 +350,8 @@ $(".warn-reset-reduction-proceed").click(function() {
         reduction: 0
     };
     socket.emit("set note reduction", noteReductionChange);
-    $("#slider").slider("value", 0);
-    $("#reduction-percentage").text(0);
+    //$("#slider").slider("value", 0);
+   // $("#reduction-percentage").text(0);
     $(".active-note-body").prop("readonly", false);
 });
 
