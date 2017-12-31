@@ -189,6 +189,49 @@ $(document).ready(function() {
             }
         }
     });
+    // on("click") is important for making sure this works on appended elements
+    $("body").on("click", ".note-label", function (){
+        var activeNoteId = $(this).find(".note-label-id").val();
+        $(".notes > .active-note-label").removeClass("active-note-label");
+        $(this).addClass("active-note-label");
+        $("#note-interface-" + lastNote).hide();
+        $("#note-interface-" + activeNoteId).show();
+        lastNote = activeNoteId;
+        var noteInfo = {
+            userId: userId,
+            noteId: activeNoteId
+        };
+        socket.emit("get note reduction", noteInfo);
+        $("#control-panel-reduction").show();
+        if ($(this).hasClass("audio-note-label")) {
+            var noteInfo = {
+                userId: $(".active-user-id").val(),
+                noteId: $(".note-interface:visible > .active-note-id").val()
+            };
+            socket.emit("get audio note", noteInfo);
+        }
+        else {
+            if ($("#control-panel").find("#audio-controls")) {
+                $("#audio-controls").remove();
+            }
+        }
+        setTimeout(function() {
+            if (typeof $("#audio-controls").attr("src") === typeof undefined || $("#audio-controls").attr("src") === false) {
+                console.log($("#audio-controls").attr("src"));
+                if ($(".control-panel").children(".btn-audio").length == 0) {
+                    $(".control-panel").prepend("<span class='control-panel-hint'></span>");
+                    $(".control-panel").prepend("<div class='btn-audio' id='record'></div><div class='btn-audio' id='base64'></div>");
+                    $(".control-panel-hint").css("color", "Green");
+                    $(".control-panel-hint").text("Click the above button to start recording");
+                }
+            }
+            else if ($("#audio-controls").attr("src").length > 0) {
+                console.log("not null");
+                $(".btn-audio").remove();
+                $(".control-panel-hint").hide();
+            }
+        }, 50);
+    });
 });
 
 loadReductionSlider();
@@ -291,33 +334,7 @@ socket.on("new note confirm", function(newNote) {
     lastNote = newNote.noteId;
 });
 
-// on("click") is important for making sure this works on appended elements
-$("body").on("click", ".note-label", function (){
-    var activeNoteId = $(this).find(".note-label-id").val();
-    $(".notes > .active-note-label").removeClass("active-note-label");
-    $(this).addClass("active-note-label");
-    $("#note-interface-" + lastNote).hide();
-    $("#note-interface-" + activeNoteId).show();
-    lastNote = activeNoteId;
-    var noteInfo = {
-        userId: userId,
-        noteId: activeNoteId
-    };
-    socket.emit("get note reduction", noteInfo);
-    $("#control-panel-reduction").show();
-    if ($(this).hasClass("audio-note-label")) {
-        var noteInfo = {
-            userId: $(".active-user-id").val(),
-            noteId: $(".note-interface:visible > .active-note-id").val()
-        };
-        socket.emit("get audio note", noteInfo);
-    }
-    else {
-        if ($("#control-panel").find("#audio-controls")) {
-            $("#audio-controls").remove();
-        }
-    }
-});
+
 
 $(".btn-new-note").click(function() {
     if ($(".new-note-text").is(":visible")) {
