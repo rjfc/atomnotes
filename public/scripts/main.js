@@ -215,22 +215,6 @@ $(document).ready(function() {
                 $("#audio-controls").remove();
             }
         }
-        setTimeout(function() {
-            if (typeof $("#audio-controls").attr("src") === typeof undefined || $("#audio-controls").attr("src") === false) {
-                console.log($("#audio-controls").attr("src"));
-                if ($(".control-panel").children(".btn-audio").length == 0) {
-                    $(".control-panel").prepend("<span class='control-panel-hint'></span>");
-                    $(".control-panel").prepend("<div class='btn-audio' id='record'></div><div class='btn-audio' id='base64'></div>");
-                    $(".control-panel-hint").css("color", "Green");
-                    $(".control-panel-hint").text("Click the above button to start recording");
-                }
-            }
-            else if ($("#audio-controls").attr("src").length > 0) {
-                console.log("not null");
-                $(".btn-audio").remove();
-                $(".control-panel-hint").hide();
-            }
-        }, 50);
     });
 });
 
@@ -262,7 +246,7 @@ socket.on("note reduction percent", function(initialValue) {
                 reduction: ui.value
             };
             socket.emit("set note reduction", noteReductionChange);
-            if (ui.value != 0) {
+            if (ui.value != 0) {m
                 $(".active-note-body").prop("readonly", true);
             }
             else {
@@ -281,7 +265,6 @@ socket.on("note reduction text", function(summarizedText) {
     else {
         $(".note-interface:visible").find(".active-note-transcript").val(summarizedText);
     }
-
 });
 
 socket.on("new note confirm", function(newNote) {
@@ -333,8 +316,6 @@ socket.on("new note confirm", function(newNote) {
     }
     lastNote = newNote.noteId;
 });
-
-
 
 $(".btn-new-note").click(function() {
     if ($(".new-note-text").is(":visible")) {
@@ -401,6 +382,20 @@ socket.on("audio note info", function(audioNoteInfo) {
         $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + LZString.decompressFromEncodedURIComponent(audioNoteInfo.base64Url) + "'></audio>");
     }
     $(".active-note-transcript").val(audioNoteInfo.transcript);
+    if (typeof $("#audio-controls").attr("src") === typeof undefined || $("#audio-controls").attr("src") === false || $("#audio-controls").attr("src") == "null") {
+        console.log($("#audio-controls").attr("src"));
+        if ($(".control-panel").children(".btn-audio").length == 0) {
+            $(".control-panel").prepend("<span class='control-panel-hint'></span>");
+            $(".control-panel").prepend("<div class='btn-audio' id='record'></div><div class='btn-audio' id='base64'></div>");
+            $(".control-panel-hint").css("color", "Green");
+            $(".control-panel-hint").text("Click the above button to start recording");
+        }
+    }
+    else if ($("#audio-controls").attr("src").length > 0) {
+        console.log("not null: " + $("#audio-controls").attr("src") + " | type: " + typeof $("#audio-controls").attr("src"));
+        $(".btn-audio").remove();
+        $(".control-panel-hint").hide();
+    }
     /*if (audioNoteInfo.transcript == "Processing...refresh or check back later!") {
         console.log("hello");
         (function loop() {
