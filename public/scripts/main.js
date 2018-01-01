@@ -376,14 +376,11 @@ socket.on("base64 audio confirm", function(audioInfo) {
 socket.on("audio note info", function(audioNoteInfo) {
     console.log(audioNoteInfo);
     if ($(".control-panel").find("#audio-controls").length > 0){
-        $("#audio-controls").attr("src", LZString.decompressFromEncodedURIComponent(audioNoteInfo.base64Url));
+        $("#audio-controls").remove();
     }
-    else {
-        $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + LZString.decompressFromEncodedURIComponent(audioNoteInfo.base64Url) + "'></audio>");
-    }
+    $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + LZString.decompressFromEncodedURIComponent(audioNoteInfo.base64Url) + "'></audio>");
     $(".active-note-transcript").val(audioNoteInfo.transcript);
     if (typeof $("#audio-controls").attr("src") === typeof undefined || $("#audio-controls").attr("src") === false || $("#audio-controls").attr("src") == "null") {
-        console.log($("#audio-controls").attr("src"));
         if ($(".control-panel").children(".btn-audio").length == 0) {
             $(".control-panel").prepend("<span class='control-panel-hint'></span>");
             $(".control-panel").prepend("<div class='btn-audio' id='record'></div><div class='btn-audio' id='base64'></div>");
@@ -392,7 +389,6 @@ socket.on("audio note info", function(audioNoteInfo) {
         }
     }
     else if ($("#audio-controls").attr("src").length > 0) {
-        console.log("not null: " + $("#audio-controls").attr("src") + " | type: " + typeof $("#audio-controls").attr("src"));
         $(".btn-audio").remove();
         $(".control-panel-hint").hide();
     }
