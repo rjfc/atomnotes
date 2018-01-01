@@ -428,8 +428,8 @@ io.on("connection", function(socket){
                                                     })
                                                     .then((data) => {
                                                     var response = data[0];
-                                                        var transcript = response.results.map(result => result.alternatives[0].transcript).join('\n').replace(/\n/g, ".") + ".";
-                                                        if (transcript == ".") transcript = "";
+                                                        var transcript = response.results.map(result => result.alternatives[0].transcript).join('\n').replace(/\n/g, ". ") + ". ";
+                                                        if (transcript == ". ") transcript = "";
                                                         transcript = sentenceCase(transcript);
                                                         console.log(`Transcription: `, transcript);
                                                         // https://www.npmjs.com/package/pitchfinder for question mark implementation

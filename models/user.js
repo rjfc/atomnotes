@@ -17,7 +17,10 @@ var NoteSchema = mongoose.Schema({
         default: getDate()
     },
     title: String,
-    bodyText: String,
+    bodyText: {
+        type: String,
+        default: ""
+    },
     binder: String,
     type: {
         type: String,

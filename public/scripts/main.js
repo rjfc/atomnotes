@@ -246,7 +246,7 @@ socket.on("note reduction percent", function(initialValue) {
                 reduction: ui.value
             };
             socket.emit("set note reduction", noteReductionChange);
-            if (ui.value != 0) {m
+            if (ui.value != 0) {
                 $(".active-note-body").prop("readonly", true);
             }
             else {
