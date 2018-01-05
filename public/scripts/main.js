@@ -294,12 +294,14 @@ socket.on("new note confirm", function(newNote) {
         $(".control-panel").append("<a class=\"button\" id=\"play\" style='color: White;'>Play</a>");
         $(".control-panel").append("<a class=\"button\" id=\"mp3\" style='color: White;'>mp3</a>");*!/*/
         $("#record").click(function() {
+            console.log("record button clicked");
             $(this).hide();
             $("#base64").show();
             $(".control-panel-hint").css("color", "Red");
             $(".control-panel-hint").text("Click the above button to stop recording");
         });
         $("#base64").click(function() {
+            console.log("b64 exp button clicked");
             $(this).hide();
             $("#record").show();
             $("#audio-controls").attr("src", "");

@@ -54,6 +54,10 @@ function makeWaveform(){
 
 $(document).ready(function(){
     $(document).on("click", "#record:not(.disabled)", function(){
+        $(this).hide();
+        $("#base64").show();
+        $(".control-panel-hint").css("color", "Red");
+        $(".control-panel-hint").text("Click the above button to stop recording");
         Fr.voice.record($("#live").is(":checked"), function(){
             $(".recordButton").addClass("disabled");
 
@@ -64,6 +68,12 @@ $(document).ready(function(){
         });
     });
     $(document).on("click", "#base64:not(.disabled)", function(){
+        $(this).hide();
+        $("#record").show();
+        $("#audio-controls").attr("src", "");
+        $(".control-panel-hint").css("color", "Green");
+        $(".control-panel-hint").text("Click the above button to start recording");
+        $(".active-note-transcript").text("Processing...refresh or check back later!");
         if($(this).parent().data("type") === "mp3"){
             Fr.voice.exportMP3(function(url){
                 var base64AudioInfo = {
