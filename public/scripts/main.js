@@ -222,43 +222,39 @@ $(document).ready(function() {
     });
 });
 
-loadReductionSlider();
-function loadReductionSlider() {
-    setTimeout(function(){
-        var noteInfo = {
-            userId: userId,
-            noteId: $("#active-note-id").val()
-        };
-    }, 10);
-}
-
-socket.on("note reduction percent", function(initialValue) {
-    var min = 0,
-        max = 100;
-    $("#slider").slider({
-        range: "min",
-        value: initialValue,
-        min: min,
-        max: max,
-        slide: function(event, ui) {
-            $("#reduction-percentage").text(ui.value);
-            $(".ui-slider-handle").css("background-color", "White");
-            $(".ui-slider-handle").css("border", "none");
-            var noteReductionChange = {
-                userId: userId,
-                noteId: $(".note-interface:visible").find(".active-note-id").val(),
-                reduction: ui.value
-            };
-            socket.emit("set note reduction", noteReductionChange);
-            if (ui.value != 0) {
-                $(".active-note-body").prop("readonly", true);
+socket.on("note reduction percent", function(noteInfo) {
+    if (noteInfo.isEmpty) {
+        $(".container-slider").hide();
+    }
+    else {
+        $(".container-slider").show();
+        var min = 0,
+            max = 100;
+        $("#slider").slider({
+            range: "min",
+            value: noteInfo.reduction,
+            min: min,
+            max: max,
+            slide: function(event, ui) {
+                $("#reduction-percentage").text(ui.value);
+                $(".ui-slider-handle").css("background-color", "White");
+                $(".ui-slider-handle").css("border", "none");
+                var noteReductionChange = {
+                    userId: userId,
+                    noteId: $(".note-interface:visible").find(".active-note-id").val(),
+                    reduction: ui.value
+                };
+                socket.emit("set note reduction", noteReductionChange);
+                if (ui.value != 0) {
+                    $(".active-note-body").prop("readonly", true);
+                }
+                else {
+                    $(".active-note-body").prop("readonly", false);
+                }
             }
-            else {
-                $(".active-note-body").prop("readonly", false);
-            }
-        }
-    });
-    $("#reduction-percentage").text(initialValue);
+        });
+        $("#reduction-percentage").text(initialValue);
+    }
 });
 
 socket.on("note reduction text", function(summarizedText) {

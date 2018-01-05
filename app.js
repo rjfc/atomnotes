@@ -349,7 +349,22 @@ io.on("connection", function(socket){
                     console.log(error);
                 }
                 else if (user) {
-                    socket.emit("note reduction percent", user.notes[0].reduction);
+                    var isEmpty = false;
+                    if (user.notes[0].type == "audio") {
+                        if (user.notes[0].noteUrl == null) {
+                            isEmpty = true;
+                        }
+                    }
+                    else {
+                        if (user.notes[0].bodyText == null) {
+                            isEmpty = true;
+                        }
+                    }
+                    var noteInfo = {
+                        isEmpty: isEmpty,
+                        reduction: user.notes[0].reduction
+                    };
+                    socket.emit("note reduction percent", noteInfo);
                 }
             }
         );
@@ -489,7 +504,7 @@ io.on("connection", function(socket){
                         base64Url: "",
                         transcript: user.notes[0].bodyText
                     };
-                    if (user.notes[0].noteUrl !== "empty") {
+                    if (user.notes[0].noteUrl !== null) {
                         var filePath = fs.readFileSync(user.notes[0].noteUrl);
                         var wavBase64 = new Buffer(filePath).toString("base64");
                         audioNoteInfo.base64Url = LZString.compressToEncodedURIComponent("data:audio/wav;base64," + wavBase64);

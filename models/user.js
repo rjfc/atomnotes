@@ -32,7 +32,7 @@ var NoteSchema = mongoose.Schema({
     },
     noteUrl: {
         type: String,
-        default: "empty"
+        default: null
     },
     summarizedBodyText: String,
     summarizedAudioNote: String
