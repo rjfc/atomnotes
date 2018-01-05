@@ -119,25 +119,45 @@ var delay = (function(){
     };
 })();
 
-$(".active-note-delete").click(function(){
+function deleteNote() {
     var noteDelete = {
         userId: userId,
         noteId: $(".note-interface:visible > .active-note-id").val()
     };
     deletedNote = noteDelete.noteId;
     socket.emit("delete note", noteDelete);
+}
+
+$(".active-note-delete").click(function(){
+    deleteNote();
 });
 
 $("body").keydown(function(e){
     if(e.keyCode == 46) {
-        var noteDelete = {
-            userId: userId,
-            noteId: $(".note-interface:visible > .active-note-id").val()
-        };
-        deletedNote = noteDelete.noteId;
-        socket.emit("delete note", noteDelete);
+        deleteNote();
     }
 });
+
+function loadControlPanel(noteId) {
+    var noteInfo = {
+        userId: userId,
+        noteId: noteId
+    };
+    socket.emit("get note reduction", noteInfo);
+    $("#control-panel-reduction").show();
+    if ($(".active-note-label").hasClass("audio-note-label")) {
+        var noteInfo = {
+            userId: $(".active-user-id").val(),
+            noteId: $(".note-interface:visible > .active-note-id").val()
+        };
+        socket.emit("get audio note", noteInfo);
+    }
+    else {
+        if ($("#control-panel").find("#audio-controls")) {
+            $("#audio-controls").remove();
+        }
+    }
+}
 
 socket.on("delete note confirm", function(noteId) {
     var activeNoteId;
@@ -150,6 +170,7 @@ socket.on("delete note confirm", function(noteId) {
     }
     $("#note-interface-" + activeNoteId).show();
     lastNote = activeNoteId;
+    loadControlPanel(activeNoteId)
 });
 
 $(document).ready(function() {
@@ -197,24 +218,7 @@ $(document).ready(function() {
         $("#note-interface-" + lastNote).hide();
         $("#note-interface-" + activeNoteId).show();
         lastNote = activeNoteId;
-        var noteInfo = {
-            userId: userId,
-            noteId: activeNoteId
-        };
-        socket.emit("get note reduction", noteInfo);
-        $("#control-panel-reduction").show();
-        if ($(this).hasClass("audio-note-label")) {
-            var noteInfo = {
-                userId: $(".active-user-id").val(),
-                noteId: $(".note-interface:visible > .active-note-id").val()
-            };
-            socket.emit("get audio note", noteInfo);
-        }
-        else {
-            if ($("#control-panel").find("#audio-controls")) {
-                $("#audio-controls").remove();
-            }
-        }
+        loadControlPanel(activeNoteId)
     });
 });
 
