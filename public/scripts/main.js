@@ -225,8 +225,18 @@ $(document).ready(function() {
 socket.on("note reduction percent", function(noteInfo) {
     if (noteInfo.isEmpty) {
         $(".container-slider").hide();
+        $("#reduction-percentage").text(0);
+        if ($(".control-panel").children(".btn-audio").length == 0) {
+            $(".control-panel").prepend("<span class='control-panel-hint'></span>");
+            $(".control-panel").prepend("<div class='btn-audio' id='record'></div><div class='btn-audio' id='base64'></div>");
+            $(".control-panel-hint").css("color", "Green");
+            $(".control-panel-hint").text("Click the above button to start recording");
+        }
     }
     else {
+        $(".btn-audio").remove();
+        $(".control-panel-hint").remove();
+        $("#reduction-percentage").text(noteInfo.reduction);
         $(".container-slider").show();
         var min = 0,
             max = 100;
@@ -376,33 +386,10 @@ socket.on("base64 audio confirm", function(audioInfo) {
 });
 
 socket.on("audio note info", function(audioNoteInfo) {
-    console.log(audioNoteInfo);
-    if ($(".control-panel").find("#audio-controls").length > 0){
+    if ($(".control-panel").find("#audio-controls").length > 0 ){
         $("#audio-controls").remove();
     }
     $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + LZString.decompressFromEncodedURIComponent(audioNoteInfo.base64Url) + "'></audio>");
     $(".active-note-transcript").val(audioNoteInfo.transcript);
-    if (typeof $("#audio-controls").attr("src") === typeof undefined || $("#audio-controls").attr("src") === false || $("#audio-controls").attr("src") == "null") {
-        if ($(".control-panel").children(".btn-audio").length == 0) {
-            $(".control-panel").prepend("<span class='control-panel-hint'></span>");
-            $(".control-panel").prepend("<div class='btn-audio' id='record'></div><div class='btn-audio' id='base64'></div>");
-            $(".control-panel-hint").css("color", "Green");
-            $(".control-panel-hint").text("Click the above button to start recording");
-        }
-    }
-    else if ($("#audio-controls").attr("src").length > 0) {
-        $(".btn-audio").remove();
-        $(".control-panel-hint").hide();
-    }
-    /*if (audioNoteInfo.transcript == "Processing...refresh or check back later!") {
-        console.log("hello");
-        (function loop() {
-        setTimeout(function () {
-            console.log("hello");
-            $("#note-interface-" + audioNoteInfo.id).load(location.href + " .note-interface" + audioNoteInfo.id);
-            loop()
-        }, 2000);
-        }());
-    }*/
 });
 
