@@ -138,24 +138,22 @@ $("body").keydown(function(e){
     }
 });
 
-function loadControlPanel(noteId) {
+function loadControlPanel(noteInformation) {
     var noteInfo = {
         userId: userId,
-        noteId: noteId
+        noteId: noteInformation.noteId
     };
     socket.emit("get note reduction", noteInfo);
     $("#control-panel-reduction").show();
-    if ($(".active-note-label").hasClass("audio-note-label")) {
+    if (noteInformation.type == "audio") {
         var noteInfo = {
             userId: $(".active-user-id").val(),
             noteId: $(".note-interface:visible > .active-note-id").val()
         };
         socket.emit("get audio note", noteInfo);
     }
-    else {
-        if ($("#control-panel").find("#audio-controls")) {
-            $("#audio-controls").remove();
-        }
+    else if (noteInformation.type == "text" && $("#control-panel").find("#audio-controls")) {
+        $("#audio-controls").remove();
     }
 }
 
@@ -164,13 +162,25 @@ socket.on("delete note confirm", function(noteId) {
     if (deletedNote == noteId) {
         $("#note-label-" + noteId).next().addClass("active-note-label");
         activeNoteId = $("#note-label-" + noteId).next().find(".note-label-id").val();
-
         $("#note-label-" + noteId).remove();
         $("#note-interface-" + noteId).remove();
     }
+    var activeNoteInfo;
+    if ($(".active-note-label").hasClass("audio-note-label")) {
+        activeNoteInfo = {
+            noteId: activeNoteId,
+            type: "audio"
+        }
+    }
+    else {
+        activeNoteInfo = {
+            noteId: activeNoteId,
+            type: "text"
+        }
+    }
     $("#note-interface-" + activeNoteId).show();
     lastNote = activeNoteId;
-    loadControlPanel(activeNoteId)
+    loadControlPanel(activeNoteInfo)
 });
 
 $(document).ready(function() {
@@ -218,7 +228,20 @@ $(document).ready(function() {
         $("#note-interface-" + lastNote).hide();
         $("#note-interface-" + activeNoteId).show();
         lastNote = activeNoteId;
-        loadControlPanel(activeNoteId)
+        var activeNoteInfo;
+        if ($(".active-note-label").hasClass("audio-note-label")) {
+            activeNoteInfo = {
+                noteId: activeNoteId,
+                type: "audio"
+            }
+        }
+        else {
+            activeNoteInfo = {
+                noteId: activeNoteId,
+                type: "text"
+            }
+        }
+        loadControlPanel(activeNoteInfo)
     });
 });
 
@@ -263,7 +286,7 @@ socket.on("note reduction percent", function(noteInfo) {
                 }
             }
         });
-        $("#reduction-percentage").text(initialValue);
+        $("#reduction-percentage").text(noteInfo.initialValue);
     }
 });
 
@@ -284,7 +307,11 @@ socket.on("new note confirm", function(newNote) {
         $(".note-interface-container").append("<div class=\"note-interface\" id=\"note-interface-" + newNote.noteId + "\"><input class=\"active-note-input active-note-title\" name=\"noteTitle\" type=\"text\" placeholder=\"Title here\" value=\"" + newNote.noteTitle + "\"><hr style=\"margin: 0; background-color: Black; height: 1px;\"><textarea class=\"active-note-input active-note-body\" name=\"noteBody\" type=\"text\" placeholder=\"Body here\"></textarea><textarea class=\"active-note-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><span></span><a class=\"active-note-delete\"><img class=\"active-note-delete-icon\" src=\"/images/trash-icon.png\"></a><span class=\"text-save-status\"></span></div>");
         $("#note-interface-" + lastNote).hide();
         $("#note-interface-" + newNote.noteId).show();
-        $("#control-panel-reduction").show();
+        var activeNoteInfo = {
+            noteId: newNote.noteId,
+            type: "text"
+        };
+        loadControlPanel(activeNoteInfo);
     }
     else {
         $(".notes .note-label").removeClass("active-note-label");
@@ -292,17 +319,17 @@ socket.on("new note confirm", function(newNote) {
         $(".note-interface-container").append("<div class=\"note-interface\" id=\"note-interface-" + newNote.noteId + "\"><input class=\"active-note-input active-note-title\" name=\"noteTitle\" type=\"text\" placeholder=\"Title here\" value=\"" + newNote.noteTitle + "\"><hr style=\"margin: 0; background-color: Black; height: 1px;\"><textarea readonly='true' class=\"active-note-transcript\" name=\"noteBody\" type=\"text\" placeholder=\"Transcript will appear here\"></textarea><textarea class=\"active-note-id\" name=\"noteId\" type=\"text\" style=\"display: none;\">" + newNote.noteId + "</textarea><span></span><a class=\"active-note-delete\"><img class=\"active-note-delete-icon\" src=\"/images/trash-icon.png\"></a></div>");
         $("#note-interface-" + lastNote).hide();
         $("#note-interface-" + newNote.noteId).show();
-        $("#control-panel-reduction").show();
+        var activeNoteInfo = {
+            noteId: newNote.noteId,
+            type: "audio"
+        };
+        loadControlPanel(activeNoteInfo);
         if ($(".control-panel").children(".btn-audio").length == 0) {
             $(".control-panel").prepend("<span class='control-panel-hint'></span>");
             $(".control-panel").prepend("<div class='btn-audio' id='record'></div><div class='btn-audio' id='base64'></div>");
             $(".control-panel-hint").css("color", "Green");
             $(".control-panel-hint").text("Click the above button to start recording");
         }
-/*      $(".control-panel").append("<a class='btn-stop-audio' id='stop' style='color: White;'>STOP</a>");
-        $(".control-panel").append("<a class=\"button\" id=\"download\" style='color: White;'>Download</a>");
-        $(".control-panel").append("<a class=\"button\" id=\"play\" style='color: White;'>Play</a>");
-        $(".control-panel").append("<a class=\"button\" id=\"mp3\" style='color: White;'>mp3</a>");*!/*/
         $("#record").click(function() {
             console.log("record button clicked");
             $(this).hide();
@@ -319,12 +346,6 @@ socket.on("new note confirm", function(newNote) {
             $(".control-panel-hint").text("Click the above button to start recording");
             $(".active-note-transcript").text("Processing...refresh or check back later!");
         });
-        if ($(".control-panel").find("#audio-controls").length > 0){
-            $("#audio-controls").attr("src", "");
-        }
-        else {
-            $(".control-panel").append("<audio controls id=\"audio-controls\" src=''></audio>");
-        }
     }
     lastNote = newNote.noteId;
 });
@@ -348,6 +369,9 @@ $(".btn-new-text-note").click(function() {
 });
 
 $(".btn-new-audio-note").click(function() {
+    if ($(".control-panel").find("#audio-controls").length == 0 ){
+        $(".control-panel").append("<audio controls id=\"audio-controls\" src=''></audio>");
+    }
     socket.emit("new audio note", userId);
 });
 
@@ -392,4 +416,3 @@ socket.on("audio note info", function(audioNoteInfo) {
     $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + LZString.decompressFromEncodedURIComponent(audioNoteInfo.base64Url) + "'></audio>");
     $(".active-note-transcript").val(audioNoteInfo.transcript);
 });
-
