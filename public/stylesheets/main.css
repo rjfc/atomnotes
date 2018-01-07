@@ -517,3 +517,9 @@ a:hover {
     font-family: Lato, 'sans-serif';
     margin-bottom: 20px;
 }
+
+.control-panel-loading{
+    color: Orange;
+    font-family: Lato, 'sans-serif';
+    margin-bottom: 20px;
+}

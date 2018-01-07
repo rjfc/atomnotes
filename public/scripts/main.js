@@ -150,6 +150,9 @@ function loadControlPanel(noteInformation) {
             userId: $(".active-user-id").val(),
             noteId: $(".note-interface:visible > .active-note-id").val()
         };
+        if ($(".control-panel").find(".control-panel-loading").length == 0) {
+            $(".control-panel").append("<span class='control-panel-loading'><br>Loading audio...</span>");
+        }
         socket.emit("get audio note", noteInfo);
     }
     else if (noteInformation.type == "text" && $("#control-panel").find("#audio-controls")) {
@@ -372,6 +375,7 @@ $(".btn-new-audio-note").click(function() {
     if ($(".control-panel").find("#audio-controls").length == 0 ){
         $(".control-panel").append("<audio controls id=\"audio-controls\" src=''></audio>");
     }
+    $(".control-panel-loading").remove();
     socket.emit("new audio note", userId);
 });
 
@@ -413,6 +417,7 @@ socket.on("audio note info", function(audioNoteInfo) {
     if ($(".control-panel").find("#audio-controls").length > 0 ){
         $("#audio-controls").remove();
     }
+    $(".control-panel-loading").remove();
     $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + LZString.decompressFromEncodedURIComponent(audioNoteInfo.base64Url) + "'></audio>");
     $(".active-note-transcript").val(audioNoteInfo.transcript);
 });
