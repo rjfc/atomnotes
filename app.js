@@ -261,6 +261,13 @@ io.on("connection", function(socket){
                     console.log(currentTime + " - " + userEmail + " HAD A DELETE NOTE ERROR: " + error);
                 }
                 else {
+                    var notePath = "doc_files/" + noteDelete.userId + "/audio_notes/" + noteDelete.noteId + ".wav";
+                    fs.stat(notePath, function (err, note) {
+                        fs.unlink(notePath, function(err){
+                            if(err) return console.log(currentTime + " - " + userEmail + " DELETED A TEXT NOTE '" + noteDelete.noteId + "'");
+                            console.log(currentTime + " - " + userEmail + " DELETED AUDIO NOTE '" + noteDelete.noteId + "' FILE");
+                        });
+                    });
                     socket.emit("delete note confirm", noteDelete.noteId);
                 }
             })
