@@ -294,7 +294,6 @@ socket.on("note reduction percent", function(noteInfo) {
 });
 
 socket.on("note reduction text", function(summarizedText) {
-    console.log(summarizedText);
     if ($(".note-interface:visible").find(".active-note-body").length) {
         $(".note-interface:visible").find(".active-note-body").val(summarizedText);
     }
@@ -334,14 +333,12 @@ socket.on("new note confirm", function(newNote) {
             $(".control-panel-hint").text("Click the above button to start recording");
         }
         $("#record").click(function() {
-            console.log("record button clicked");
             $(this).hide();
             $("#base64").show();
             $(".control-panel-hint").css("color", "Red");
             $(".control-panel-hint").text("Click the above button to stop recording");
         });
         $("#base64").click(function() {
-            console.log("b64 exp button clicked");
             $(this).hide();
             $("#record").show();
             $("#audio-controls").attr("src", "");
@@ -403,7 +400,6 @@ $("#dark-overlay-interface").click(function() {
 });
 
 socket.on("base64 audio confirm", function(audioInfo) {
-    console.log("b64 client received");
     if ($(".control-panel").find("#audio-controls").length > 0){
         $("#audio-controls").attr("src", LZString.decompressFromEncodedURIComponent(audioInfo.base64URL));
     }
