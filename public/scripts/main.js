@@ -344,7 +344,7 @@ socket.on("new note confirm", function(newNote) {
             $("#audio-controls").attr("src", "");
             $(".control-panel-hint").css("color", "Green");
             $(".control-panel-hint").text("Click the above button to start recording");
-            $(".active-note-transcript").text("Processing...refresh or check back later!");
+            $(".active-note-transcript").attr("placeholder", "Processing...refresh or check back later!");
         });
     }
     lastNote = newNote.noteId;
@@ -400,20 +400,38 @@ $("#dark-overlay-interface").click(function() {
 });
 
 socket.on("base64 audio confirm", function(audioInfo) {
-    if ($(".control-panel").find("#audio-controls").length > 0){
-        $("#audio-controls").attr("src", LZString.decompressFromEncodedURIComponent(audioInfo.base64URL));
+    // If returned base64 audio information matches active audio note
+    if ($(".active-note-label").attr("id").substring(11, $(".active-note-label").attr("id").length) == audioInfo.noteId) {
+        if ($(".control-panel").find("#audio-controls").length > 0){
+            $("#audio-controls").attr("src", LZString.decompressFromEncodedURIComponent(audioInfo.base64URL));
+        }
+        else {
+            $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + audioInfo.base64URL + "'></audio>");
+        }
+        if (audioInfo.transcript.length > 0) {
+            $(".active-note-transcript").val(audioInfo.transcript);
+        }
+        else if (audioInfo.transcript.length == 0 && $(".active-note-label").attr("id").substring(11, $(".active-note-label").attr("id").length) == audioInfo.noteId){
+            $(".active-note-transcript").attr("placeholder", "Transcript was not possible");
+        }
     }
-    else {
-        $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + audioInfo.base64URL + "'></audio>");
-    }
-    $(".active-note-transcript").val(audioInfo.transcript);
 });
 
 socket.on("audio note info", function(audioNoteInfo) {
-    if ($(".control-panel").find("#audio-controls").length > 0 ){
+    if ($(".control-panel").find("#audio-controls").length > 0) {
         $("#audio-controls").remove();
     }
     $(".control-panel-loading").remove();
     $(".control-panel").append("<audio controls id=\"audio-controls\" src='" + LZString.decompressFromEncodedURIComponent(audioNoteInfo.base64Url) + "'></audio>");
-    $(".active-note-transcript").val(audioNoteInfo.transcript);
+    if (audioNoteInfo.transcript.length > 0) {
+        $(".active-note-transcript").val(audioNoteInfo.transcript);
+    }
+    else if (audioNoteInfo.transcript.length == 0 && $("#audio-controls").attr("src") != "null"){
+        $(".active-note-transcript").attr("placeholder", "Transcript was not possible");
+        $(".active-note-transcript").val("");
+    }
+    else if (audioNoteInfo.transcript.length == 0 && $("#audio-controls").attr("src") == "null") {
+        $(".active-note-transcript").attr("placeholder", "Transcript will appear here");
+        $(".active-note-transcript").val("");
+    }
 });
