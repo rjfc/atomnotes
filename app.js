@@ -406,7 +406,7 @@ io.on("connection", function(socket){
             },
             {
                 "$set": {
-                    "notes.$.bodyText": "Processing...refresh or check back later!"
+                    "notes.$.bodyText": "Processing...check back later or refresh if it's taking too long!"
                 }
             },
             function(error, doc) {

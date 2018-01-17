@@ -247,6 +247,7 @@ $(document).ready(function() {
         }
         loadControlPanel(activeNoteInfo)
     });
+
 });
 
 socket.on("note reduction percent", function(noteInfo) {
@@ -345,7 +346,7 @@ socket.on("new note confirm", function(newNote) {
             $("#audio-controls").attr("src", "");
             $(".control-panel-hint").css("color", "Green");
             $(".control-panel-hint").text("Click the above button to start recording");
-            $(".active-note-transcript").attr("placeholder", "Processing...refresh or check back later!");
+            $(".active-note-transcript").attr("placeholder", "Processing...check back later or refresh if it's taking too long!");
         });
     }
     lastNote = newNote.noteId;
@@ -436,5 +437,9 @@ socket.on("audio note info", function(audioNoteInfo) {
     else if (audioNoteInfo.transcript.length == 0 && $("#audio-controls").attr("src") == "null") {
         $(".active-note-transcript").attr("placeholder", "Transcript will appear here");
         $(".active-note-transcript").val("");
+    }
+    if ($(".active-note-transcript").val() == "Processing...refresh or check back later!") {
+        $(".btn-audio").remove();
+        $(".control-panel-hint").remove();
     }
 });
