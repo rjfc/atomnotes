@@ -54,27 +54,27 @@ function makeWaveform(){
 
 $(document).ready(function(){
     $(document).on("click", "#record:not(.disabled)", function(){
+        console.log("record clicked");
         $(this).hide();
         $("#base64").show();
         $(".control-panel-hint").css("color", "Red");
         $(".control-panel-hint").text("Click the above button to stop recording");
         Fr.voice.record($("#live").is(":checked"), function(){
             $(".recordButton").addClass("disabled");
-
             $("#live").addClass("disabled");
             $(".one").removeClass("disabled");
-
             makeWaveform();
         });
     });
     $(document).on("click", "#base64:not(.disabled)", function(){
+        console.log("base64 clicked");
         $(this).hide();
         $("#record").show();
         $("#audio-controls").attr("src", "");
         $(".control-panel-hint").css("color", "Green");
         $(".control-panel-hint").text("Click the above button to start recording");
         $(".active-note-transcript").text("Processing...refresh or check back later!");
-        if($(this).parent().data("type") === "mp3"){
+        if ($(this).parent().data("type") === "mp3") {
             Fr.voice.exportMP3(function(url){
                 var base64AudioInfo = {
                     userId: $(".active-user-id").val(),
@@ -84,7 +84,8 @@ $(document).ready(function(){
                 socket.emit("set base64 audio", base64AudioInfo);
                 $("<a href='"+ url +"' target='_blank'></a>")[0].click();
             }, "base64");
-        }else{
+        }
+        else {
             Fr.voice.export(function(url){
                 var base64AudioInfo = {
                     userId: $(".active-user-id").val(),

@@ -247,14 +247,13 @@ $(document).ready(function() {
         }
         loadControlPanel(activeNoteInfo)
     });
-
 });
 
 socket.on("note reduction percent", function(noteInfo) {
     if (noteInfo.isEmpty) {
         $(".container-slider").hide();
         $("#reduction-percentage").text(0);
-        if ($(".control-panel").children(".btn-audio").length == 0) {
+        if ($(".control-panel").children(".btn-audio").length == 0 && $(".active-note-transcript").attr("placeholder") == "Transcript will appear here") {
             $(".control-panel").prepend("<span class='control-panel-hint'></span>");
             $(".control-panel").prepend("<div class='btn-audio' id='record'></div><div class='btn-audio' id='base64'></div>");
             $(".control-panel-hint").css("color", "Green");
