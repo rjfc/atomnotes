@@ -289,7 +289,7 @@ io.on("connection", function(socket){
                     getCurrentTime();
                     console.log(currentTime + " - " + userEmail + " HAD A NOTE SETTING REDUCTION ERROR: " + error);
                 }
-                else { nm
+                else {
                     User.findOne(
                         {
                             "_id": noteReductionInfo.userId,
