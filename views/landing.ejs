@@ -10,10 +10,12 @@
                 </div>
             </div>
             <div class="popup-body">
+                <form action="/terms" method="GET" id="form-terms"></form>
+                <form action="/privacyPolicy" method="GET" id="form-privacyPolicy"></form>
                 <form action="/register" method="POST" class="popup-form" id="popup-sign-up-form">
                     <input type="text" name="email" placeholder="Email address" id="popup-sign-up-form-email"><br>
                     <input type="password" name="password" placeholder="Password" id="popup-sign-up-form-password" autocomplete="off">
-                    <span class="popup-text-hint">By signing up you agree to our <a>Terms</a> and <a>Privacy Policy</a></span>
+                    <span class="popup-text-hint">By signing up you agree to our <a href="javascript:{}" onclick="document.getElementById('form-terms').submit();">Terms</a> and <a href="javascript:{}" onclick="document.getElementById('form-privacyPolicy').submit();">Privacy Policy</a></span>
                     <br>
                     <strong>
                         <span class="popup-text-hint popup-error" id="popup-sign-up-form-error">

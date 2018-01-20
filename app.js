@@ -554,12 +554,15 @@ io.on("connection", function(socket){
     });
 });
 
-// POST ROUTE: open a note
-app.post("/openNote", function(req, res) {
-    activeNote = req.body.noteId;
-    res.render("interface");
+// GET ROUTE: terms and conditions page
+app.get("/terms", function(req, res) {
+    res.render("terms");
 });
 
+// GET ROUTE: privacy policy page
+app.get("/privacyPolicy", function(req, res) {
+    res.render("privacyPolicy");
+});
 
 // Listen on set port
 http.listen(port, function() {
