@@ -1,5 +1,7 @@
 # atomnotes
-A note system that allows for both audio and text summarization.
+A note system that allows for both audio and text summarization.<br>
+**A valid Google Cloud Platform must be set up and configured in order for the audio notes to work.**
+
 
 If you get the following error:
 ```
